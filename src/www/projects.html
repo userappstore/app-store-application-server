@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Projects</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <span>/</span>
+      <a href="/projects" title="Code something">Projects</a>
+      <a href="/create-project" title="Code something">Create project</a>
+    </template>
+  </head>
+  <body>
+    <h1>Projects</h1>
+    <p>Make something useful, fun or creative and share it</p>
+    <p><a href="/create-project" class="pure-button pure-button-primary">Create project</a></p>
+    <div id="no-projects">
+      <p>You have not created any projects yet.</p>
+    </div>
+    <table id="projects-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/projects?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="project-row">
+    <tr id="${project.projectid}">
+      <td><a href="/project?projectid=${project.projectid}">${project.projectid}</a></td>
+      <td>${project.created}</td>
+      <td class="pure-button-group">
+      </td>
+    </tr>
+  </template>
+</html>

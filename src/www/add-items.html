@@ -1,0 +1,55 @@
+<!doctype html>
+<html navbar="/navbar-collection.html">
+  <head>
+    <title>Apps in ${collection.name}</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <style>
+        .launcher { margin: 0; padding: 0; list-style-type: none }
+        .launcher li { display: inline-block;  margin: 0 1rem 1rem 0; width: 8rem; font-size: 0.9rem; text-align: center }
+        .launcher button { border: none; background-color: transparent }
+        .launcher img { width: 8rem; max-height: 8rem; display: block; margin-bottom: 1rem }
+        .launcher .installed { border: 1px solid darkgreen; border-radius: 0.25rem; padding: 0.25rem }
+        .launcher .installed img { opacity: 0.25 }
+      </style>    
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Add apps to ${collection.name}</h1>
+    <div id="message-container"></div>
+    <div id="apps">
+      <h2>Apps in collection</h2>
+      <ul class="launcher" id="removable-list"></ul>
+      <div id="no-removable">
+        <p>This collection is empty.</p>
+      </div>
+      <h2>Available to add</h2>
+      <ul class="launcher" id="addable-list"></ul>
+      <div id="no-addable">
+        <p>There are no installed apps left to add.</p>
+      </div>
+    </div>
+  </body>
+  <template id="addable-item">
+    <li>
+      <form id="${install.installid}" method="POST">
+        <button type="submit" name="installid" value="${install.installid}">
+          <img src="/install/${install.installid}/icon.png" />
+          ${install.installid}
+        </button>
+      </form>
+    </li>
+  </template>
+  <template id="removable-item">
+    <li id="${install.installid}">
+      <img src="/install/${install.installid}/icon.png" />
+      ${install.installid}
+    </li>
+  </template>  
+  <template id="invalid-installid">
+    <div class="error-message">Error!  An invalid install was submitted.</div>
+  </template>  
+  <template id="success">
+    <div class="success-message">Success!  The install has been added to the collection.</div>
+  </template>
+</html>

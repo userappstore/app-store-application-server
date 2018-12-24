@@ -1,0 +1,12 @@
+{
+  "name": "project",
+  "version": "0.0.1",
+  "main": "main.js",
+  "engines": {
+    "node": "8.1.4",
+    "npm": "5.0.3"
+  },
+  "dependencies": {
+    "@userappstore/dashboard": "^2018.11.20-4"
+  }
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html navbar="/navbar-app.html">
+  <head>
+    <title>About ${app.appid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+    .icon,
+    .icon img { max-width: 16rem; max-height: 16rem }
+    .icon { margin-right: 1rem }
+    .tags, .tags li { margin: 0 0 1rem 0; padding: 0; list-style-type: none }
+    .tags li { display: inline-block; margin-right: 1rem }
+    .tags a { display: inline-block; padding: 0.5rem; border-radius: 0.25rem; 
+          background-color: #369; color: #FFF; text-decoration: none }
+    .screenshots, .screenshots li { margin: 0 0 1rem 0; padding: 0; list-style-type: none }
+    .screenshots li { display: block }
+    .screenshots img { max-width: 100% }
+    </style>
+  </head>
+  <body>
+    <div class="pure-g">
+      <div class="pure-u-1-2 icon">
+        <img src="/app/icon.png?appid=${app.appid}" />
+      </div>
+      <div class="pure-u-1-2">
+        <h1>${app.name}</h1>
+        <ul id="tags" class="tags"></ul>
+        <div id="publisher"></div>
+        <p>${app.description}</p>
+      </div>
+    </div>
+    <h2>Subscription plans</h2>
+    <table id="plans-table">
+      <tr>
+        <th>Plan</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </table>
+    <h2>Screenshots</h2>
+    <ul id="screenshots" class="screenshots"></ul>
+  </body>
+  <template id="plan-row">
+    <tr>
+      <td>${plan.id}</td>
+      <td>${plan.description}</td>
+      <td>${plan.amount}</td>
+      <td class="pure-button-group">
+        <a class="pure-button pure-button-primary" href="/install-app?appid=${plan.metadata.appid}&planid=${plan.id}">Install</a>
+      </td>
+    </tr>
+  </template>
+  <template id="individual-publisher">
+    <table id="${account.id}">
+      <tr>
+        <th>Publisher</th>
+        <td>${account.legal_entity.first_name} ${account.legal_entity.last_name}</td>
+      </tr>
+      <tr>
+        <th>Country</th>
+        <td>${account.country}</td>
+      </tr>
+      <tr>
+        <th>Registered</th>
+        <td>${account.created}</td>
+      </tr>
+    </table>
+  </template>
+  <template id="company-publisher">
+    <table id="${account.id}">
+      <tr>
+        <th>Publisher</th>
+        <td>${account.legal_entity.business_name}</td>
+      </tr>
+      <tr>
+        <th>Country</th>
+        <td>${account.country}</td>
+      </tr>
+      <tr>
+        <th>Registered</th>
+        <td>${account.created}</td>
+      </tr>
+    </table>
+  </template>
+  <template id="tag-item">
+    <li><a href="/tag?tag=${tag.textEncoded}">${tag.text}</a></li>
+  </template>
+  <template id="screenshot-item">
+    <img src="/app/screenshot${screenshot.number}.jpg?appid=${screenshot.appid}" />
+  </template>
+</html>

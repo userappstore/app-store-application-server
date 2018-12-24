@@ -1,0 +1,59 @@
+<!doctype html>
+<html navbar="/navbar-project.html">
+  <head>
+    <title>Project IDE ${project.projectid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <script src="/public/ide.js"></script>
+    <script src="/public/request.js"></script>
+    <script src="/public/ace/ace.js"></script>
+    <script src="/public/ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/ace/mode-json.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/ace/mode-css.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/ace/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+      html, body { width: 100%; height: 100%; padding: 0 }
+      body { background-color: #000 }
+      .ace_dark,
+      .ace_gutter-layer,
+      .ace-twilight { background-color: #000 !important }
+      .files { display: table-row; height: 3rem; width: 100% }
+      .files li:first-of-type { margin-left: 1rem }
+      .files li { display: inline-block; margin-right: 1rem; height: 3rem; line-height: 3rem; color: #666; font-size: 0.8rem }
+      .files a { display: inline-block; text-decoration: none; color: #999; font-size: 0.8rem; padding: 0 0.5rem; line-height: 2rem; margin-top: 0.5rem; border-radius: 0.5rem }
+      .files a.current { background-color: #222 }
+      .wrapper { display: table-row }
+      .editor { width: 100%; height: 100% }
+      .files .pure-button { margin-left: 1rem; box-shadow: 0 2px 2px 0 #000; background-image: linear-gradient(#666, #333); color: #CCC }
+      .files .pure-button:hover { background-image: linear-gradient(#999, #666); color: #333 }
+      .files .pure-button:active { background-image: linear-gradient(#999, #CCC); color: #000 }
+      .files label { color: #666 }
+      .files input { margin-right: 0.5rem }
+      form { padding: 0; margin: 0; height: 100%; width: 100%; display: table }
+      textarea.file { display: none }
+      .unsaved { color: #666 }
+      .saved { color: transparent }
+    </style>
+    <base target="_top" />
+  </head>
+  <body>
+    <form id="submit-form" method="POST">
+      <ul id="files-menu" class="files">
+        <li id="project">${project.projectid}</li>
+        <li><a id="home.html-link" href="/project-ide?filename=home.html&projectid=${project.projectid}">/home.html <sup id="home.html-status" class="saved">*</sup></a></li>
+        <li><a id="app.js-link" href="/project-ide?filename=app.js&projectid=${project.projectid}">/public/app.js <sup id="app.js-status" class="saved">*</sup></a></li>
+        <li><a id="app.css-link" href="/project-ide?filename=app.css&projectid=${project.projectid}">/public/app.css <sup id="app.css-status" class="saved">*</sup></a></li>
+      </ul>
+      <div id="editors" class="wrapper">
+        <div id="home.html-editor" class="editor"></div>
+        <div id="app.js-editor" class="editor"></div>
+        <div id="app.css-editor" class="editor"></div>
+      </div>
+    </form>
+    <template id="file-editor">
+      <textarea class="file" id="${file.filename}">${file.text}</textarea>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html template="false">
+  <head>
+    <title>Install app ${app.name}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      h1,
+      label,
+      .pure-button-group { text-align: left }
+      form, 
+      .pure-button-group { margin-bottom: 0 }
+      select { width: 100% }
+      .entry-form .submit { margin: 0; padding: 0; text-align: left }
+      .entry-form .cancel { margin: 0; padding: 0; text-align: right }
+      a.pure-button { color: #333 }
+      </style>
+  </head>
+  <body class="entry-form">
+    <h1>Install ${app.name}</h1>
+    <div id="message-container"></div>
+    <form class="pure-form pure-form-stacked" method="POST">
+      <div class="pure-control-group">
+        <label for="text">Link text</label>
+        <input id="text" name="text" type="text" maxlength="30" />
+      </div>
+      <div class="pure-control-group">
+        <label for="collections-list">Collection</label>
+        <select id="collections-list" name="collectionid">
+          <option value="">Unassigned</option>
+        </select>
+      </div>
+      <div class="pure-control-group">
+        <label for="organizations-list">Install type</label>
+        <select id="organizations-list" name="organizationid">
+          <option>Select install type</option>
+          <option value="personal">Personal</option>
+        </select>
+      </div>
+      <div class="pure-control-group">
+        <label for="plans-list">Subscription plan</label>
+        <select id="plans-list" name="planid">
+          <option>Select plan</option>
+        </select>
+      </div>
+      <div class="pure-g">
+        <div class="submit" class="pure-u-1-2">
+          <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
+        </div>
+        <div class="cancel" class="pure-u-1-2">
+          <a href="/about?appid=${app.appid}" class="pure-button">Back</a>
+        </div>
+      </div>
+    </form>
+    </div>
+  </body>
+  <template id="plan-option">
+    <option value="${plan.id}">${plan.id}</option>
+  </template>
+  <template id="organization-option">
+    <option value="${organization.organizationid}">${organization.name} [organization]</option>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error! An error occurred installing the app.</div>
+  </template>
+  <template id="invalid-text">
+    <div class="error-message">Error! Invalid link text was provided.</div>
+  </template>
+  <template id="invalid-planid">
+    <div class="error-message">Error! An invalid plan was provided.</div>
+  </template>
+  <template id="invalid-organizationid">
+    <div class="error-message">Error! An invalid install type or organization was provided.</div>
+  </template>
+  <template id="invalid-planid">
+    <div class="error-message">Error! An invalid plan was provided.</div>
+  </template>
+  <template id="invalid-collectionid">
+    <div class="error-message">Error! An invalid collection was provided.</div>
+  </template>
+</html>

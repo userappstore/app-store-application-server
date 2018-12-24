@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Collections</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <span>/</span>
+      <a href="/collections" title="Group relevant installs into collections">Collections</a>
+      <a href="/create-collection" title="Group relevant installs into collections">Create collection</a>
+    </template>
+  </head>
+  <body>
+    <h1>Collections</h1>
+    <p>Create your own menu links with the apps you select.</p>
+    <p><a href="/create-collection" class="pure-button pure-button-primary">Create collection</a></p>
+    <div id="no-collections">
+      <p>You have not created any collections yet.</p>
+    </div>
+    <table id="collections-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Background color</th>
+          <th>Text color</th>
+          <th>Apps</th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/collections?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="collection-row">
+    <tr id="${collection.collectionid}">
+      <td><a href="/collection?collectionid=${collection.collectionid}">${collection.name}</a></td>
+      <td>${collection.background}</td>
+      <td>${collection.text}</td>
+      <td>${collection.apps}</td>
+    </tr>
+  </template>
+</html>

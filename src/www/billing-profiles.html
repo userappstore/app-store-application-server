@@ -1,0 +1,49 @@
+<!doctype html>
+<html navbar="/navbar.html">
+  <head>
+    <title>Billing profiles</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+		<base href="/" target="_top" />
+  </head>
+  <body>
+    <h1>Billing profiles</h1>
+    <p><a href="/account/subscriptions/create-billing-profile?returnURL=/billing-profiles" class="pure-button pure-button-primary">Add billing information</a></p>
+    <div id="no-customers">
+      <p>You have not added any billing information yet.</p>
+    </div>
+    <table id="customers-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Description</th>
+          <th>Card</th>
+          <th>Expires</th>
+          <th>Paid subscriptions</th>
+          <th>Free subscriptions</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id='page-link'>
+    <li><a href="/account/subscriptions/billing-profiles?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="customer-row">
+    <tr id="${customer.id}">
+      <td><a href="/account/subscriptions/billing-profile?customerid=${customer.id}">${customer.id}</a></td>
+      <td><a href="mailto:${customer.email}">${customer.email}</a></td>
+      <td>${customer.description}</td>
+      <td>${customer.sources.data[0].brand} ${customer.sources.data[0].last4}</td>
+      <td>${customer.sources.data[0].exp_month} / ${customer.sources.data[0].exp_year}</td>
+      <td><a href="/account/subscriptions/billing-profile-subscriptions?customerid=${customer.id}">${customer.paid}</a></td>
+      <td><a href="/account/subscriptions/billing-profile-subscriptions?customerid=${customer.id}">${customer.free}</a></td>
+      <td class="pure-button-group" role="group">
+        <a id="delete-billing-profile-link-${customer.id}" class="pure-button" href="/account/subscriptions/delete-billing-profile?customerid=${customer.id}">Delete</a>
+      </td>
+    </tr>
+  </template>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html template="false">
+  <head>
+    <title>Confirm subscription for ${install.text}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+    h1 { text-align: left }
+    h2,
+    .pure-button-group,
+    .pure-control-group { text-align: left; margin-bottom: 0 }
+    form { margin-bottom: 0 }
+    select { width: 100% }
+    input[type="checkbox"] { margin-right: 0.5rem }
+    .entry-form p { text-align: left }
+    .entry-form .memberships { list-style-type: none; margin: 0 0 1rem 0; padding: 0 }
+    .entry-form .memberships li { display: block; text-align: left }
+    .entry-form .submit { margin: 0; padding: 0; text-align: left }
+    .entry-form .cancel { margin: 0; padding: 0; text-align: right }
+    .entry-form a.pure-button-primary { color: #FFF }
+    a.pure-button { color: #333 }
+    .summary { width: 100% }
+    .summary th { color: #666; font-size: 0.9rem; text-align: left }
+    </style>
+  </head>
+  <body class="entry-form">
+    <h1>Confirm subscription</h1>
+    <div id="message-container"></div>
+    <table id="plan-table" class="summary">
+      <tr>
+        <th>Plan</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Period</th>
+      </tr>
+    </table>
+    <h2>Charge information</h2>
+    <div id="charge"></div>
+    <table id="subscriptions-table">
+      <tr>
+        <th>Included subscriptions</th>
+      </tr>
+    </table>
+    <div class="pure-g">
+      <div class="submit" class="pure-u-1-2">
+        <a href="/select-billing-profile?installid=${install.installid}" id="select-customer" class="pure-button pure-button-primary">Select billing profile</a> 
+      </div>
+      <div class="cancel" class="pure-u-1-2">
+        <a href="/edit-install?installid=${install.installid}" class="pure-button">Back</a> 
+      </div>
+    </div>
+  </div>
+  </body>
+  <template id="charge-now">
+    <p>You will be charged ${charge.amount} now.</p>
+  </template>
+  <template id="charge-later">
+    <p>You will be charged after the ${charge.trial} day trial period.</p>
+  </template>
+  <template id="day-period">
+    <span>daily</span>
+  </template>
+  <template id="week-period">
+    <span>weekly</span>
+  </template>
+  <template id="month-period">
+    <span>monthly</span>
+  </template>
+  <template id="annual-period">
+    <span>anually</span>
+  </template>
+  <template id="plan-row">
+    <tr>
+      <td>${plan.name}</td>
+      <td>${plan.quantity}x</td>
+      <td>${plan.price}</td>
+      <td>${plan.interval}</td>
+    </tr>
+  </template>
+  <template id="subscription-row">
+    <tr id="${item.accountid}">
+      <td>${item.email}</td>
+    </tr>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error!  An error occurred installing the app.</div>
+  </template>
+  <template id="invalid-cardid">
+    <div class="error-message">Error!  You have not added <a href="/account/subscriptions/edit-payment-information">payment information</a>.</div>
+  </template>
+  <template id="invalid-organization">
+    <div class="error-message">Error!  An invalid organization was provided.</div>
+  </template>
+  <template id="invalid-collectionid">
+    <div class="error-message">Error!  An invalid collection was provided.</div>
+  </template>
+</html>

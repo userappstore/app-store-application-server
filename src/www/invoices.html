@@ -1,0 +1,48 @@
+<!doctype html>
+<html navbar="/navbar.html">
+  <head>
+    <title>All invoices</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+		<base href="/" target="_top" />
+  </head>
+  <body>
+    <h1>All invoices</h1>
+    <div id="message-container"></div>
+    <div id="no-invoices">
+      <p>You have do not have any invoices.</p>
+    </div>
+    <table id="invoices-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Invoice number</th>
+          <th>Subscription</th>
+          <th>Statement description</th>
+          <th>Billing period</th>
+          <th>Charge date</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id='page-link'>
+    <li><a href="/account/subscriptions/invoices?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="invoice-row">
+    <tr id="${invoice.id}">
+      <td><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.id}</a></td>
+      <td>${invoice.number}</td>
+      <td>${invoice.plan_name}</td>
+      <td>${invoice.statement_descriptor}</td>
+      <td>${invoice.periodStart} - ${invoice.periodEnd}</td>
+      <td>${invoice.date}</td>
+      <td>${invoice.totalFormatted}</td>
+      <td class="pure-button-group" role="group">
+      </td>
+    </tr>
+  </template>
+</html>

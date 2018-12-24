@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <template id="head"></template>
+    <script id="user">
+      window.onload = function(e) {
+        var user = {
+          sessionid: "${app.user.sessionid}",
+          profileid: "${app.user.profileid}",
+          url: "${app.user.url}",
+          root: "${app.user.root}"
+        }
+        var iframe = document.getElementById('application-iframe')
+        iframe.contentWindow.postMessage(JSON.stringify(user), '*')
+      }
+    </script>
+    <template id="navbar"></template>
+  </head>
+  <template id="navigation-link">
+    <a href="/install/${install.installid}/home">${install.text}</a>
+  </template>
+</html>

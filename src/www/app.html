@@ -1,0 +1,35 @@
+<!doctype html>
+<html navbar="/navbar-app.html">
+  <head>
+    <title>App ${app.appid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+  </head>
+  <body>
+    <h1>App ${app.appid}</h1>
+    <p class="pure-button-group">
+      <a class="pure-button pure-button-primary" href="/administrator/${app.appid}/subscriptions">Subscriptions module</a>
+      <a class="pure-button pure-button-primary" href="/administrator/${app.appid}/organizations">Organizations module</a>
+    </p>
+    <table id="apps-table" class="pure-table pure-table-striped">
+      <tbody id="${app.appid}">
+        <tr id="${app.appid}">
+          <th>Name</th>
+          <td><a href="/app?appid=${app.appid}">${app.name}</a></td>
+        </tr>
+        <tr>
+          <th>Created</th>C
+          <td>${app.created}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td id="draft-${app.appid}">Draft</td>
+          <td id="published-${app.appid}">Published</td>
+          <td id="unpublished-${app.appid}">Unpublished</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

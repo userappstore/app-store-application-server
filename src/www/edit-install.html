@@ -1,0 +1,58 @@
+<!doctype html>
+<html template="false">
+  <head>
+    <title>Edit ${install.installid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      h1,
+      label,
+      .pure-button-group { text-align: left }
+      form, 
+      .pure-button-group { margin-bottom: 0 }
+      select { width: 100% }
+      .entry-form .submit { margin: 0; padding: 0; text-align: left }
+      .entry-form .cancel { margin: 0; padding: 0; text-align: right }
+      a.pure-button { color: #333 }
+      </style>
+  </head>
+  <body class="entry-form">
+    <h1>Edit ${install.text} setup</h1>
+    <div id="message-container"></div>
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+      <div class="pure-control-group">
+        <label for="text">Link text</label>
+        <input id="text" name="text" type="text" maxlength="30" />
+      </div>
+      <div class="pure-control-group">
+        <label for="collections-list">Collection</label>
+        <select id="collections-list" name="collectionid">
+          <option value="">Unassigned</option>
+        </select>
+      </div>
+      <div class="pure-g">
+        <div class="submit" class="pure-u-1-2">
+          <button id="submit-button" type="submit" class="pure-button pure-button-primary">Update</button>
+        </div>
+    </form>
+  </body>
+  <template id="success">
+    <div class="success">Success! The install has been updated.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error! An error occurred updating the install.</div>
+  </template>
+  <template id="collection-option">
+    <option value="${collection.collectionid}">${collection.name}</option>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error! An error occurred updating the install.</div>
+  </template>
+  <template id="invalid-collectionid">
+    <div class="error-message">Error! An invalid collection was provided.</div>
+  </template>
+  <template id="invalid-text">
+    <div class="error-message">Error! Invalid or missing text.</div>
+  </template>
+</html>

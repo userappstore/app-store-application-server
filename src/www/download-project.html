@@ -1,0 +1,23 @@
+<!doctype html>
+<html navbar="/navbar-project.html">
+  <head>
+    <title>Download ${project.projectid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+  </head>
+  <body>
+    <h1>Download project</h1>
+    <div id="message-container"></div>
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+      <button id="submit-button" class="pure-button pure-button-primary" type="submit">Download ZIP</button>
+    </form>
+  </body>
+  <template id="download-note-template">
+    <p>Download a ZIP file of your project configured to run independently with Dashboard.</p>
+  </template>
+  <template id="unknown-error">
+    <div id="error-message">An error ocurred zipping the project.</div>
+  </template>
+</html>

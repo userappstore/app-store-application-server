@@ -1,0 +1,26 @@
+<!doctype html>
+<html navbar="/navbar-app.html">
+  <head>
+    <title>Delete ${app.appid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+  </head>
+  <body>
+    <h1>Delete ${app.appid}</h1>
+    <div id="message-container"></div>
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+      <button id="submit-button" class="pure-button pure-button-primary" type="submit">Delete</button>
+    </form>
+  </body>
+  <template id="note">
+    <p>Any active subscriptions will be cancelled and users will no longer have access to the app.</p>
+  </template>
+  <template id="success">
+    <div class="success-message">The app has been deleted.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">An error ocurred deleting the app.</div>
+  </template>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Installed apps</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <span>/</span>
+      <a href="/installs" title="Apps you have installed">Installed apps</a>
+      <a href="/import-project" title="Import an app">Import project</a>
+      <a href="/import-website" title="Import an app">Import website</a>
+      <a href="/uninstalled" title="Apps you have uninstalled">Uninstalled</a>
+    </template>
+  </head>
+  <body>
+    <h1>Installed apps, projects and URLs</h1>
+    <div id="message-container"></div>
+    <div id="no-installs">
+      <p>You have not installed anything yet.</p>Y
+    </div>
+    <table id="installs-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Created</th>
+          <th>Source</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+
+  <template id="page-link">
+    <li><a href="/installs?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="install-row">
+    <tr id="${install.installid}">
+      <td><a href="/install?installid=${install.installid}">${install.installid}</a></td>
+      <td>${install.created}</td>
+      <td id="app-${install.installid}">${install.appid} (app store)</td>
+      <td id="project-${install.installid}">${install.projectid} (project)</td>
+      <td id="url-${install.installid}">${install.url} (url)</td>
+      <td></td>
+    </tr>
+  </template>
+</html>

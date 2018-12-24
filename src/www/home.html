@@ -1,0 +1,88 @@
+<!doctype html>
+<html navbar="/navbar.html">
+  <head>
+    <title>UserAppStore</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      .launcher {
+        margin: 0;
+        padding: 0;
+        list-style-type: none
+      }
+
+      .launcher li {
+        display: inline-block;
+        margin-bottom: 2rem;
+        margin: 0 1rem 1rem 0;
+        padding: 0.75rem;
+        width: 8rem;
+        background-color: rgba(33, 66, 99, 0.05);
+        border-radius: 0.25rem
+      }
+
+      .launcher li:hover {
+        background-color: #F5F5F5;
+        border-radius: 0.25rem
+      }
+
+      .launcher img {
+        width: 8rem;
+        max-height: 8rem;
+        display: block;
+        margin-bottom: 0.75rem
+      }
+
+      .launcher a {
+        display: block;
+        color: #666;
+        font-size: 0.8rem;
+        text-decoration: none;
+        text-align: center
+      }
+    </style>
+    <base target="_top" />
+  </head>
+  <body>
+    <div id="charging-container">
+      <h2>Upcoming charges</h2>
+      <ul id="charging-list" class="launcher"></ul>
+      <p>You have no charges in the next 7 days.</p>
+    </div>
+    <div id="trials-container">
+      <h2>Trials ending</h2>
+      <ul id="trials-list" class="launcher"></ul>
+      <p>You have no free trials ending in the next 7 days.</p>
+    </div>
+    <div id="apps-container">
+      <ul id="apps-list" class="launcher"></ul>
+    </div>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/home?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="trial-item">
+    <li id="${subscription.subscriptionid}">
+      <a href="/user/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.subscriptionid}">
+        ${subscription.metadata.appid}
+      </a>
+    </li>
+  </template>
+  <template id="charging-item">
+    <li id="${app.appid}">
+      <a href="/user/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.subscriptionid}">
+        ${subscription.metadata.appid}
+      </a>
+    </li>
+  </template>
+  <template id="app-item">
+    <li id="${app.appid}">
+      <a href="/about?appid=${app.appid}">
+        <img src="/app/icon.png?appid=${app.appid}" />
+        ${app.name}
+      </a>
+    </li>
+  </template>
+</html>

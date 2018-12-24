@@ -1,0 +1,43 @@
+<!doctype html>
+<html navbar="/navbar-collection.html">
+  <head>
+    <title>Remove apps from ${collection.name}</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <style>
+        .launcher { margin: 0; padding: 0; list-style-type: none }
+        .launcher li { display: inline-block;  margin: 0 1rem 1rem 0; width: 8rem; font-size: 0.9rem; text-align: center }
+        .launcher button { border: none; background-color: transparent }
+        .launcher img { width: 8rem; max-height: 8rem; display: block; margin-bottom: 1rem }
+        .launcher .installed { border: 1px solid darkgreen; border-radius: 0.25rem; padding: 0.25rem }
+        .launcher .installed img { opacity: 0.25 }
+      </style>    
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Remove apps from ${collection.name}</h1>
+    <div id="message-container"></div>
+    <div id="apps">
+      <ul class="launcher" id="removable-list"></ul>
+      <div id="no-removable">
+        <p>This collection is empty.</p>
+      </div>
+    </div>
+  </body>
+  <template id="removable-item">
+    <li>
+      <form id="${install.installid}" method="POST">
+        <button type="submit" name="installid" value="${install.installid}">
+          <img src="/install/${install.installid}/icon.png" />
+          ${install.installid}
+        </button>
+      </form>
+    </li>
+  </template>
+  <template id="invalid-installid">
+    <div class="error-message">Error!  An invalid app was submitted.</div>
+  </template>  
+  <template id="success">
+    <div class="success-message">The app has been removed from the collection.</div>
+  </template>
+</html>

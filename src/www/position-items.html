@@ -1,0 +1,50 @@
+<!doctype html>
+<html navbar="/navbar-collection.html">
+  <head>
+    <title>Apps in ${collection.name}</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <style>
+      .pure-table th.id { width: 30% }
+        .pure-table th.position { width: 3rem }
+        .pure-table td input[type="number"] { width: 2rem; box-sizing: initial }
+        </style>
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Position apps in ${collection.name}</h1>
+    <div id="message-container"></div>
+    <div id="apps">
+      <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+        <table id="installs-table" class="pure-table pure-table-striped">
+          <thead>
+            <tr>
+              <th class="position">Position</th>
+              <th class="id">ID</th>
+              <th>Menu text</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="pure-controls">
+          <button id="submit-button" class="pure-button pure-button-primary" type="submit">Update</button>
+        </div>
+      </form>
+      <div id="no-installs">
+        <p>This collection is empty.</p>
+      </div>
+    </div>
+  </body>
+  <template id="install-row">
+    <tr id="${install.installid}">
+      <td><input required id="position-${install.installid}" name="position-${install.installid}" type="number" /></td>
+      <td>${install.installid}</td>
+      <td>${install.text}</td>
+    </tr>
+  </template>
+  <template id="invalid-installid">
+    <div class="error-message">Error! An invalid app was submitted.</div>
+  </template>
+  <template id="success">
+    <div class="success-message">The app has been added to the collection.</div>
+  </template>
+</html>

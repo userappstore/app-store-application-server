@@ -1,0 +1,66 @@
+<!doctype html>
+<html template="false">
+  <head>
+    <title>Setup subscription for ${install.text}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      h1,
+      .pure-button-group,
+      .pure-control-group { text-align: left; margin-bottom: 0 }
+      form { margin-bottom: 0 }
+      select { width: 100% }
+      input[type="checkbox"] { margin-right: 0.5rem }
+      .entry-form p { text-align: left }
+      .entry-form .memberships { list-style-type: none; margin: 0 0 1rem 0; padding: 0 }
+      .entry-form .memberships li { display: block; text-align: left }
+      .entry-form .submit { margin: 0; padding: 0; text-align: left }
+      .entry-form .cancel { margin: 0; padding: 0; text-align: right }
+      a.pure-button { color: #333 }
+      </style>
+  </head>
+  <body class="entry-form">
+    <h1>Setup subscription for ${install.text}</h1>
+    <p>Select any members of your organization you wish to subscribe for:</p>
+    <div id="message-container"></div>
+    <form class="pure-form pure-form-stacked" method="POST">
+      <ul id="memberships-list" class="memberships"></ul>
+      <div class="pure-g">
+        <div class="submit" class="pure-u-1-2">
+          <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
+        </div>
+        <div class="cancel" class="pure-u-1-2">
+          <a href="/edit-install?installid=${install.installid}" class="pure-button">Back</a>
+        </div>
+      </div>
+    </form>
+    </div>
+  </body>
+  <template id="membership-item">
+    <li id="${membership.membershipid}">
+      <label for="member-${membership.membershipid}">
+        <input id="member-${membership.membershipid}" name="member-${membership.membershipid}" type="checkbox" value="${membership.membershipid}">
+        ${membership.email}
+      </label>
+    </li>
+  </template>
+  <template id="plan-option">
+    <option value="${plan.id}">${plan.id}</option>
+  </template>
+  <template id="organization-option">
+    <option value="${organization.organizationid}">${organization.name} [organization]</option>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error! An error occurred saving the settings.</div>
+  </template>
+  <template id="invalid-membershipid">
+    <div class="error-message">Error! An invalid membership was included.</div>
+  </template>
+  <template id="invalid-organization">
+    <div class="error-message">Error! An invalid organization was provided.</div>
+  </template>
+  <template id="invalid-collectionid">
+    <div class="error-message">Error! An invalid collection was provided.</div>
+  </template>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html navbar="/navbar-app-store.html">
+  <head>
+    <title>Apps</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Apps</h1>
+    <p>You must have a completed Stripe Connect registration to create apps.</p>
+    <p class="pure-button-group">
+      <a class="pure-button pure-button-primary" href="/create-app">Create app</a>
+      <a class="pure-button pure-button-primary" href="/account/connect/create-registration">Create registration</a>
+      <a class="pure-button pure-button-primary" href="/account/connect/stripe-accounts">View registrations</a>
+    </p>
+    <div id="no-apps">
+      <p>You have not created any apps yet.</p>
+    </div>
+    <table id="apps-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Created</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/apps?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="app-row">
+    <tr id="${app.appid}">
+      <td><a href="/app?appid=${app.appid}">${app.name}</a></td>
+      <td>${app.created}</td>
+      <td id="draft-${app.appid}">Draft</td>
+      <td id="published-${app.appid}">Published</td>
+      <td id="unpublished-${app.appid}">Unpublished</td>
+      <td></td>
+    </tr>
+  </template>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html navbar="/navbar-install.html">
+  <head>
+    <title>View ${install.installid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      ul, li { list-style-type: none; padding: 0; margin: 0 }
+      input[type="color"] { width: 2rem; height: 2rem; box-shadow: none; border-radius: 0; border: 0.2rem outset #FFF }
+      .pure-table { width: auto }
+      .pure-table tr th { vertical-align: top; text-align: left; width: 25%; max-width: 10rem; min-width: 10rem }
+      .pure-table td p { margin-bottom: 0 }
+    </style>
+  </head>
+  <body>
+    <h1>${install.installid}</h1>
+    <table id="installs-table" class="pure-table">
+      <tbody id="${install.installid}">
+        <tr>
+          <th>Status</th>
+          <td id="installed">Installed since ${install.installed}</td>
+          <td id="uninstalled">Uninstalled since ${install.uninstalled}, installed ${install.installed}</td>
+        </tr>
+        <tr>
+          <th>Install type</th>
+          <td id="individual">Individual</td>
+          <td id="organization"><a href="/account/organizations/organization?organizationid=${install.organizationid}">Organization</a></td>
+        </tr>
+        <tr>
+          <th>Billing type</th>
+          <td id="unknown">Free or third-party</td>
+          <td id="free"><a href="/account/subscriptions/subscription?subscriptionid=${install.subscriptionid}">Free subscription</a></td>
+          <td id="paid"><a href="/account/subscriptions/subscription?subscriptionid=${install.subscriptionid}">Paid subscription</a></td>
+        </tr>
+        <tr id="appstore">
+          <th>Source</th>
+          <td id="published"><a href="/about?appid=${install.appid}">App store</a></td>
+          <td id="unpublished">App store (unpublished)</td>
+          <td><a href="/appstore/developer?stripeid=${install.stripeid}">Developer</a></td>
+        </tr>
+        <tr id="project">
+          <th>Source</th>
+          <td id="shared">${install.projectid} (shared project)</td>
+          <td id="owned">${install.projectid} (<a href="/project?projectid=${install.projectid}">project</a>)</td>
+        </tr>
+        <tr id="url">
+          <th>URL</th>
+          <td>${install.url}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="trial-container">
+      <h2>Free trial</h2>
+      <div id="trial-period"></div>
+    </div>
+    <div id="charge-container">
+      <h2>Next charge</h2>
+      <div id="next-charge"></div>
+    </div>
+    <div id="invoices-container">
+      <h2>Invoices</h2>
+      <ul id="invoices"></ul>
+    </div>
+    <div id="memberships-container">
+      <h2>Organization</h2>
+      <table id="memberships">
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td><a href="#">email@address</a></td>
+          <td>Installed</td>
+          <td>Not installed</td>
+          <td>
+            <a class="pure-button" href="#">Create subscription</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+  <template id="trial">
+    <p>${subscription.trial_end}</p>
+  </template>
+  <template id="charge">
+    <p>${charge.amount} on ${charge.brand} ${charge.last4}</p>
+  </template>
+  <template id="invoice">
+    <li id="${invoice.id}"><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.date</a></li>
+  </template>
+  <template id="membership">
+    <tr id="${membership.membershipid}">
+      <td>${email}</td>
+    </tr>
+  </template>
+</html>

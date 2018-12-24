@@ -1,0 +1,46 @@
+<!doctype html>
+<html navbar="/navbar-project.html">
+  <head>
+    <title>View ${project.projectid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+      .files { list-style-type: none; margin: 0 0 2rem 0; padding: 0 }
+      .files li { display: inline-block; text-align: center }
+      .files img { width: 4rem; height: 4rem; display: block; margin-bottom: 0.5rem }
+      .files a { color: #999; font-size: 0.8rem; text-transform: uppercase; text-decoration: none }
+      em { font-style: normal }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">${project.projectid}</h1>
+    <div id="status"></div>
+    <ul id="files-list" class="files"></ul>
+    <table id="projects-table" class="pure-table pure-table-striped">
+      <tbody id="${project.projectid}">
+        <tr>
+          <th>Project ID</th>
+          <td><a href="/project?projectid=${project.projectid}">${project.projectid}</a></td>
+          <th>Created</th>
+          <td>${project.created}</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <template id="file-item-template">
+    <li id="${file.fileid}" title="Last modified ${file.lastModifiedRelative} on ${file.lastModified}">
+      <a href="/project-ide?filename=${file.filename}&projectid=${file.projectid}">
+        <img src="/public/icons/${file.icon}-file.png" height="64" width="64" />
+        ${file.sizeFormatted}
+      </a>
+    </li>
+  </template>
+  <template id="unshared">
+    <p>This project is not being shared.</p>
+  </template>
+  <template id="shared">
+    <p>This project is shared.</p>
+  </template>
+</html>

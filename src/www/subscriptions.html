@@ -1,0 +1,54 @@
+<!doctype html>
+<html navbar="/navbar.html">
+  <head>
+    <title>All subscriptions</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+		<base href="/" target="_top" />
+  </head>
+  <body>
+    <h1>All subscriptions</h1>
+    <div id="message-container"></div>
+    <div id="no-subscriptions">
+      <p>You have not created any subscriptions yet.</p>
+    </div>
+    <table id="subscriptions-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Plan</th>
+          <th>Price</th>
+          <th>Started</th>
+          <th>Next charge</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id='page-link'>
+    <li><a href="/account/subscriptions/subscriptions?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="subscription-row">
+    <tr id="${subscription.id}">
+      <td><a href="/account/subscriptions/subscription?subscriptionid=${subscription.id}">${subscription.id}</a></td>
+      <td>${subscription.plan_name}</td>
+      <td>${subscription.priceFormatted} ${subscription.currency}</td>
+      <td>${subscription.created}</td>
+      <td>${subscription.nextCharge}</td>
+      <td id='active-subscription-${subscription.id}'>Active</td>
+      <td id='canceling-subscription-${subscription.id}'>Active (canceling)</td>
+      <td id='trialing-subscription-${subscription.id}' title="Trial ending ${subscription.trial_end}">Trial (ending in ${subscription.trialEnd})</td>
+      <td id='past_due-subscription-${subscription.id}'>Past due</td>
+      <td id='canceled-subscription-${subscription.id}'>Canceled</td>
+      <td id='unpaid-subscription-${subscription.id}'>Unpaid</td>
+      <td class="pure-button-group" role="group">
+        <a class="pure-button" href="/account/subscriptions/invoices?subscriptionid=${subscription.id}">Invoices</a>
+        <a id="change-plan-link-${subscription.id}" class="pure-button" href="/account/subscriptions/change-plan?subscriptionid=${subscription.id}">Change plan</a>
+        <a id="cancel-subscription-link-${subscription.id}" class="pure-button" href="/account/subscriptions/cancel-subscription?subscriptionid=${subscription.id}">Cancel</a>
+      </td>
+    </tr>
+  </template>
+</html>

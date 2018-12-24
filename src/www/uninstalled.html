@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Uninstalled</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <a href="/installs" title="Apps you have installed">Installed</a>
+      <a href="/uninstalled" title="Apps you have uninstalled">Uninstalled</a>
+    </template>
+  </head>
+  <body>
+    <h1>Uninstalled</h1>
+    <p>Deleting an installed app, project or URL will create an uninstall record.</p>
+    <div id="no-uninstalls">
+      <p>You have not uninstalled anything yet.</p>
+    </div>
+    <table id="uninstalls-table" class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Created</th>
+          <th>App</th>
+          <th>Project</th>
+          <th>URL</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/uninstalls?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="uninstall-row">
+    <tr id="${uninstall.uninstallid}">
+      <td><a href="/account/profile?profileid=${uninstall.uninstallid}">${uninstall.uninstallid}</a></td>
+      <td>${uninstall.created}</td>
+      <td>${uninstall.install.appid}</td>
+      <td>${uninstall.install.projectid}</td>
+      <td>${uninstall.install.url}</td>
+      <td></td>
+    </tr>
+  </template>
+</html>

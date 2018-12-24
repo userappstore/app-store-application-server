@@ -1,0 +1,667 @@
+
+> userappstore.com@1.0.1 test /home/benlowry/SynologyDrive/workspaces/userappstore/userappstore-application-server
+> mocha './src/{,!(node_modules)/**}/*.test.js' --recursive --timeout 60000 --slow 60000
+
+
+
+  internal-api/app
+    App#create()
+      ✓ should require accountid
+      ✓ should create app with blank info
+      ✓ should create app with blank info
+      ✓ should create app with included info 
+    App#update()
+      ✓ should require appid
+      ✓ should update changed field
+      ✓ should remove deleted info
+      ✓ should add new info
+    App#deleteApp()
+      ✓ should require appid
+      ✓ should delete app
+    App#list()
+      ✓ should require accountid
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    App#load()
+      ✓ should require appid
+      ✓ should load the app
+
+  internal-api/appstore
+    AppStore#publish()
+      ✓ should require stripeid
+      ✓ should require appid
+      ✓ should publish app
+    AppStore#unpublish()
+      ✓ should require appid
+      ✓ should unpublish app
+    AppStore#listPublished()
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    AppStore#listUnpublished()
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+
+  internal-api/collection
+    Collection#create()
+      ✓ should require accountid
+      ✓ should create collection with blank info
+      ✓ should create collection with included info 
+    Collection#update()
+      ✓ should require collectionid
+      ✓ should update changed field
+      ✓ should remove deleted info
+      ✓ should add new info
+    Collection#deleteCollection()
+      ✓ should require collectionid
+      ✓ should delete collection
+    Collection#list()
+      ✓ should require accountid
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    Collection#load()
+      ✓ should require collectionid
+      ✓ should load the collection
+
+  internal-api/html
+    HTML#parseHTML()
+      ✓ should reject invalid strings
+      ✓ should return expected contents
+    HTML#findOrCreateTableBody()
+      ✓ should require a document
+      ✓ should require a table
+      ✓ should accept table ids
+      ✓ should return existing TBODY
+      ✓ should create new TBODY as last child of table
+    HTML#renderTable()
+      ✓ should require a document
+      ✓ should require a table
+      ✓ should require a template
+      ✓ should require a dataset
+      ✓ should create TR for each item
+      ✓ should alternate TR class
+      ✓ should contain expected data
+    HTML#renderList()
+      ✓ should require a document
+      ✓ should require a list
+      ✓ should require a template
+      ✓ should require a dataset
+      ✓ should create LI for each item
+      ✓ should contain expected data
+    HTML#renderTemplate()
+      ✓ should require a document
+      ✓ should not require a data object
+      ✓ should require a template
+      ✓ should require a parent element
+      ✓ should append contents to parent element
+    HTML#renderPagination()
+      ✓ should require a document
+      ✓ should require a total greater than 0
+      ✓ should require an offset less than total
+      ✓ should accept null or string offset
+      ✓ should enforce global page size
+      ✓ should override global page size
+
+  internal-api/install
+    Install#create()
+      ✓ should require accountid
+      ✓ should require source
+      ✓ should accept appid source
+      ✓ should accept url source
+      ✓ should accept projectid source
+      ✓ should create install with blank info
+      ✓ should create install with blank info
+      ✓ should create install with included info 
+    Install#update()
+      ✓ should require installid
+      ✓ should update changed field
+      ✓ should remove deleted info
+      ✓ should add new info
+    Install#deleteInstall()
+      ✓ should require installid
+      ✓ should delete install
+    Install#list()
+      ✓ should require accountid
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    Install#load()
+      ✓ should require installid
+      ✓ should load the install
+
+  internal-api/project
+    Project#create()
+      ✓ should require accountid
+      ✓ should create project with blank info
+      ✓ should create project with blank info
+      ✓ should create project with included info 
+    Project#update()
+      ✓ should require projectid
+      ✓ should update changed field
+      ✓ should remove deleted info
+      ✓ should add new info
+    Project#deleteProject()
+      ✓ should require projectid
+      ✓ should delete project
+    Project#list()
+      ✓ should require accountid
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    Project#load()
+      ✓ should require projectid
+      ✓ should load the project
+
+  internal-api/storage-list
+    StorageList#add
+      ✓ should add the item
+    StorageList#count()
+      ✓ should count the items
+      ✓ should not count removed items
+    StorageList#remove
+      ✓ should not count removed items
+    StorageList#list()
+      ✓ should enforce page size
+      ✓ should enforce offset
+
+  internal-api/storage
+    Storage#read
+      ✓ should require file
+      ✓ should return file contents
+    Storage#write()
+      ✓ should require file
+      ✓ should require contents
+      ✓ should accept content object
+      ✓ should accept content string
+      ✓ should write file contents
+    Storage#list()
+      ✓ should require path
+      ✓ should return file list
+      ✓ should sort by created
+    Storage#deleteFile()
+      ✓ should require file
+      ✓ should delete file
+
+  internal-api/timestamp
+    #create()
+      ✓ should reject null date
+      ✓ should accept date
+      ✓ should accept string
+
+  internal-api/uninstall
+    Uninstall#create()
+      ✓ should require accountid
+      ✓ should require installid
+      ✓ should create uninstall
+    Uninstall#deleteUninstall()
+      ✓ should require uninstallid
+      ✓ should delete install
+    Uninstall#list()
+      ✓ should require accountid
+      ✓ should return one page
+      ✓ should enforce page size
+      ✓ should enforce offset
+    Uninstall#load()
+      ✓ should require uninstallid
+      ✓ should load the uninstall
+
+  internal-api/uuid
+    #friendly
+      ✓ should generate a three-word id
+      ✓ length should be at least xxx-xxx-xxx
+    #v4()
+      ✓ should be a v4 uuid
+
+  /about
+    About#BEFORE
+      ✓ should require appid
+      ✓ should require published app
+      ✓ should allow other user access
+      ✓ should bind app, plans and publisher to req
+    About#GET
+      ✓ should present the publisher table
+
+  /add-items
+    AddItems#BEFORE
+      ✓ should require collectionid
+      ✓ should require own collectionid
+      ✓ should bind collection to req
+    AddItems#GET
+      ✓ should present form for each install not in collection
+    AddItems#POST
+      ✓ should reject invalid installid
+      ✓ should add items after authorization
+
+  /app
+    App#BEFORE
+      ✓ should require appid
+      ✓ should reject other account's app
+      ✓ should bind app, to req
+    App#GET
+      ✓ should present the app table
+
+  /apps
+    Apps#BEFORE
+      ✓ should bind apps to req
+    Apps#GET
+      ✓ should limit apps to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /billing-profiles
+    BillingProfiles#BEFORE
+      ✓ should bind customers to req
+    BillingProfiles#GET
+      ✓ should limit billing profiles to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /browse
+    Browse#BEFORE
+      ✓ should bind apps to req
+    Browse#GET
+      ✓ should limit apps to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /collection
+    Collection#BEFORE
+      ✓ should require collectionid
+      ✓ should reject other account's collection
+      ✓ should bind collection, to req
+    Collection#GET
+      ✓ should present the collection table
+
+  /collections
+    Collections#BEFORE
+      ✓ should bind collections to req
+    Collections#GET
+      ✓ should limit collections to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /confirm-subscription
+    ConfirmSubscription#BEFORE
+      ✓ should require installid
+      ✓ should require own installid
+      ✓ should bind install without organization to req
+      ✓ should bind install, organization and members to req
+    ConfirmSubscription#GET
+      ✓ should present the plan table
+      ✓ should present the charge information
+      ✓ should present the included organization members
+
+  /copy-project
+    CopyProject#GET
+      ✓ should present the form
+    CopyProject#POST
+      ✓ should require shared project id
+      ✓ should require copy project id
+      ✓ should require shared project
+      ✓ should reject invalid projectid
+      ✓ should reject duplicate projectid
+      ✓ should apply after authorization
+
+  /create-app
+    CreateApp#BEFORE
+      ✓ should bind projects
+      ✓ should bind Stripe accounts with payouts enabled
+    CreateApp#GET
+      ✓ should present the form
+    CreateApp#POST
+      ✓ should reject invalid appid
+      ✓ should reject duplicate appid
+      ✓ should reject missing Stripe account
+      ✓ should reject missing source
+      ✓ should reject insecure URL
+      ✓ should reject invalid project
+      ✓ should generate appid if not provided
+      ✓ should create from project after authorization
+      ✓ should create from URL after authorization
+
+  /create-collection
+    CreateCollection#GET
+      ✓ should present the form
+    CreateCollection#POST
+      ✓ should reject invalid name
+      ✓ should reject invalid CSS text color
+      ✓ should reject invalid CSS background color
+      ✓ should create after authorization
+
+  /create-project
+    CreateProject#GET
+      ✓ should present the form
+    CreateProject#POST
+      ✓ should reject invalid projectid
+      ✓ should reject duplicate projectid
+      ✓ should create after authorization
+
+  /delete-app
+    DeleteApp#BEFORE
+      ✓ should require appid
+      ✓ should require own appid
+      ✓ should bind app to req
+    DeleteApp#GET
+      ✓ should present the form
+    DeleteApp#POST
+      ✓ should apply after authorization
+
+  /delete-collection
+    DeleteCollection#BEFORE
+      ✓ should require collectionid
+      ✓ should require own collectionid
+      ✓ should bind collection to req
+    DeleteCollection#GET
+      ✓ should present the form
+    DeleteCollection#POST
+      ✓ should collectionly after authorization
+
+  /delete-install
+    DeleteInstall#BEFORE
+      ✓ should require installid
+      ✓ should require own installid
+      ✓ should bind install to req
+    DeleteInstall#GET
+      ✓ should present the form
+    DeleteInstall#POST
+      ✓ should installly after authorization
+
+  /delete-project
+    DeleteProject#BEFORE
+      ✓ should require projectid
+      ✓ should require own projectid
+      ✓ should bind project to req
+    DeleteProject#GET
+      ✓ should present the form
+    DeleteProject#POST
+      ✓ should projectly after authorization
+
+  /download-project
+    DownloadProject#BEFORE
+      ✓ should require projectid
+      ✓ should require own projectid
+      ✓ should bind project to req
+    DownloadProject#GET
+      ✓ should present the form
+    DownloadProject#POST
+      ✓ should download zip file
+      ✓ should decompress zip file
+      ✓ should start standalone project server
+
+  /edit-collection
+    EditCollection#BEFORE
+      ✓ should reject invalid collectionid
+      ✓ should bind collection to req
+    EditCollection#GET
+      ✓ should present the form
+    EditCollection#POST
+      ✓ should reject invalid name
+      ✓ should reject invalid text color
+      ✓ should reject invalid background color
+      ✓ should update after authorization
+
+  /edit-install
+    EditInstall#BEFORE
+      ✓ should reject invalid installid
+      ✓ should bind install to req
+    EditInstall#GET
+      ✓ should present the form
+    EditInstall#POST
+      ✓ should reject invalid text
+      ✓ should reject invalid collection
+      ✓ should update after authorization
+
+  /edit-store-page
+    EditStorePage#BEFORE
+      ✓ should reject invalid appid
+      ✓ should reject unpublished app
+      ✓ should bind app to req
+    EditStorePage#GET
+      ✓ should present the form
+    EditStorePage#POST
+      ✓ should reject invalid name
+      ✓ should reject invalid description
+      ✓ should update after authorization
+
+  /home
+    Home#BEFORE
+      ✓ should bind installs to req
+    Home#GET
+      ✓ should put all installs on one page
+
+  /import-project
+    ImportProject#GET
+      ✓ should present the form
+    ImportProject#POST
+      ✓ should reject unshared projectid
+      ✓ should reject invalid text
+      ✓ should create install from project
+
+  /import-url
+    ImportURL#GET
+      ✓ should present the form
+    ImportURL#POST
+      ✓ should reject invalid URL
+      ✓ should reject non-HTTPS URLs
+      ✓ should reject invalid text
+      ✓ should create install from URL
+
+  /install-app
+    InstallApp#BEFORE
+      ✓ should require appid
+      ✓ should require published appid
+      ✓ should bind app to req
+      ✓ should bind organizations to req
+    InstallApp#GET
+      ✓ should present the plans list
+      ✓ should present the organizations list
+    InstallApp#POST
+      ✓ should require text
+      ✓ should reject invalid organizationid
+      ✓ should reject invalid plan
+      ✓ should create organization install and redirect to setup page
+      ✓ should create personal install and redirect to setup page
+
+  /install
+    Install#BEFORE
+      ✓ should require installid
+      ✓ should reject other account's install
+      ✓ should bind install, to req
+    Install#GET
+      ✓ should present the install table
+
+  /installs
+    Installs#BEFORE
+      ✓ should bind installs to req
+    Installs#GET
+      ✓ should limit installs to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /invoices
+    Invoices#BEFORE
+      ✓ should bind invoices to req
+    Invoices#GET
+      ✓ should limit subscriptions to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /organizations
+    Organizations#BEFORE
+      ✓ should bind organizations to req
+    Organizations#GET
+      ✓ should limit organizations to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /position-items
+    PositionItems#BEFORE
+      ✓ should require collectionid
+      ✓ should require own collectionid
+      ✓ should bind collection to req
+    PositionItems#GET
+      ✓ should present the form
+    PositionItems#POST
+      ✓ should reject invalid installid
+      ✓ should position items after authorization
+
+  /project-ide
+    ProjectIDE#BEFORE
+      ✓ should reject invalid projectid
+      ✓ should bind project to req
+    ProjectIDE#GET
+      ✓ should present the form
+    ProjectIDE#POST
+      ✓ should update home.html
+      ✓ should update app.js
+      ✓ should update app.css
+
+  /project
+    Project#BEFORE
+      ✓ should require projectid
+      ✓ should reject other account's project
+      ✓ should bind project, to req
+    Project#GET
+      ✓ should present the project table
+
+  /projects
+    Projects#BEFORE
+      ✓ should bind projects to req
+    Projects#GET
+      ✓ should limit projects to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /publish-app
+    PublishApp#BEFORE
+      ✓ should require appid
+      ✓ should require own appid
+      ✓ should reject published app
+      ✓ should reject unpublished app
+      ✓ should bind app to req
+    PublishApp#GET
+      ✓ should present the form
+    PublishApp#POST
+      ✓ should apply after authorization
+
+  /published
+    Published#BEFORE
+      ✓ should bind apps to req
+    Published#GET
+      ✓ should limit apps to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /publisher
+    Publisher#BEFORE
+      ✓ should require stripeid
+      ✓ should require active Stripe account
+      ✓ should allow other user access
+      ✓ should bind stripe account to req
+    Publisher#GET
+      ✓ should present the stripe table
+
+  /remove-items
+    RemoveItems#BEFORE
+      ✓ should require collectionid
+      ✓ should require own collectionid
+      ✓ should bind collection to req
+    RemoveItems#GET
+      ✓ should present form for each install in collection
+    RemoveItems#POST
+      ✓ should reject invalid installid
+      ✓ should remove items after authorization
+
+  /select-billing-profile
+    SelectBillingProfile#BEFORE
+      ✓ should require installid
+      ✓ should require own installid
+      ✓ should reject non-app install
+      ✓ should bind install to req
+      ✓ should bind customer objects to req
+    SelectBillingProfile#GET
+      ✓ should present the customers list
+    SelectBillingProfile#POST
+      ✓ should reject invalid customerid
+      ✓ should require customer have a card for paid plans
+      ✓ should create personal install and redirect to setup page
+
+  /setup-subscription
+    SetupSubscription#BEFORE
+      ✓ should require installid
+      ✓ should require own installid
+      ✓ should reject non-app install
+      ✓ should bind install to req
+      ✓ should bind organization to req
+      ✓ should bind organization members to req
+    SetupSubscription#GET
+      ✓ should present the members list
+    SetupSubscription#POST
+      ✓ should reject invalid membership
+      ✓ should redirect to confirmation page with no members
+      ✓ should set members and redirect to confirmation page
+
+  /share-project
+    ShareProject#BEFORE
+      ✓ should require projectid
+      ✓ should require own projectid
+      ✓ should reject shared project
+      ✓ should bind project to req
+    ShareProject#GET
+      ✓ should present the form
+    ShareProject#POST
+      ✓ should apply after authorization
+
+  /subscriptions
+    Subscriptions#BEFORE
+      ✓ should bind subscriptions to req
+    Subscriptions#GET
+      ✓ should limit subscriptions to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /uninstalled
+    Uninstalled#BEFORE
+      ✓ should bind uninstalled to req
+    Uninstalled#GET
+      ✓ should limit uninstalled to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /unpublish-app
+    UnpublishApp#BEFORE
+      ✓ should require appid
+      ✓ should require own appid
+      ✓ should reject never-published app
+      ✓ should reject unpublished app
+      ✓ should bind app to req
+    UnpublishApp#GET
+      ✓ should present the form
+    UnpublishApp#POST
+      ✓ should apply after authorization
+
+  /unpublished
+    Unpublished#BEFORE
+      ✓ should bind apps to req
+    Unpublished#GET
+      ✓ should limit apps to one page
+      ✓ should enforce page size
+      ✓ should enforce specified offset
+
+  /unshare-project
+    UnshareProject#BEFORE
+      ✓ should require projectid
+      ✓ should require own projectid
+      ✓ should reject unshared project
+      ✓ should bind project to req
+    UnshareProject#GET
+      ✓ should present the form
+    UnshareProject#POST
+      ✓ should apply after authorization
+
+
+  391 passing (4m)
+

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Import project</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      body { padding: 0 }
+        .warning { color: #FFF; padding: 1rem; background-color: #FC0 }
+        .warning p { margin: 0; color: rgba(0, 0, 0, 0.75) }
+        .padder { padding: 1rem }
+      </style>
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <a href="/installs" title="Apps you have installed">Installed apps</a>
+      <a href="/import-project" title="Import an app">Import project</a>
+      <a href="/import-website" title="Import an app">Import website</a>
+      <a href="/uninstalled" title="Apps you have uninstalled">Uninstalled</a>
+    </template>
+  </head>
+  <body>
+    <div class="warning">
+      <p>You are importing a third-party website. You accept all responsibility for using the other website.</p>
+    </div>
+    <div class="padder">
+      <h1>Import project</h1>
+      <div id="message-container"></div>
+      <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+        <div id="url-container" class="pure-control-group">
+          <label for="url">URL (https only)</label>
+          <input require id="url" placeholder="https://..." name="url" type="text" maxlength="100" size="40" />
+        </div>
+        <div class="pure-controls">
+          <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
+        </div>
+      </form>
+    </div>
+  </body>
+  <template id="invalid-text">
+    <div class="error-message">Error!  Invalid text was provided.</div>
+  </template>
+  <template id="invalid-url">
+    <div class="error-message">Error!  An invalid URL was provided.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error!  An error occurred importing the project.</div>
+  </template>
+  <template id="success">
+    <div class="success-message">Success!  The URL has been installed.</div>
+  </template>
+</html>
