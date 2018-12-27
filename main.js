@@ -62,13 +62,13 @@ if(process.env.NODE_ENV !== 'testing') {
 async function receiveRequest (req, res) {
   res.statusCode = 200
   // confirm it came from the Dashboard server
-  if (req.headers['x-dashboard'] === process.env.DASHBOARD_SERVER) {
+  if (req.headers['x-dashboard-server'] === process.env.DASHBOARD_SERVER) {
     if (!req.headers['x-accountid']) {
       // guest accessing something
       req.dashboardServer = true
     } else {
       // user is signed in
-      const token = req.headers['x-token']
+      const token = req.headers['x-dashboard-token']
       const accountid = req.headers['x-accountid']
       const sessionid = req.headers['x-sessionid']
       const expected = `${process.env.APPLICATION_SERVER_TOKEN}:${accountid}:${sessionid}`
