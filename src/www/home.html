@@ -41,122 +41,130 @@
         text-decoration: none;
         text-align: center
       }
+      .guide-container { background-color: #F5F5F5; border: 1px solid #EEE; padding: 1rem }
+      .guide-container h2 { font-size: 1.1rem; font-weight: bold; color: #333 }
+      .guide-container p { margin: 0.25rem 0 0 0 }
     </style>
     <base target="_top" />
   </head>
   <body>
-    <div id="guide-container">
-      <h2>Cloning a project</h2>
-      <p>Learn how to copy a shared project to edit it</p>
-      <ul>
-        <li>1. Click projects</li>
-        <li>2. Click copy project</li>
-        <li>3. Enter the shared project ID</li>
-        <li>4. Enter a new ID for your project</li>
-        <li>5. Submit form</li>
-      </ul>
-
-      <h2>Creating a project</h2>
-      <p>A guide to get started with your first project</p>
-      <ul>
-        <li>1. Click projects</li>
-        <li>2. Click new project</li>
-        <li>4. Enter an ID for your project</li>
-        <li>5. Submit form</li>
-      </ul>
-      
-      <h2>Creating custom menus</h2>
-      <p>Learn how to group your shortcuts into color-coded menus</p>
-      <ul>
-        <li>1. Click collections</li>
-        <li>2. Click new collection</li>
-        <li>3. Enter a name and select the color scheme</li>
-        <li>4. Submit form; then select the shortcuts to include</li>
-      </ul>
-
-      <h2>Importing a web app</h2>
-      <p>Learn how to import a web app from outside the app store</p>
-      <ul>
-        <li>1. Click installs</li>
-        <li>2. Click import URL</li>
-        <li>3. Enter the URL</li>
-        <li>4. Submit form; then enter shortcut information</li>
-      </ul>
-
-      <h2>Installing a project</h2>
-      <p>Learn how to install a shared project to use it</p>
-      <ul>
-        <li>1. Click installs</li>
-        <li>2. Click import project</li>
-        <li>3. Enter the shared project ID</li>
-        <li>4. Submit form; then enter shortcut information</li>
-      </ul>
-      
-      <h2>Installing from the app store</h2>
-      <p>Learn how to install apps for yourself and organizations</p>
-      <ul>
-        <li>1. Click home</li>
-        <li>2. Click desired app</li>
-        <li>3. Click install button of desired plan</li>
-        <li>4. Submit form; then enter shortcut information</li>
-      </ul>
-      
-      <h2>Installing for organizations</h2>
-      <p>Learn how to install apps for yourself and organizations</p>
-      <ul>
-        <li>1. Click home</li>
-        <li>2. Click desired app</li>
-        <li>3. Click install button of desired plan</li>
-        <li>5. Select desired organization and enter shortcut information</li>
-        <li>6. Select any members you wish to pay for</li>
-        <li>7. Submit form; then enter shortcut information</li>
-      </ul>
-
-      <h2>Managing subscriptions</h2>
-      <p>Learn how to change subscriptions from the app store</p>
-      <ul>
-        <li>1. Hover account</li>
-        <li>2. Click subscriptions &amp; billing</li>
-        <li>3. Click desired subscription</li>
-        <li>4. Click change plan</li>
-        <li>5. Select new plan</li>
-        <li>6. Submit form</li>
-      </ul>
-
-      <h2>Cancelling subscriptions</h2>
-      <p>Learn how to cancel subscriptions from the app store</p>
-      <ul>
-        <li>1. Click installs</li>
-        <li>2. Click desired install</li>
-        <li>3. Click subscription</li>
-        <li>4. Click cancel subscription</li>
-        <li>5. Submit form</li>
-      </ul>
-
-      <h2>Uninstalling</h2>
-      <p>Learn how to remove things you have installed</p>
-      <ul>
-        <li>1. Click installs</li>
-        <li>2. Click desired install</li>
-        <li>3. Click delete install</li>
-        <li>4. Submit form</li>
-      </ul>
-
+    <div class="pure-g">
+      <div class="pure-u-4-5">
+        <div id="charging-container">
+          <h2>Upcoming charges</h2>
+          <ul id="charging-list" class="launcher"></ul>
+          <p>You have no charges in the next 7 days.</p>
+        </div>
+        <div id="trials-container">
+          <h2>Trials ending</h2>
+          <ul id="trials-list" class="launcher"></ul>
+          <p>You have no free trials ending in the next 7 days.</p>
+        </div>
+        <div id="apps-container">
+          <ul id="apps-list" class="launcher"></ul>
+        </div>
+        <ul id="page-links" class="pagination"></ul>
+      </div>
+      <div class="pure-u-1-5">
+        <div id="guide-container">
+          <h2>Cloning a project</h2>
+          <p>Learn how to copy a shared project to edit it</p>
+          <ol>
+            <li>Click projects</li>
+            <li>Click copy project</li>
+            <li>Enter the shared project ID</li>
+            <li>Enter a new ID for your project</li>
+            <li>Submit form</li>
+          </ol>
+        
+          <h2>Creating a project</h2>
+          <p>A guide to get started with your first project</p>
+          <ol>
+            <li>Click projects</li>
+            <li>Click new project</li>
+            <li>Enter an ID for your project</li>
+            <li>Submit form</li>
+          </ol>
+        
+          <h2>Creating custom menus</h2>
+          <p>Learn how to group your shortcuts into color-coded menus</p>
+          <ol>
+            <li>Click collections</li>
+            <li>Click new collection</li>
+            <li>Enter a name and select the color scheme</li>
+            <li>Submit form; then select the shortcuts to include</li>
+          </ol>
+        
+          <h2>Importing a web app</h2>
+          <p>Learn how to import a web app from outside the app store</p>
+          <ol>
+            <li>Click installs</li>
+            <li>Click import URL</li>
+            <li>Enter the URL</li>
+            <li>Submit form; then enter shortcut information</li>
+          </ol>
+        
+          <h2>Installing a project</h2>
+          <p>Learn how to install a shared project to use it</p>
+          <ol>
+            <li>Click installs</li>
+            <li>Click import project</li>
+            <li>Enter the shared project ID</li>
+            <li>Submit form; then enter shortcut information</li>
+          </ol>
+        
+          <h2>Installing from the app store</h2>
+          <p>Learn how to install apps for yourself and organizations</p>
+          <ol>
+            <li>Click home</li>
+            <li>Click desired app</li>
+            <li>Click install button of desired plan</li>
+            <li>Submit form; then enter shortcut information</li>
+          </ol>
+        
+          <h2>Installing for organizations</h2>
+          <p>Learn how to install apps for yourself and organizations</p>
+          <ol>
+            <li>Click home</li>
+            <li>Click desired app</li>
+            <li>Click install button of desired plan</li>
+            <li>Select desired organization and enter shortcut information</li>
+            <li>Select any members you wish to pay for</li>
+            <li>Submit form; then enter shortcut information</li>
+          </ol>
+        
+          <h2>Managing subscriptions</h2>
+          <p>Learn how to change subscriptions from the app store</p>
+          <ol>
+            <li>Hover account</li>
+            <li>Click subscriptions &amp; billing</li>
+            <li>Click desired subscription</li>
+            <li>Click change plan</li>
+            <li>Select new plan</li>
+            <li>Submit form</li>
+          </ol>
+        
+          <h2>Cancelling subscriptions</h2>
+          <p>Learn how to cancel subscriptions from the app store</p>
+          <ol>
+            <li>Click installs</li>
+            <li>Click desired install</li>
+            <li>Click subscription</li>
+            <li>Click cancel subscription</li>
+            <li>Submit form</li>
+          </ol>
+        
+          <h2>Uninstalling</h2>
+          <p>Learn how to remove things you have installed</p>
+          <ol>
+            <li>Click installs</li>
+            <li>Click desired install</li>
+            <li>Click delete install</li>
+            <li>Submit form</li>
+          </ol>
+        </div>
+      </div>
     </div>
-    <div id="charging-container">
-      <h2>Upcoming charges</h2>
-      <ul id="charging-list" class="launcher"></ul>
-      <p>You have no charges in the next 7 days.</p>
-    </div>
-    <div id="trials-container">
-      <h2>Trials ending</h2>
-      <ul id="trials-list" class="launcher"></ul>
-      <p>You have no free trials ending in the next 7 days.</p>
-    </div>
-    <div id="apps-container">
-      <ul id="apps-list" class="launcher"></ul>
-    </div>
-    <ul id="page-links" class="pagination"></ul>
   </body>
   <template id="page-link">
     <li><a href="/home?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
