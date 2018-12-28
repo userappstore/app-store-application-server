@@ -9,7 +9,14 @@ async function beforeRequest (req) {
   if (!req.query || !req.query.appid) {
     throw new Error('invalid-appid')
   }
-  const app = await global.api.user.userappstore.App.get(req)
+  let app
+  try {
+    app = await global.api.user.userappstore.App.get(req)
+  } catch (error) {
+  }
+  if (!app) {
+    return
+  }
   let screenshot
   if (app.screenshots &&
       app.screenshots.length > 2 &&
@@ -23,7 +30,7 @@ async function beforeRequest (req) {
 }
 
 function renderFile (req, res) {
-  if (!req.data.screenshot) {
+  if (!req.data || !req.data.screenshot) {
     res.statusCode = 404
     return res.end()
   }
