@@ -16,7 +16,6 @@ const util = require('util')
 global.rootPath = path.join(__dirname, `src/www`)
 global.storagePath = process.env.STORAGE_PATH || path.join(__dirname, 'data')
 global.applicationPath = __dirname
-global.stripePublishableKey = process.env.STRIPE_PUBLISHABLE_KEY
 global.pageSize = 100
 
 const eightDays = 8 * 24 * 60 * 60 * 1000
@@ -65,13 +64,17 @@ async function receiveRequest (req, res) {
   if (req.headers['x-dashboard-server'] === process.env.DASHBOARD_SERVER) {
     if (!req.headers['x-accountid']) {
       // guest accessing something
-      req.dashboardServer = true
+      const token = req.headers['x-dashboard-token']
+      const expected = process.env.APPLICATION_SERVER_TOKEN
+      if (bcrypt.compareSync(expected, token)) {
+        req.dashboardServer = true
+      }
     } else {
       // user is signed in
       const token = req.headers['x-dashboard-token']
       const accountid = req.headers['x-accountid']
       const sessionid = req.headers['x-sessionid']
-      const expected = `${process.env.APPLICATION_SERVER_TOKEN}:${accountid}:${sessionid}`
+      const expected = `${process.env.APPLICATION_SERVER_TOKEN}/${accountid}/${sessionid}`
       if (bcrypt.compareSync(expected, token)) {
         req.dashboardServer = true
         req.account = { accountid }

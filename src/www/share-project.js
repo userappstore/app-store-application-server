@@ -1,3 +1,4 @@
+const navbar = require('./navbar-project.js')
 const userAppStore = require('../../index.js')
 
 module.exports = {
@@ -22,6 +23,7 @@ async function beforeRequest (req) {
 
 async function renderPage (req, res, messageTemplate) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.project, 'project')
+  navbar.setup(doc, req)
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, req.data.project, messageTemplate, 'message-container')
     if (messageTemplate === 'success') {

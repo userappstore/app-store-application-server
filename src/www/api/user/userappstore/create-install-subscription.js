@@ -27,10 +27,7 @@ module.exports = {
     try {
       subscription = await dashboardServer.post(`/api/user/${install.appid}/subscriptions/create-subscription?planid=${install.planid}`, req.body, req.account.accountid, req.session.sessionid)
     } catch (error) {
-      if (error.message.startsWith('invalid-')) {
-        throw error
-      }
-      throw new Error('unknown-error')
+      throw new Error(error.message)
     }
     install.subscriptionid = subscription.id
     await userAppStore.Storage.write(`install/${req.query.installid}`, install)

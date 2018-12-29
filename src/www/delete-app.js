@@ -29,7 +29,6 @@ async function submitForm (req, res) {
     await global.api.user.userappstore.DeleteApp.delete(req)
     return renderPage(req, res, 'success')
   } catch (error) {
-    console.log(error)
     return renderPage(req, res, error.message)
   }
 }

@@ -1,68 +1,58 @@
 <!doctype html>
-<html>
-
-<head>
-  <title>Copy project</title>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <link rel="stylesheet" href="/public/pure-min.css" />
-  <link rel="stylesheet" href="/public/content.css" />
-  <style>
-    body { padding: 0 }
+<html navbar="/navbar-projects.html">
+  <head>
+    <title>Copy project</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <style>
+      body { padding: 0 }
       .warning { color: #FFF; padding: 1rem; background-color: #FC0 }
       .warning p { margin: 0; color: rgba(0, 0, 0, 0.75) }
       .padder { padding: 1rem }
     </style>
-  <template id="navbar">
-    <a href="/home" title="UserAppStore home">Home</a>
-    <a href="/installs" title="Apps you have installed">Installed apps</a>
-    <a href="/import-project" title="Import an app">Import project</a>
-    <a href="/import-website" title="Import an app">Import website</a>
-    <a href="/uninstalled" title="Apps you have uninstalled">Uninstalled</a>
+    <base target="_top" />
+  </head>
+  <body>
+    <div class="warning">
+      <p>You are copying a shared project. You accept all responsibility for using the project.</p>
+    </div>
+    <div class="padder">
+      <h1>Copy project</h1>
+      <div id="message-container"></div>
+      <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+        <div class="pure-control-group">
+          <label for="sharedid">Their project ID</label>
+          <input require id="sharedid" placeholder="" name="sharedid" type="text" maxlength="50"
+            size="40" />
+        </div>
+        <div class="pure-control-group">
+          <label for="projectid">Your project ID</label>
+          <input require id="projectid" placeholder="" name="projectid" type="text" maxlength="50"
+            size="40" />
+        </div>
+        <div class="pure-controls">
+          <button id="submit-button" class="pure-button pure-button-primary" type="submit">Clone project</button>
+        </div>
+      </form>
+    </div>
+  </body>
+  <template id="invalid-sharedid">
+    <div class="error-message">Error! An invalid shared project ID was provided.</div>
   </template>
-  <base target="_top" />
-</head>
-
-<body>
-  <div class="warning">
-    <p>You are copying a shared project. You accept all responsibility for using the project.</p>
-  </div>
-  <div class="padder">
-    <h1>Copy project</h1>
-    <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
-      <div class="pure-control-group">
-        <label for="sharedid">Their project ID</label>
-        <input require id="sharedid" placeholder="something-something-number" name="sharedid" type="text" maxlength="50"
-          size="40" />
-      </div>
-      <div class="pure-control-group">
-        <label for="projectid">Your project ID</label>
-        <input require id="projectid" placeholder="something-something-number" name="projectid" type="text" maxlength="50"
-          size="40" />
-      </div>
-      <div class="pure-controls">
-        <button id="submit-button" class="pure-button pure-button-primary" type="submit">Clone project</button>
-      </div>
-    </form>
-  </div>
-</body>
-<template id="invalid-sharedid">
-  <div class="error-message">Error! An invalid shared project ID was provided.</div>
-</template>
-<template id="invalid-projectid">
-  <div class="error-message">Error! An invalid project ID was provided.</div>
-</template>
-<template id="duplicate-projectid">
-  <div class="error-message">Error! The copy project ID is being used by something.</div>
-</template>
-<template id="invalid-project">
-  <div class="error-message">Error! An invalid shared project was provided.</div>
-</template>
-<template id="unknown-error">
-  <div class="error-message">Error! An error occurred importing the project.</div>
-</template>
-<template id="success">
-  <div class="success-message">Success! The project has been copied to your projects.</div>
-</template>
-
+  <template id="invalid-projectid">
+    <div class="error-message">Error! An invalid project ID was provided.</div>
+  </template>
+  <template id="duplicate-projectid">
+    <div class="error-message">Error! The copy project ID is being used by something.</div>
+  </template>
+  <template id="invalid-project">
+    <div class="error-message">Error! An invalid shared project was provided.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error-message">Error! An error occurred importing the project.</div>
+  </template>
+  <template id="success">
+    <div class="success-message">Success! The project has been copied to your projects.</div>
+  </template>
 </html>

@@ -18,19 +18,21 @@
     <h1 id="title">${project.projectid}</h1>
     <div id="status"></div>
     <ul id="files-list" class="files"></ul>
-    <table id="projects-table" class="pure-table pure-table-striped">
+    <table id="projects-table" class="pure-table data-table">
       <tbody id="${project.projectid}">
         <tr>
           <th>Project ID</th>
           <td><a href="/project?projectid=${project.projectid}">${project.projectid}</a></td>
+        </tr>
+        <tr>
           <th>Created</th>
-          <td>${project.created}</td>
+          <td>${project.createdFormatted}</td>
         </tr>
       </tbody>
     </table>
   </body>
   <template id="file-item-template">
-    <li id="${file.fileid}" title="Last modified ${file.lastModifiedRelative} on ${file.lastModified}">
+    <li id="${file.fileid}" title="${file.filename}">
       <a href="/project-ide?filename=${file.filename}&projectid=${file.projectid}">
         <img src="/public/icons/${file.icon}-file.png" height="64" width="64" />
         ${file.sizeFormatted}

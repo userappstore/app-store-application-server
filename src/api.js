@@ -60,6 +60,9 @@ function wrapAPIRequest(nodejsHandler, filePath) {
     }
     nodejsHandler[`_${functionName}`] = originalFunction
     nodejsHandler[functionName] = async (req, res) => {
+      if (res){
+        res.setHeader('content-type', 'application/json')
+      }
       if (!req.session && nodejsHandler.auth !== false) {
         if (res) {
           res.statusCode = 511
@@ -76,7 +79,6 @@ function wrapAPIRequest(nodejsHandler, filePath) {
       } catch (error) {
         if (res) {
           res.statusCode = 500
-          res.setHeader('content-type', 'application/json')
           return res.end(`{"error": "${error.message}"}`)
         }
         throw error

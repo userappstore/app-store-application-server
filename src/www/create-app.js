@@ -120,9 +120,6 @@ async function submitForm (req, res) {
     res.setHeader('location', `/app?appid=${app.appid}`)
     return res.end()
   } catch (error) {
-    if (error.message.startsWith('invalid-') || error.message.startsWith('duplicate-')) {
-      return renderPage(req, res, error.message)
-    }
     return renderPage(req, res, error.message)
   } 
 }

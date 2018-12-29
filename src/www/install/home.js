@@ -14,8 +14,30 @@ async function beforeRequest (req) {
   }
   req.query.accountid = req.account.accountid
   const installs = await global.api.user.userappstore.Installs.get(req)
-  const install = await global.api.user.userappstore.Install.get(req)
-  req.data = { install, installs }
+  if (!installs || !installs.length) {
+    throw new Error('invalid-installid')
+  }
+  let install
+  for (const item of installs) {
+    if (item.installid === req.query.installid) {
+      install = item
+      break
+    }
+  }
+  let collection, ungrouped
+  if (install.collectionid) {
+    req.query.collectionid = install.collectionid
+    collection = await global.api.user.userappstore.Collection.get(req)
+  } else {
+    ungrouped = []
+    for (const item of installs) {
+      if (!item.collectionid) {
+        ungrouped.push(item)
+      }
+    }
+  }
+  const menu = collection ? collection.items : ungrouped
+  req.data = { install, menu }
   if (install.projectid) {
     req.query.projectid = install.projectid
     const project = await global.api.user.userappstore.InstalledProject.get(req)
@@ -24,13 +46,13 @@ async function beforeRequest (req) {
     req.data.project = project
   } else if (install.appid) {
     req.query.appid = install.appid
-    const app = await global.api.user.userappstore.InstalledApp.get(req)
-    req.data.app = app
+    const installedApp = await global.api.user.userappstore.InstalledApp.get(req)
+    req.data.installedApp = installedApp
   } else if (install.url) {
     req.data.url = install.url
   }
-  req.data.app = {
-    object: 'app',
+  req.data.installInfo = {
+    object: 'install',
     user: {
       sessionid: req.session.sessionid,
       profileid: req.account.profileid,
@@ -40,36 +62,65 @@ async function beforeRequest (req) {
   }
 }
 async function renderPage (req, res) {
-  let appDoc
+  let doc
+  // rendering a project requires substituting root links
+  // for their install-specific URLs
   if (req.data.project) {
-    try {
-      appDoc = await renderProject(req, res)
-    } catch (error) {
-      projectErrorHTML = projectErrorHTML || fs.readFileSync(path.join(__dirname, 'app-error.html').toString())
-      appDoc = userAppStore.HTML.parse(projectErrorHTML)
+    let projectHTML
+    if (req.data.files['home.html'] && req.data.files['home.html'].length) {
+      try {
+        projectHTML = req.data.files['home.html']
+      } catch (error) {
+        projectHTML = projectErrorHTML = projectErrorHTML || fs.readFileSync(path.join(__dirname, 'project-error.html').toString())
+      }
     }
-  }
-  // add the app navigation and head script
-  const doc = userAppStore.HTML.parse(req.route.html, req.data.app, 'app')
-  const navbar = doc.getElementById('navbar')
-  userAppStore.HTML.renderList(doc, req.data.installs, 'navigation-link', navbar)
-  const head = doc.getElementById('head')
-  const userScript = doc.getElementById('user')
-  head.child = [userScript]
-  appDoc.child = appDoc.child || []
-  appDoc.appendChild(navbar)
-  appDoc.appendChild(head)
-  return res.end(appDoc.toString())
-}
+    projectHTML = projectHTML.split('/home').join(`/project/${req.data.project.projectid}/home`)
+    projectHTML = projectHTML.split('/public/app.js').join(`/project/${req.data.project.projectid}/public/app.js`)
+    projectHTML = projectHTML.split('/public/app.css').join(`/project/${req.data.project.projectid}/public/app.css`)
+    try {
+      doc = userAppStore.HTML.parse(projectHTML)
+    } catch (error) {
+      projectHTML = projectErrorHTML = projectErrorHTML || fs.readFileSync(path.join(__dirname, 'project-error.html').toString())
+      doc = userAppStore.HTML.parse(projectHTML)
+    }
+  } else if (req.data.installedApp) {
 
-async function renderProject (req, res) {
-  let project
-  if (req.data.files['home.html'] && req.data.files['home.html'].length) {
-    try {
-      project = userAppStore.HTML.parse(req.data.files['home.html'])
-    } catch (error) {
-    }
+  } else {
+
   }
-  project = project || userAppStore.HTML.parse(`<html><body></body></html>`)
-  return project
+  if (!doc) {
+    throw new Error('invalid-install')
+  }
+  // The project's <template id="navbar" /> conflicts with the page
+  // so the project one gets renamed to app-navbar, and then the
+  // Dashboard places that in a secondary navigation found in
+  // UserAppStore's template.  When a project is exported it will
+  // stay named navbar and use the Dashboard template's navigation.
+  const installNavbar = doc.getElementById('navbar')
+  if (installNavbar) {
+    installNavbar.attr.id = 'app-navbar'
+  }
+  // The project's <template id="head" /> can't be used on
+  // UserAppStore because it adds HTML to the <head> of the
+  // template, so it's renamed to exclude it.  When a project
+  // is exported you can use that tag to add to your template.
+  const installHead = doc.getElementById('head')
+  if (installHead) {
+    installNavbar.attr.id = 'app-head'
+  }
+  // add the ungrouped or collection items to the primary navigation
+  const template = doc.createElement('template')
+  template.attr = { id: 'navbar' }
+  for (const item of req.data.menu) {
+    const link = doc.createElement('a')
+    link.attr = { href: `/install/${item.installid}/home` }
+    link.child = [{
+      node: 'text',
+      text: item.text
+    }]
+    template.appendChild(link)
+  }
+  doc.appendChild(template)
+  res.setHeader('content-type', 'text/html')
+  return res.end(doc.toString())
 }

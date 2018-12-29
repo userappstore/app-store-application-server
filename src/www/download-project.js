@@ -1,3 +1,4 @@
+const navbar = require('./navbar-project.js')
 const bcrypt = require('bcrypt-node')
 const exec = require('child_process').exec
 const fs = require('fs')
@@ -38,6 +39,7 @@ async function beforeRequest (req) {
 
 function renderPage (req, res, messageTemplate) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.project, 'project')
+  navbar.setup(doc, req)
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, null, messageTemplate, 'message-container')
   } else {

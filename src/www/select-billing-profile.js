@@ -61,10 +61,6 @@ async function submitForm(req, res) {
     res.setHeader('location', `/install/${req.query.installid}/home`)
     return res.end()
   } catch (error) {
-    console.log(error)
-    if (error.message.startsWith('invalid-')) {
-      return renderPage(req, res, error.message)
-    }
     return renderPage(req, res, error.message)
   }
 }

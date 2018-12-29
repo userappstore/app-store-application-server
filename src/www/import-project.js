@@ -44,9 +44,6 @@ async function submitForm (req, res) {
     await global.api.user.userappstore.CreateInstall.post(req)
     return renderPage(req, res, 'success')
   } catch (error) {
-    if (error.message.startsWith('invalid-')) {
-      return renderPage(req, res, error.message)
-    }
     return renderPage(req, res, error.message)
   }
 }

@@ -18,17 +18,16 @@ module.exports = {
         accountid: req.account.accountid 
       }, 
       body: {
-        projectid: req.body.projectid,
-        created: userAppStore.Timestamp.now
+        projectid: req.body.projectid
       }
     }
     const project = await global.api.user.userappstore.CreateProject._post(projectReq)
-    req.body = {
+    projectReq.body = {
       'app.js': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.js`),
       'app.css': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.css`),
       'home.html': await userAppStore.Storage.read(`project-files/${req.query.projectid}/home.html`)
     }
-    await global.api.user.userappstore.UpdateProjectFiles.patch(req)
+    await global.api.user.userappstore.UpdateProjectFiles.patch(projectReq)
     req.success = true
     return project
   }

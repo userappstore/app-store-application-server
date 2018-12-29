@@ -1,19 +1,5 @@
 <!doctype html>
 <html navbar="/navbar-project.html">
-  <head>
-    <template id="head">
-      <script>
-        window.onload = function(e) {
-          const user = {
-            sessionid: "${project.owner.sessionid}",
-            profileid: "${project.owner.profileid}",
-            url: "${project.owner.url}",
-            root: "${project.owner.root}"
-          }
-          const iframe = document.getElementById('application-iframe')
-          iframe.contentWindow.postMessage(JSON.stringify(user), '*')
-        }
-      </script>
-    </template>
-  </head>
+  <head></head>
+  <body></body>
 </html>

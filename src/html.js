@@ -161,6 +161,12 @@ function renderTemplate (doc, dataObject, template, parent) {
   if (template.substring) {
     templateName = template
     template = doc.getElementById(template)
+    if (!template) {
+      if (process.env.DEBUG_ERRORS) {
+        console.log('missing template', templateName, template)
+      }
+      throw new Error('invalid-template')
+    }
   } else {
     templateName = template.attr.id
   }

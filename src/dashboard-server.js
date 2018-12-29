@@ -69,7 +69,6 @@ const proxy = util.promisify((method, path, data, accountid, sessionid, callback
       }
       if (body && proxyResponse.headers['content-type'] === 'application/json') {
         body = JSON.parse(body)
-        console.log('[proxy]', path, body)
         return callback(new Error(body.error))
       }
       return callback(new Error('dashboard-error'))

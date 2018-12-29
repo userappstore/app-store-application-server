@@ -1,3 +1,4 @@
+const navbar = require('./navbar-project.js')
 const userAppStore = require('../../index.js')
 
 module.exports = {
@@ -36,6 +37,7 @@ async function beforeRequest (req) {
 
 function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.project, 'project')
+  navbar.setup(doc, req)
   userAppStore.HTML.renderList(doc, req.data.files, 'file-editor', 'editors')
   return res.end(doc.toString())
 }

@@ -1,25 +1,22 @@
 <!doctype html>
-<html>
+<html navbar="/navbar-projects.html">
   <head>
     <title>Projects</title>
     <link href="/public/pure-min.css" rel="stylesheet" />
     <link href="/public/content.css" rel="stylesheet" />
     <base target="_top" href="/" />
-    <template id="navbar">
-      <a href="/home" title="UserAppStore home">Home</a>
-      <span>/</span>
-      <a href="/projects" title="Code something">Projects</a>
-      <a href="/create-project" title="Code something">Create project</a>
-    </template>
   </head>
   <body>
     <h1>Projects</h1>
     <p>Make something useful, fun or creative and share it</p>
-    <p><a href="/create-project" class="pure-button pure-button-primary">Create project</a></p>
+    <p class="pure-button-group">
+      <a href="/create-project" class="pure-button pure-button-primary">Create project</a>
+      <a href="/copy-project" class="pure-button pure-button-primary">Copy shared project</a>
+    </p>
     <div id="no-projects">
       <p>You have not created any projects yet.</p>
     </div>
-    <table id="projects-table" class="pure-table pure-table-striped">
+    <table id="projects-table" class="pure-table pure-table-striped list-table">
       <thead>
         <tr>
           <th>ID</th>

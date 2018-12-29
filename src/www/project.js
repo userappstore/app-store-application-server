@@ -1,3 +1,4 @@
+const navbar = require('./navbar-project.js')
 const userAppStore = require('../../index.js')
 
 module.exports = {
@@ -10,6 +11,7 @@ async function beforeRequest (req) {
     throw new Error('invalid-projectid')
   }
   const project = await global.api.user.userappstore.Project.get(req)
+  project.createdFormatted = userAppStore.Timestamp.date(project.created)
   const projectFiles = await global.api.user.userappstore.ProjectFiles.get(req)
   const files = []
   for (const filename in projectFiles) {
@@ -28,6 +30,7 @@ async function beforeRequest (req) {
 
 async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.project, 'project')
+  navbar.setup(doc, req)
   userAppStore.HTML.renderList(doc, req.data.files, 'file-item-template', 'files-list')
   if (req.data.project.shared) {
     userAppStore.HTML.renderTemplate(doc, req.data.project, 'shared', 'status')
