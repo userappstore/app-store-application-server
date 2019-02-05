@@ -21,8 +21,15 @@ async function beforeRequest (req) {
   req.query = req.query || {}
   req.query.accountid = req.account.accountid
   req.query.all = true
-  const projects = await global.api.user.userappstore.Projects.get(req)
-  req.data = { projects, accounts }
+  const servers = await global.api.user.userappstore.ApplicationServers.get(req)
+  if (servers && servers.length) {
+    for (const server of servers) {
+      if (server.appid) {
+        servers.splice(servers.indexOf(server), 1)
+      }
+    } 
+  }
+  req.data = { stripeAccounts, servers }
 }
 
 async function renderPage(req, res, messageTemplate) {
@@ -30,12 +37,12 @@ async function renderPage(req, res, messageTemplate) {
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, req.data ? req.data.project : null, messageTemplate, 'message-container')
   }
-  if (req.data.projects && req.data.projects.length) {
-    userAppStore.HTML.renderList(doc, req.data.projects, 'project-option', 'projectid')
+  if (req.data.servers && req.data.servers.length) {
+    userAppStore.HTML.renderList(doc, req.data.servers, 'server-option', 'serverid')
   }
-  if (req.data.accounts && req.data.accounts.length) {
-    userAppStore.HTML.renderList(doc, req.data.accounts, 'account-option', 'stripeid')
-    for (const account of req.data.accounts) {
+  if (req.data.stripeAccounts && req.data.stripeAccounts.length) {
+    userAppStore.HTML.renderList(doc, req.data.stripeAccounts, 'account-option', 'stripeid')
+    for (const account of req.data.stripeAccounts) {
       if (account.legal_entity.type === 'individual') {
         const individualName = doc.getElementById(`individual-${account.id}`)
         individualName.parentNode.removeChild(individualName)
@@ -45,18 +52,14 @@ async function renderPage(req, res, messageTemplate) {
       }
     }
   }
+  const idField = doc.getElementById('appid')
   if (req.body) {
-    const idFIeld = doc.getElementById('appid')
-    idFIeld.setAttribute('value', req.body.appid || '')
-    if (req.body.projectid) {
-      userAppStore.HTML.setSelectedOptionByValue(doc, 'projectid', req.body.projectid)
-    } else if (req.body.url) {
-      const urlField = doc.getElementById('url')
-      urlField.setAttribute('value', req.body.url || '')
+    idField.setAttribute('value', req.body.appid || '')
+    if (req.body.serverid) {
+      userAppStore.HTML.setSelectedOptionByValue(doc, 'serverid', req.body.serverid)
     }
   } else {
-    const idFIeld = doc.getElementById('appid')
-    idFIeld.setAttribute('value', userAppStore.UUID.friendly())
+    idField.setAttribute('value', userAppStore.UUID.friendly())
   }
   return res.end(doc.toString())
 }
@@ -65,8 +68,8 @@ async function submitForm (req, res) {
   if (!req.body) {
     return renderPage(req, res)
   }
-  if (!req.body.name || !req.body.name.length) {
-    return renderPage(req, res, 'invalid-name')
+  if (!req.body.appid || !req.body.appid.length) {
+    return renderPage(req, res, 'invalid-appid')
   }
   if (!req.body.stripeid || !req.body.stripeid.length) {
     return renderPage(req, res, 'invalid-stripeid')
@@ -80,8 +83,8 @@ async function submitForm (req, res) {
       }
   }
   let stripeAccount
-  if (req.data.accounts && req.data.accounts.length) {
-    for (const account of req.data.accounts) {
+  if (req.data.stripeAccounts && req.data.stripeAccounts.length) {
+    for (const account of req.data.stripeAccounts) {
       if (account.id === req.body.stripeid) {
         stripeAccount = account
       }
@@ -90,29 +93,24 @@ async function submitForm (req, res) {
   if (!stripeAccount) {
     return renderPage(req, res, 'invalid-stripeid')
   }
-  if (!req.body.projectid && !req.body.url) {
-    return renderPage(req, res, 'invalid-source')
-  }
-  if (req.body.projectid) {
-    let found = false
-    if (req.data.projects && req.data.projects.length) {
-      for (const project of req.data.projects) {
-        found = project.projectid === req.body.projectid
-        if (found) {
-          break
-        }
-      }
-    }
-    if (!found) {
-      return renderPage(req, res, 'invalid-projectid')
-    }
-  } else if (req.body.url) {
-    if (req.body.url.indexOf('https://') !== 0) {
-      return renderPage(req, res, 'invalid-url')
-    }
-  }
   if (req.body.appid && !req.body.appid.match(/^[a-zA-Z0-9\-]+$/)) {
     return renderPage(req, res, 'invalid-appid')
+  }
+  if (!req.body.serverid || !req.body.serverid.length) {
+    return renderPage(req, res, 'invalid-application-serverid')
+  }
+  if (!req.data.servers || !req.data.servers) {
+    return renderPage(req, res, 'invalid-application-serverid') 
+  }
+  let found = false
+  for (const server of req.data.servers) {
+    found = server.serverid === req.body.serverid
+    if (found) {
+      break
+    }
+  }
+  if (!found) {
+    return renderPage(req, res, 'invalid-application-serverid')
   }
   try {
     const app = await global.api.user.userappstore.CreateApp.post(req)

@@ -1,32 +1,46 @@
 <!doctype html>
 <html navbar="/navbar-project.html">
-
-<head>
-  <title>Share ${project.projectid}</title>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <link rel="stylesheet" href="/public/pure-min.css" />
-  <link rel="stylesheet" href="/public/content.css" />
-  <base target="_top" />
-</head>
-
-<body>
-  <h1>Share ${project.projectid}</h1>
-  <div id="message-container"></div>
-  <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
-    <button id="submit-button" class="pure-button pure-button-primary" type="submit">Share</button>
-  </form>
-</body>
-<template id="unshared">
-  <p>Sharing this project will let anyone who knows the ID import it.</p>
-</template>
-<template id="shared">
-  <p>The project may be imported by anyone who knows its ID.</p>
-</template>
-<template id="success">
-  <div class="success-message">Success! The project may be imported by its ID.</div>
-</template>
-<template id="unknown-error">
-  <div class="error-message">An error ocurred sharing the project.</div>
-</template>
-
+  <head>
+    <title>Share ${project.projectid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+      p { max-width: 40rem }
+    </style>
+  </head>
+  <body>
+    <h1>Share ${project.projectid}</h1>
+    <div id="message-container"></div>
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+      <h2>Owner organization</h2>
+      <p>Assigning an organization will allow members to share administrative access to your project's users.</p>
+      <div id="existing-organization" class="pure-control-group">
+        <label for="organizationid">Existing organization</label>
+        <select id="organizationid" name="organizationid">
+          <option value="">No organization</option>
+        </select>
+      </div>
+      <button id="submit-button" class="pure-button pure-button-primary" type="submit">Share</button>
+    </form>
+  </body>
+  <template id="unshared">
+    <p>Shared project IDs can be used to install and use projects, or to copy and edit as your own project.   An <a href="/application-servers">application server</a> will be created for you to administrate. Your profile may be shared with your projects' users and any administrators you appoint.</p>
+  </template>
+  <template id="shared">
+    <p>The project may be imported by anyone who knows its ID.</p>
+  </template>
+  <template id="profile-option">
+    <option value="${profile.profileid}">${profile.email} / ${profile.firstName} ${profile.lastName}</option>
+  </template>
+  <template id="organization-option">
+    <option value="${organization.organizationid}">${organization.name}</option>
+  </template>
+  <template id="success">
+    <div class="success message">Success! The project may be imported by its ID.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error message">An error ocurred sharing the project.</div>
+  </template>
 </html>

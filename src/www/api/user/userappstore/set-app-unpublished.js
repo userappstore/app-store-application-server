@@ -18,6 +18,7 @@ module.exports = {
     await userAppStore.StorageList.add(`account/unpublished/${req.account.accountid}`, app.appid)
     await userAppStore.StorageList.remove(`published`, app.appid)
     await userAppStore.StorageList.remove(`account/published/${req.account.accountid}`, app.appid)
+    await userAppStore.StorageList.remove(`stripeid/published/${app.stripeid}`, app.appid)
     req.success = true
     return app
   }

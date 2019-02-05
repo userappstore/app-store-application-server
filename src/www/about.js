@@ -26,12 +26,28 @@ async function beforeRequest (req) {
       screenshots.push({ number: (parseInt(i, 10) + 1), appid: req.query.appid, object: 'screenshot' })
     }
   }
-  const stripeAccount = await dashboardServer.get(`/api/user/userappstore/publisher?stripeid=${app.stripeid}`, req.account.accountid, req.session.sessionid)
-  const plans = await dashboardServer.get(`/api/user/${app.appid}/subscriptions/published-plans?stripeid=${app.stripeid}`, req.account.accountid, req.session.sessionid)
-  req.data = { app, screenshots, tags, stripeAccount, plans }
+  req.query.stripeid = app.stripeid
+  const publisher = await global.api.user.userappstore.Publisher.get(req)
+  req.query.serverid = app.serverid
+  const server = await global.api.user.userappstore.ApplicationServer.get(req)
+  const plans = await dashboardServer.get(`/api/user/subscriptions/published-plans`, null, null, server.applicationServer, server.applicationServerToken)
+  if (plans && plans.length) {
+    for (const plan of plans) {
+      plan.appid = req.query.appid
+      switch (plan.currency) {
+        case 'usd':
+          plan.amountFormatted = `$${plan.amount / 100}`
+          break
+        default:
+          plan.amountFormatted = plan.amount
+          break
+      }      
+    }
+  }
+  req.data = { app, screenshots, tags, publisher, plans }
 }
 
-async function renderPage (req, res, messageTemplate) {
+async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.app, 'app')
   if (req.data.tags && req.data.tags.length) {
     userAppStore.HTML.renderList(doc, req.data.tags, 'tag-item', 'tags')
@@ -42,10 +58,10 @@ async function renderPage (req, res, messageTemplate) {
   if (req.data.screenshots && req.data.screenshots.length) {
     userAppStore.HTML.renderList(doc, req.data.screenshots, 'screenshot-item', 'screenshots')
   }
-  if (req.data.stripeAccount.legal_entity.type === 'individual') {
-    userAppStore.HTML.renderTemplate(doc, req.data.stripeAccount, 'individual-publisher', 'publisher')
+  if (req.data.publisher.type === 'individual') {
+    userAppStore.HTML.renderTemplate(doc, req.data.publisher, 'individual-publisher', 'publisher')
   } else {
-    userAppStore.HTML.renderTemplate(doc, req.data.stripeAccount, 'company-publisher', 'publisher')
+    userAppStore.HTML.renderTemplate(doc, req.data.publisher, 'company-publisher', 'publisher')
   }
   return res.end(doc.toString())
 }

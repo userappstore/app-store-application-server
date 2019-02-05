@@ -22,6 +22,8 @@ module.exports = {
       await userAppStore.Storage.deleteFile(`project-files/${req.query.projectid}/app.js`)
     } catch (error) {
     }
+    await userAppStore.StorageList.remove(`account/projects/${req.account.accountid}`, req.query.projectid)
+    await userAppStore.StorageList.remove(`projects`, req.query.projectid)
     req.success = true
   }
 }

@@ -1,8 +1,17 @@
+const dashboardServer = require('../dashboard-server.js')
 const userAppStore = require('../../index.js')
 
 module.exports = {
+  before: beforeRequest,
   get: renderPage,
   post: submitForm
+}
+
+async function beforeRequest (req) {
+  req.query = req.query || {}
+  req.query.accountid = req.account.accountid
+  const collections = await global.api.user.userappstore.Collections.get(req)
+  req.data = { collections }
 }
 
 async function renderPage (req, res, messageTemplate) {
@@ -16,7 +25,14 @@ async function renderPage (req, res, messageTemplate) {
     if (messageTemplate === 'success') {
       const form = doc.getElementById('submit-form')
       form.parentNode.removeChild(form)
+      return res.end(doc.toString())
     }
+  }
+  if (req.data.collections && req.data.collections.length) {
+    userAppStore.HTML.renderList(doc, req.data.collections, 'collection-option', 'collectionid')
+  } else {
+    const collectionContainer = doc.getElementById('collection-container')
+    collectionContainer.parentNode.removeChild(collectionContainer)
   }
   return res.end(doc.toString())
 }

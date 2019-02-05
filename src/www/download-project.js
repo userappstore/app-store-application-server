@@ -1,5 +1,5 @@
 const navbar = require('./navbar-project.js')
-const bcrypt = require('bcrypt-node')
+const bcrypt = require('../bcrypt.js')
 const exec = require('child_process').exec
 const fs = require('fs')
 const os = require('os')
@@ -50,19 +50,11 @@ function renderPage (req, res, messageTemplate) {
 
 async function submitForm (req, res) {
   // node project config
-  const salt = bcrypt.genSaltSync(1)
-  const uuidEncoding = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split().sort((a, b) => {
-    return Math.random() < 0.5 ? 1 : -1
-  })
-  const uuidSeed = 1000000 + Math.floor(Math.random() * 1000000)
-  const uuidIncrement = Math.ceil(Math.random() * 1000)
+  const salt = await bcrypt.genSalt(10)
   const dotEnv = `NODE_ENV=development
-BCRYPT_WORK_FACTOR=1
+BCRYPT_WORK_FACTOR=10
 PORT=9573
-BCRYPT_FIXED_SALT=${salt}
-UUID_ENCODING_CHARACTERS=${uuidEncoding}
-UUID_SEED=${uuidSeed}
-UUID_INCREMENT=${uuidIncrement}`
+BCRYPT_FIXED_SALT=${salt}`
   // write the project files with supplemental files to make it standalone
   nodePackageJSON = nodePackageJSON || fs.readFileSync(path.join(__dirname, '../project-standalone/package.json')).toString('utf-8')
   nodeMainJS = nodeMainJS || fs.readFileSync(path.join(__dirname, '../project-standalone/main.js')).toString('utf-8')

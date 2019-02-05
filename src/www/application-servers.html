@@ -1,0 +1,45 @@
+<!doctype html>
+<html navbar="/navbar-application-servers.html">
+  <head>
+    <title>Application servers</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Application servers</h1>
+    <p>Claim your Dashboard-integrated web applications to administrate your users and access the API.</p>
+    <p class="pure-button-group">
+      <a href="/claim-application-server" class="pure-button pure-button-primary">Claim a server</a>
+    </p>
+    <div id="no-application-servers">
+      <p>You have not claimed any servers yet.</p>
+    </div>
+    <table id="application-servers-table" class="pure-table pure-table-striped list-table">
+      <thead>
+        <tr>
+          <th>Server ID</th>
+          <th>Domain</th>
+          <th>Created</th>
+          <th>Claimed</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="page-links" class="pagination"></ul>
+  </body>
+  <template id="page-link">
+    <li><a href="/application-servers?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
+  </template>
+  <template id="application-server-row">
+    <tr id="${server.serverid}">
+      <td><a href="/server?serverid=${server.serverid}">${server.serverid}</a></td>
+      <td>${server.applicationServer}</td>
+      <td>${server.createdFormatted}</td>
+      <td>${server.claimedFormatted}</td>
+      <td class="pure-button-group">
+        <a class="pure-button pure-button-primary" href="/administrator/${server.serverid}">Administration</a>
+      </td>
+    </tr>
+  </template>
+</html>

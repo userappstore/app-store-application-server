@@ -17,15 +17,15 @@ function onSelectFileUpload (e) {
     info.innerHTML = info.originalInnerHTML = info.originalInnerHTML || info.innerHTML
     var size = info.innerHTML.split(' ')[0].split('x')
     if (img.width !== +size[0] || img.height !== +size[1]) {
-      info.className = 'error-message'
+      info.className = 'error message'
       return
     }
     if (e.target.name === 'icon' && filename.indexOf('.png') !== filename.length - 4) {
-      info.className = 'error-message'
+      info.className = 'error message'
       return
     }
     if (e.target.name !== 'icon' && filename.indexOf('.jpg') !== filename.length - 4 && filename.indexOf('.jpeg') !== filename.length - 5) {
-      info.className = 'error-message'
+      info.className = 'error message'
       return
     }
     info.className = ''

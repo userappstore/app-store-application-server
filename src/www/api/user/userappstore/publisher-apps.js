@@ -7,10 +7,10 @@ module.exports = {
     }
     let appids
     if (req.query.all) {
-      appids = await userAppStore.StorageList.listAll(`published/apps/${accountid}`)
+      appids = await userAppStore.StorageList.listAll(`stripeid/published/${req.query.stripeid}`)
     } else {
       const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0
-      appids = await userAppStore.StorageList.list(`published/apps/${accountid}`, offset)
+      appids = await userAppStore.StorageList.list(`stripeid/published/${req.query.stripeid}`, offset)
     }
     if (!appids || !appids.length) {
       return null

@@ -27,7 +27,7 @@ module.exports = {
       !req.body.background.startsWith('rgba(')) {
       throw new Error('invalid-background')
     }
-    let collectionid = userAppStore.UUID.friendly()
+    let collectionid = `collection_${userAppStore.UUID.random(16)}`
     let exists = await userAppStore.Storage.exists(`collection/${collectionid}`)
     if (exists) {
       while (exists) {

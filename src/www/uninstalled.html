@@ -21,6 +21,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Install</th>
           <th>Created</th>
           <th>App</th>
           <th>Project</th>
@@ -37,6 +38,7 @@
   <template id="uninstall-row">
     <tr id="${uninstall.uninstallid}">
       <td><a href="/account/profile?profileid=${uninstall.uninstallid}">${uninstall.uninstallid}</a></td>
+      <td><a href="/account/profile?profileid=${uninstall.uninstallid}">${uninstall.install.installid}</a></td>
       <td>${uninstall.created}</td>
       <td>${uninstall.install.appid}</td>
       <td>${uninstall.install.projectid}</td>

@@ -6,7 +6,7 @@ var editors = {}
 var links = {}
 var statuses = {}
 var lastSent = {}
-var nextAutoSave = (new Date().getTime() / 1000) + 2
+var nextAutoSave = (new Date().getTime() / 1000) + 1
 
 window.addEventListener('load', startIDE)
 

@@ -16,21 +16,53 @@ module.exports = {
     if (!install.planid) {
       throw new Error('invalid-plan')
     }
-    const plan = await dashboardServer.get(`/api/user/${install.appid}/subscriptions/published-plan?planid=${install.planid}`, req.account.accountid, req.session.sessionid)
+    req.query.appid = install.appid
+    const app = await global.api.user.userappstore.PublishedApp.get(req)
+    req.query.serverid = install.serverid
+    const server = await global.api.user.userappstore.ApplicationServer.get(req)
+    const plan = await dashboardServer.get(`/api/user/subscriptions/published-plan?planid=${install.planid}`, null, null, server.applicationServer, server.applicationServerToken)
     const customer = await dashboardServer.get(`/api/user/subscriptions/customer?customerid=${req.body.customerid}`, req.account.accountid, req.session.sessionid)
     if (plan.amount && !customer.default_source) {
       throw new Error('invalid-customerid')
+  }
+    let defaultSource
+    for (const source of customer.sources.data) {
+      if (source.id === customer.default_source) {
+        defaultSource = source
+        break
+      }
     }
-    const quantity = install.organizationid && install.subscriptions ? install.subscriptions.length + 1 : 1
-    req.body = { quantity }
-    let subscription
-    try {
-      subscription = await dashboardServer.post(`/api/user/${install.appid}/subscriptions/create-subscription?planid=${install.planid}`, req.body, req.account.accountid, req.session.sessionid)
-    } catch (error) {
-      throw new Error(error.message)
+    const nameParts = defaultSource.name.split(' ')
+    const firstName = nameParts.shift()
+    const otherNames = nameParts.join(' ')
+    req.body = {
+      email: customer.email,
+      ['first-name']: firstName,
+      ['last-name']: otherNames
     }
+    const account = await dashboardServer.post(`/api/application-server/create-user?serverid=${install.serverid}`, req.body, req.account.accountid, req.session.sessionid)
+    if (!account) {
+      throw new Error('invalid-account')
+    }
+    // create customer profile
+    const installCustomer = await dashboardServer.post(`/api/application-server/copy-customer?customerid=${customer.id}`, { installid: install.installid, accountid: account.accountid }, req.account.accountid, req.session.sessionid)
+    const subscription = await dashboardServer.post(`/api/application-server/create-subscription?customerid=${installCustomer.id}`, { installid: install.installid, accountid: account.accountid }, req.account.accountid, req.session.sessionid)
+    if(!subscription) {
+      throw new Error('invalid-subscription')
+    }
+    install.stripeid = app.stripeid
+    install.customerid = installCustomer.id
     install.subscriptionid = subscription.id
+    install.configured = userAppStore.Timestamp.now
+    install.serverid = app.serverid
     await userAppStore.Storage.write(`install/${req.query.installid}`, install)
+    if (install.subscriptions && install.subscriptions.length) {
+      for (const membershipid of install.subscriptions) {
+        const membership = await dashboardServer.get(`/api/user/organizations/membership?membershipid=${membershipid}`, req.account.accountid, req.session.sessionid)
+        await userAppStore.StorageList.add(`account/organization-installs/${membership.accountid}`, install.installid)
+        await userAppStore.StorageList.add(`account/organization-installs-unconfigured/${membership.accountid}`, install.installid)
+      }
+    }
     req.success = true
     return install
   }

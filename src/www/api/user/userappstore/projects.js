@@ -18,12 +18,15 @@ module.exports = {
     if (!projectids || !projectids.length) {
       return null
     }
+    const query = req.query
+    req.query = {}
     const projects = []
     for (const projectid of projectids) {
       req.query.projectid = projectid
       const project = await global.api.user.userappstore.Project.get(req)
       projects.push(project)
     }
+    req.query = query
     return projects
   }
 }

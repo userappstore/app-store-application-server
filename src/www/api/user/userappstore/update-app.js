@@ -9,9 +9,7 @@ module.exports = {
     if (!req.query || !req.query.appid) {
       throw new Error('invalid-appid')
     }
-    if (process.env.NODE_ENV !== 'testing') {
-      await parseMultiPartData(req)
-    }
+    await parseMultiPartData(req)
     if (!req.body || !req.body.name || !req.body.name.length) {
       throw new Error('invalid-name')
     }
@@ -55,13 +53,11 @@ const parseMultiPartData = util.promisify((req, callback) => {
     if (error) {
       return callback(error)
     }
+    
     req.body = {}
     req.icon = null
     req.screenshots = []
     for (const field in fields) {
-      if (field === 'fileid') {
-        throw new Error('invalid-upload')
-      }
       req.body[field] = fields[field][0]
     }
     if (!files) {

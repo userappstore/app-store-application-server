@@ -18,12 +18,15 @@ module.exports = {
     if (!itemids || !itemids.length) {
       return null
     }
+    const query = req.query
+    req.query = {}
     const uninstalls = []
     for (const itemid of itemids) {
       req.query.uninstallid = itemid
       const uninstall = await global.api.user.userappstore.Uninstall.get(req)
       uninstalls.push(uninstall)
     }
+    req.query = query
     return uninstalls
   }
 }

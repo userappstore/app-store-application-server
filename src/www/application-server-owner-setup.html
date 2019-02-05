@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Owner profile for ${server.serverid}</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+      p { max-width: 40rem }
+      </style>
+    <template id="navbar">
+      <a href="/home" title="UserAppStore home">Home</a>
+      <span>/</span>
+      <a href="/application-servers">Application servers</a>
+      <a href="/application-server-administrator-setup">Administrator account setup</a>
+    </template>
+  </head>
+  <body>
+    <h1>Owner profile for ${server.serverid}</h1>
+    <p>Setup your profile to continue.</p>
+    <div id="message-container"></div>
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+      <h2>Owner profile</h2>
+      <p>This information is shared with users.</p>
+      <div id="existing-profile" class="pure-control-group">
+        <label for="profileid">Existing profile</label>
+        <select id="profileid" name="profileid">
+          <option value="">Select profile</option>
+        </select>
+      </div>
+      <h2>New profile</h2>
+      <div class="pure-control-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" />
+      </div>
+      <div class="pure-control-group">
+        <label for="first-name">First name</label>
+        <input type="text" id="first-name" name="first-name" />
+      </div>
+      <div class="pure-control-group">
+        <label for="last-name">Last name</label>
+        <input type="text" id="last-name" name="last-name" />
+      </div>
+      <button id="submit-button" class="pure-button pure-button-primary" type="submit">Share</button>
+    </form>
+  </body>
+  <template id="profile-option">
+    <option value="${profile.profileid}">${profile.email} / ${profile.firstName} ${profile.lastName}</option>
+  </template>
+  <template id="invalid-profile-first-name">
+    <div class="error message">Error! A missing or invalid first name provided.</div>
+  </template>
+  <template id="invalid-profile-first-name-length">
+    <div class="error message">Error! An invalid first name was provided.</div>
+  </template>
+  <template id="invalid-profile-last-name">
+    <div class="error message">Error! A missing or invalid last name was provided.</div>
+  </template>
+  <template id="invalid-profile-last-name-length">
+    <div class="error message">Error! An invalid last name was provided.</div>
+  </template>
+  <template id="invalid-profile-email">
+    <div class="error message">Error! Invalid email address.</div>
+  </template>
+  <template id="invalid-profile">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
+  <template id="invalid-profileid">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error message">An error ocurred sharing the project.</div>
+  </template>
+</html>

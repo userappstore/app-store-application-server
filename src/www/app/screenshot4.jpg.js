@@ -11,7 +11,7 @@ async function beforeRequest (req) {
   }
   let app
   try {
-    app = await global.api.user.userappstore.App.get(req)
+    app = await global.api.user.userappstore.PublishedApp.get(req)
   } catch (error) {
   }
   if (!app) {

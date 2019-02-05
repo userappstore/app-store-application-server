@@ -2,6 +2,12 @@ const userAppStore = require('../../../../../index.js')
 
 module.exports = {
   get: async (req) => {
-    return userAppStore.StorageList.count(`account/projects/${req.account.accountid}`)
+    if (!req.query || !req.query.accountid) {
+      throw new Error('invalid-accountid')
+    }
+    if (req.query.accountid !== req.account.accountid) {
+      throw new Error('invalid-account')
+    }
+    return userAppStore.StorageList.count(`account/projects/${req.query.accountid}`)
   }
 }

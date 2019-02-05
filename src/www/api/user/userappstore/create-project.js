@@ -22,6 +22,7 @@ module.exports = {
       throw new Error('duplicate-projectid')
     }
     await userAppStore.Storage.write(`project/${req.body.projectid}`, projectInfo)
+    await userAppStore.StorageList.add(`projects`, req.body.projectid)
     await userAppStore.StorageList.add(`account/projects/${req.query.accountid}`, req.body.projectid)
     req.success = true
     return projectInfo

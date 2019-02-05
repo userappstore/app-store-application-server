@@ -7,7 +7,7 @@ module.exports = {
   post: submitForm
 }
 
-async function beforeRequest (req, res) {
+async function beforeRequest (req) {
   if (!req.query || !req.query.installid) {
     throw new Error('invalid-installid')
   }
@@ -19,6 +19,15 @@ async function beforeRequest (req, res) {
   if (install.organizationid) {
     organization = await dashboardServer.get(`/api/user/organizations/organization?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
     memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
+    if(memberships && memberships.length) {
+      for (const i in memberships) {
+        const membership = memberships[i]
+        if (membership.accountid === req.account.accountid) {
+          memberships.splice(i, 1)
+          break
+        }
+      }
+    }
   }
   req.data = { install, organization, memberships }
 }
@@ -30,6 +39,10 @@ function renderPage (req, res, messageTemplate) {
   }
   if (req.data.memberships && req.data.memberships.length) {
     userAppStore.HTML.renderList(doc, req.data.memberships, 'membership-item', 'memberships-list')
+  } else {
+    res.statusCode = 302
+    res.setHeader('location', `/confirm-subscription?installid=${req.query.installid}`)
+    return res.end()
   }
   return res.end(doc.toString())
 }
@@ -56,8 +69,11 @@ async function submitForm (req, res) {
     }
   }
   // stash the members in the install info
-  await global.api.user.userappstore.UpdateInstall.patch(req)
-  req.success = true
+  try {
+    await global.api.user.userappstore.UpdateInstall.patch(req)
+  } catch (error) {
+    return renderPage(req, res, error.message)
+  }
   res.statusCode = 302
   res.setHeader('location', `/confirm-subscription?installid=${req.query.installid}`)
   return res.end()

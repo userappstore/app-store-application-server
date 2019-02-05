@@ -20,7 +20,7 @@
     <table id="apps-table" class="pure-table pure-table-striped list-table">
       <thead>
         <tr>
-          <th>Name</th>
+          <th>ID</th>
           <th>Created</th>
           <th>Status</th>
           <th></th>
@@ -34,7 +34,7 @@
   </template>
   <template id="app-row">
     <tr id="${app.appid}">
-      <td><a href="/app?appid=${app.appid}">${app.name}</a></td>
+      <td><a href="/app?appid=${app.appid}">${app.appid}</a></td>
       <td>${app.created}</td>
       <td id="draft-${app.appid}">Draft</td>
       <td id="published-${app.appid}">Published</td>

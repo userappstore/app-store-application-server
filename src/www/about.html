@@ -46,42 +46,41 @@
   <template id="plan-row">
     <tr>
       <td>${plan.id}</td>
-      <td>${plan.description}</td>
-      <td>${plan.amount}</td>
+      <td>${plan.amountFormatted}</td>
       <td class="pure-button-group">
-        <a class="pure-button pure-button-primary" href="/install-app?appid=${plan.metadata.appid}&planid=${plan.id}">Install</a>
+        <a class="pure-button pure-button-primary" href="/install-app?appid=${plan.appid}&planid=${plan.id}">Install</a>
       </td>
     </tr>
   </template>
   <template id="individual-publisher">
-    <table id="${account.id}">
+    <table id="${publisher.stripeid}">
       <tr>
         <th>Publisher</th>
-        <td>${account.legal_entity.first_name} ${account.legal_entity.last_name}</td>
+        <td>${publisher.first_name} ${publisher.last_name} (${publisher.type})</td>
       </tr>
       <tr>
         <th>Country</th>
-        <td>${account.country}</td>
+        <td>${publisher.country}</td>
       </tr>
       <tr>
         <th>Registered</th>
-        <td>${account.created}</td>
+        <td>${publisher.created}</td>
       </tr>
     </table>
   </template>
   <template id="company-publisher">
-    <table id="${account.id}">
+    <table id="${publisher.stripeid}">
       <tr>
         <th>Publisher</th>
-        <td>${account.legal_entity.business_name}</td>
+        <td>${publisher.business_name}(${publisher.type})</td>
       </tr>
       <tr>
         <th>Country</th>
-        <td>${account.country}</td>
+        <td>${publisher.country}</td>
       </tr>
       <tr>
         <th>Registered</th>
-        <td>${account.created}</td>
+        <td>${publisher.created}</td>
       </tr>
     </table>
   </template>

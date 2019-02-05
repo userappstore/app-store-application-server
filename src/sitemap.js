@@ -113,8 +113,25 @@ async function wrapBeforeFunction(nodejsHandler) {
       continue
     }
     nodejsHandler[verb] = async (req, res) => {
-      await nodejsHandler.before(req)
-      return originalFunction(req, res)
+      try {
+        await nodejsHandler.before(req)
+      } catch (error) {
+        if (process.env.DEBUG_ERRORS) {  
+          console.log('sitemap.before', error)
+        }
+        res.statusCode = 500
+        return res.end()
+      }
+      try {
+        return originalFunction(req, res)
+      }
+      catch (error) {
+        if (process.env.DEBUG_ERRORS) {
+          console.log('sitemap.after', error)
+        }
+        res.statusCode = 500
+        return res.end()
+      }
     }
   }
 }

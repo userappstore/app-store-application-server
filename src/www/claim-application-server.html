@@ -1,0 +1,128 @@
+<!doctype html>
+<html navbar="/navbar-application-servers.html">
+  <head>
+    <title>Claim application server</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+      p { margin-bottom: 1rem; max-width: 60rem }
+      pre { padding: 1rem; background-color: #EEE; margin-bottom: 2rem }
+      code span { color: darkgreen}
+      .box { padding: 1rem; margin: 1rem 0; border: 1px dashed #666; display: inline-block }
+      .token { padding: 1rem; background-color: #333; color: #FFF; border: none; font-family: mono }
+      .note { margin: 0.25rem 0 0 0; font-size: 0.9rem; color: #333 }
+    </style>
+  </head>
+  <body>
+    <h1>Claim application server</h1>
+    <p id="claiming-start">Users can import your web application without claiming it, but you need to claim it to access the administration interface and APIs.</p>
+    <p id="claiming-guide">When your web app is ready to serve the text at the required URL submit your claim. Afterwards you will become the owner of the application server and you may publish it on our app store to enable subscriptions.</p>
+    <div id="message-container"></div>
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+      <div class="pure-control-group">
+        <label>Application server domain (https)</label>
+        <input id="url" name="url" placeholder="https://application.example.com" require type="text" size="40" maxlength="200" />
+      </div>
+      <div id="verification-container">
+        <input name="profileid" id="selected-profileid" type="hidden" />
+        <div class="pure-control-group">
+          <label for="verification-path">Verification URL path</label>
+          <input require id="verification-path" type="text" size="40" />
+        </div>
+        <div class="pure-control-group">
+          <label for="token">Verification text</label>
+          <input readonly require id="token" name="text" size="64"></textarea>
+        </div>
+      </div>
+      <div id="organization-container">
+        <h2>Owner organization</h2>
+        <p>Assigning an organization will allow members to administrate your users.</p>
+        <div id="existing-organization" class="pure-control-group">
+          <label for="organizationid">Existing organization</label>
+          <select id="organizationid" name="organizationid">
+            <option value="">No organization</option>
+          </select>
+        </div>
+      </div>
+      <div class="pure-controls">
+        <button id="submit-url-button" class="pure-button pure-button-primary" type="submit" name="refresh" value="true">Submit domain</button>
+        <button id="submit-claim-button" class="pure-button pure-button-primary" type="submit">Claim server</button>
+      </div>
+    </form>
+    <div id="integration-guide">
+      <h2>How to integrate Dashboard</h2>
+      <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> proxies your server when non-Dashboard URLs are requested, and each request it makes includes headers with account, session, and optionally organization and subscription ids. You use that data to determine what content to serve to the user. HTML content must be well-formed because it is parsed
+      and modified before being served to the user.</p>
+      <pre id="integration-guide-header"></pre>
+      <p>The HTML your server returns is modified to include the installation path in URLs, for instance <strong>/home</strong> becomes <strong>/install/installid/home</strong>.  The modified HTML is served to the user via a sandboxed <strong>iframe</strong> in the <strong>srcdoc</strong> attribute so it's ready to render.  Quotation marks are modified to inline the document as an attribute, and you must include a <strong>base</strong> tag with <strong>href="_top"</strong> for forms and links to use the entire page.</p>
+    </div>
+    <div id="usage-guide">
+      <h2>Using your application server token</h2>
+      <p>Your new token enables your server to make requests to our API on behalf of your users.</p>
+      <div class="box">
+        <input readonly id="token" name="token" require type="text" size="80" class="token" />
+        <p class="note">We will not show you this token again, but you can generate a new token if you forget it.</p>
+      </div>
+      <p>Use the same headers to make HTTP requests to Dashboard's API on behalf of your users.</p>
+      <pre id="usage-headers"></pre>
+    </div>
+  </body>
+  <template id="token-usage"><code><span># make API requests on behalf of users</span>
+x-application-server: "${header.applicationServer}"
+x-dashboard-token: bcrypt.hash("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", bcrypt.genSalt(1))
+x-accountid: "account_aaaaaaaaa"
+x-sessionid: "session_bbbbbbbbb"
+GET ${header.dashboardServer}/api/user/organizations/organization?organizationid=organization_ccccccccc
+GET ${header.dashboardServer}/api/user/subscriptions/subscription?subscriptionid=subscription_ddddddddd
+
+<span># verify requests made to your server</span>
+x-dashboard-server: "${header.dashboardServer}"
+x-dashboard-token: "${header.dashboardServerToken}"
+x-accountid: "account_aaaaaaaaa"
+x-sessionid: "session_bbbbbbbbb"
+x-organizationid: "organization_ccccccccc" <span># if user installed for organization</span>
+x-subscriptionid: "subscription_ddddddddd" <span># if user installed from app store</span>
+
+<span># this simple identification can easily be faked</span>
+if (x-dashboard-server === "${header.dashboardServer}") {
+  <span># but only we know your secret token the hashes are made with</span>
+  valid = bcrypt.compare("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", x-dashboard-token)
+}
+</code></template>
+  <template id="integration-headers"><code>x-dashboard-server: "${header.dashboardServer}"
+x-dashboard-token: "${header.token}"
+x-accountid: "account_aaaaaaaaa"
+x-sessionid: "session_bbbbbbbbb"
+x-organizationid: "organization_ccccccccc" <span># if user installed for organization</span>
+x-subscriptionid: "subscription_ddddddddd" <span># if user installed from app store</span>
+GET ${header.dashboardServer}/install/installid/home <span># proxies /home on your server</span></code></template>
+  <template id="invalid-url">
+    <div class="error message">Error! An invalid URL was provided.</div>
+  </template>
+  <template id="invalid-verification-token">
+    <div class="error message">Error! The URL is not serving the required verification token.</div>
+  </template>
+  <template id="invalid-url-length">
+    <div class="error message">Error! An invalid URL was provided.</div>
+  </template>
+  <template id="invalid-profile-email">
+    <div class="error message">Error! Invalid email address.</div>
+  </template>
+  <template id="invalid-profile">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
+  <template id="invalid-profileid">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
+  <template id="duplicate-claim">
+    <div class="error message">Error! Somebody has claimed this application server.</div>
+  </template>
+  <template id="unknown-error">
+    <div class="error message">Error! An error occurred claiming the application server.</div>
+  </template>
+  <template id="success">
+    <div class="success message">Success! You are now the owner of the application server.</div>
+  </template>
+</html>

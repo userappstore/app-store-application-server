@@ -1,25 +1,28 @@
-const bcrypt = require('bcrypt-node')
+const bcrypt = require('./bcrypt.js')
 const http = require('http')
 const https = require('https')
 const querystring = require('querystring')
 const util = require('util')
 
 module.exports = {
-  get: async (path, accountid, sessionid) => {
-    return proxy('GET', path, null, accountid, sessionid)
+  get: async (path, accountid, sessionid, alternativeServer, alternativeToken) => {
+    return proxy('GET', path, null, accountid, sessionid, alternativeServer, alternativeToken)
   },
-  post: async (path, body, accountid, sessionid) => {
-    return proxy('POST', path, body, accountid, sessionid)
+  post: async (path, body, accountid, sessionid, alternativeServer, alternativeToken) => {
+    return proxy('POST', path, body, accountid, sessionid, alternativeServer, alternativeToken)
   },
-  patch: async (path, body, accountid, sessionid) => {
-    return proxy('PATCH', path, body, accountid, sessionid)
+  patch: async (path, body, accountid, sessionid, alternativeServer, alternativeToken) => {
+    return proxy('PATCH', path, body, accountid, sessionid, alternativeServer, alternativeToken)
   },
-  delete: async (path, body, accountid, sessionid) => {
-    return proxy('DELETE', path, body, accountid, sessionid)
+  delete: async (path, body, accountid, sessionid, alternativeServer, alternativeToken) => {
+    return proxy('DELETE', path, body, accountid, sessionid, alternativeServer, alternativeToken)
   }
 }
 
-const proxy = util.promisify((method, path, data, accountid, sessionid, callback) => {
+const hashCache = {}
+const hashCacheItems = []
+
+const proxy = util.promisify((method, path, data, accountid, sessionid, alternativeServer, alternativeToken, callback) => {
   if (process.env.NODE_ENV === 'testing' && global.testResponse) {
     if (global.testResponse[path]) {
       return callback(null, global.testResponse[path])
@@ -40,19 +43,37 @@ const proxy = util.promisify((method, path, data, accountid, sessionid, callback
     port = 80
     host = baseURLParts[1]
   }
-  const salt = bcrypt.genSaltSync(1)
-  const token = bcrypt.hashSync(`${process.env.APPLICATION_SERVER_TOKEN}:${accountid}:${sessionid}`, salt)
+  const applicationServer = alternativeServer || process.env.APPLICATION_SERVER
+  const applicationServerToken = alternativeToken || process.env.APPLICATION_SERVER_TOKEN
+    let token, hashText
+  if (accountid) {
+    hashText = `${applicationServerToken}/${accountid}/${sessionid}`
+  } else {
+    hashText = applicationServerToken
+  }
+  if (hashCache[hashText]) {
+    token = hashCache[hashText]
+  } else {
+    const salt = bcrypt.genSaltSync(4)
+    token = hashCache[hashText] = bcrypt.hashSync(hashText, salt)
+    hashCacheItems.unshift(hashText)
+    if (hashCacheItems > 10000) {
+      hashCacheItems.pop()
+    }
+  }
   const requestOptions = {
     host,
     path,
     port,
     method,
     headers: {
-      'x-application': process.env.APPLICATION_SERVER,
-      'x-token': token,
-      'x-accountid': accountid,
-      'x-sessionid': sessionid
+      'x-application-server': applicationServer,
+      'x-dashboard-token': token
     }
+  }
+  if (accountid) {
+    requestOptions.headers['x-accountid'] = accountid
+    requestOptions.headers['x-sessionid'] = sessionid
   }
   const protocol = baseURLParts[0] === 'https' ? https : http
   const proxyRequest = protocol.request(requestOptions, (proxyResponse) => {

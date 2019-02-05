@@ -10,18 +10,19 @@
   <body>
     <h1>App ${app.appid}</h1>
     <p class="pure-button-group">
-      <a class="pure-button pure-button-primary" href="/administrator/${app.appid}/subscriptions">Subscriptions module</a>
-      <a class="pure-button pure-button-primary" href="/administrator/${app.appid}/organizations">Organizations module</a>
+      <a class="pure-button pure-button-primary" href="/administrator/${app.serverid}">Dashboard administration</a>
+      <a class="pure-button pure-button-primary" href="/administrator/${app.serverid}/subscriptions">Subscriptions</a>
+      <a class="pure-button pure-button-primary" href="/administrator/${app.serverid}/organizations">Organizations</a>
     </p>
-    <table id="apps-table" class="pure-table object-table">
+    <table id="apps-table" class="pure-table data-table">
       <tbody id="${app.appid}">
         <tr id="${app.appid}">
-          <th>Name</th>
-          <td><a href="/app?appid=${app.appid}">${app.name}</a></td>
+          <th>ID</th>
+          <td><a href="/app?appid=${app.appid}">${app.appid}</a></td>
         </tr>
         <tr>
-          <th>Created</th>C
-          <td>${app.created}</td>
+          <th>Created</th>
+          <td>${app.createdFormatted}</td>
         </tr>
         <tr>
           <th>Status</th>

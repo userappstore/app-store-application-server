@@ -71,12 +71,26 @@ function wrapAPIRequest(nodejsHandler, filePath) {
         return { message: 'Sign in required' }
       }
       if (nodejsHandler.before) {
-        await nodejsHandler.before(req)
+        try {
+          await nodejsHandler.before(req)
+        } catch (error) {
+          if (process.env.DEBUG_ERRORS) {
+            console.log('api.before', req.url, req.query, req.body, error)
+          }
+          if (res) {
+            res.statusCode = 500
+            return res.end(`{"error": "${error.message}"}`)
+          }
+          throw error
+        }
       }
       let result
       try {
         result = await originalFunction(req)
       } catch (error) {
+        if (process.env.DEBUG_ERRORS) {
+          console.log('api.exec', req.url, req.query, req.body, error)
+        }
         if (res) {
           res.statusCode = 500
           return res.end(`{"error": "${error.message}"}`)

@@ -16,6 +16,7 @@ module.exports = {
     await userAppStore.StorageObject.setProperty(`app/${app.appid}`, 'published', app.published)
     await userAppStore.StorageList.add(`published`, app.appid)
     await userAppStore.StorageList.add(`account/published/${req.account.accountid}`, app.appid)
+    await userAppStore.StorageList.add(`stripeid/published/${app.stripeid}`, app.appid)
     req.success = true
     return app
   }

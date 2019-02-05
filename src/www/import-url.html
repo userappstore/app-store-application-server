@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="/public/content.css" />
     <style>
       body { padding: 0 }
-        .warning { color: #FFF; padding: 1rem; background-color: #FC0 }
-        .warning p { margin: 0; color: rgba(0, 0, 0, 0.75) }
-        .padder { padding: 1rem }
+      .warning { color: #FFF; padding: 1rem; background-color: #FC0 }
+      .warning p { margin: 0; color: rgba(0, 0, 0, 0.75) }
+      .padder { padding: 1rem }
+      .padder form { margin-bottom: 2rem }
+      .padder p { margin: 0 0 1rem 0; max-width: 30rem }
       </style>
+      <base target="_top" />
   </head>
   <body>
     <div class="warning">
@@ -20,9 +23,27 @@
       <h1>Import URL</h1>
       <div id="message-container"></div>
       <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
-        <div id="url-container" class="pure-control-group">
-          <label for="url">URL (https only)</label>
-          <input require id="url" placeholder="https://..." name="url" type="text" maxlength="100" size="40" />
+        <div id="url-container" class="pure-control-group">       
+          <label for="url">Application server URL (https only)</label>
+          <input require id="url" placeholder="https://application.example.com" name="url" type="text" maxlength="200" size="40" />
+        </div>
+        <div class="pure-control-group">
+          <label for="text">Navigation text</label>
+          <input require id="text" placeholder="" name="text" type="text" maxlength="50" size="40" />
+        </div>
+        <div class="pure-control-group">
+          <h2>Websites you use</h2>
+          <p>This will frame the URL, all websites are eligible but they may disallow and prevent it working.</p>
+          <label for="iframe">
+            <input id="iframe" checked name="application-server" value="iframe" type="radio" /> This website has its own signin (iframe)
+          </label>
+        </div>
+        <div id="application-server" class="pure-control-group">
+          <h2>Websites that use Dashboard</h2>
+          <p>This will proxy the URL, requiring strictly well-formed HTML and Dashboard integration to work.</p>
+          <label for="proxy">
+            <input id="proxy" name="application-server" value="proxy" type="radio" /> This is an application server for Dashboard (proxy)
+          </label>
         </div>
         <div class="pure-controls">
           <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
@@ -31,15 +52,21 @@
     </div>
   </body>
   <template id="invalid-text">
-    <div class="error-message">Error!  Invalid text was provided.</div>
+    <div class="error message">Error!  Invalid text was provided.</div>
   </template>
   <template id="invalid-url">
-    <div class="error-message">Error!  An invalid URL was provided.</div>
+    <div class="error message">Error!  An invalid URL was provided.</div>
+  </template>
+  <template id="invalid-url-length">
+    <div class="error message">Error! The URL cannot exceed 200 characters.</div>
+  </template>
+  <template id="invalid-url">
+    <div class="error message">Error!  An invalid URL was provided.</div>
   </template>
   <template id="unknown-error">
-    <div class="error-message">Error!  An error occurred importing the project.</div>
+    <div class="error message">Error!  An error occurred importing the project.</div>
   </template>
   <template id="success">
-    <div class="success-message">Success!  The URL has been installed.</div>
+    <div class="success message">Success!  The URL has been installed.</div>
   </template>
 </html>

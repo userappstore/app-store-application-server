@@ -10,53 +10,73 @@
     h2,
     .pure-button-group,
     .pure-control-group { text-align: left; margin-bottom: 0 }
+    h2 { font-weight: bold; font-size: 1rem }
     form { margin-bottom: 0 }
     select { width: 100% }
     input[type="checkbox"] { margin-right: 0.5rem }
     .entry-form p { text-align: left }
     .entry-form .memberships { list-style-type: none; margin: 0 0 1rem 0; padding: 0 }
     .entry-form .memberships li { display: block; text-align: left }
-    .entry-form .submit { margin: 0; padding: 0; text-align: left }
-    .entry-form .cancel { margin: 0; padding: 0; text-align: right }
+    .pure-controls { text-align: left }
+    .entry-form .submit { margin: 0 }
+    .entry-form .cancel { margin: 0 }
     .entry-form a.pure-button-primary { color: #FFF }
     a.pure-button { color: #333 }
-    .summary { width: 100% }
+    .summary { width: 100%; margin-top: 1rem }
     .summary th { color: #666; font-size: 0.9rem; text-align: left }
+    .included { font-size: 0.9rem; font-weight: bold; line-height: 1.2rem; color: #076 }
+    .new-profile { margin: 1rem 0 }
+    .new-profile a.pure-button { margin: 0; padding: 0.25rem 0.5rem }
     </style>
   </head>
   <body class="entry-form">
     <h1>Confirm subscription</h1>
     <div id="message-container"></div>
-    <table id="plan-table" class="summary">
-      <tr>
-        <th>Plan</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Period</th>
-      </tr>
-    </table>
-    <h2>Charge information</h2>
-    <div id="charge"></div>
-    <table id="subscriptions-table">
-      <tr>
-        <th>Included subscriptions</th>
-      </tr>
-    </table>
-    <div class="pure-g">
-      <div class="submit" class="pure-u-1-2">
-        <a href="/select-billing-profile?installid=${install.installid}" id="select-customer" class="pure-button pure-button-primary">Select billing profile</a> 
-      </div>
-      <div class="cancel" class="pure-u-1-2">
-        <a href="/edit-install?installid=${install.installid}" class="pure-button">Back</a> 
-      </div>
+      <h2>Billing profile</h2>
+      <div id="message-container"></div>
+      <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+        <div id="existing-container" class="pure-control-group">
+          <label for="customerid">Existing profile</label>
+          <select name="customerid" id="customerid">
+            <option>Select profile</option>
+          </select>
+        </div>
+        <div class="pure-control-group new-profile">
+          <a id="create-link" href="/account/subscriptions/create-billing-profile?returnURL=/confirm-subscription%3Finstallid=${install.installid}" class="pure-button">Add new profile</a>
+        </div>
+        <h2>Subscription information</h2>
+        <table id="plan-table" class="summary">
+          <tr>
+            <th>Plan</th>
+            <th>Price</th>
+            <th>Period</th>
+          </tr>
+        </table>
+        <h2>Charge summary</h2>
+        <div id="charge"></div>
+        <table id="subscriptions-table">
+          <tr>
+            <th>Included subscriptions</th>
+          </tr>
+          <tr>
+            <td class="included">myself</td>
+          </tr>
+        </table>
+        <div class="pure-controls">
+          <button id="submit-button" class="pure-button pure-button-primary submit" type="submit">Start subscription</button>
+          <a href="/edit-install?installid=${install.installid}" class="pure-button cancel">Back</a>
+        </div>
+      </form>
     </div>
-  </div>
   </body>
+  <template id="customer-option">
+    <option value="${customer.id}">${customer.description} (${customer.defaultSource.brand} exp ${customer.defaultSource.exp_month}/${customer.defaultSource.exp_year})</option>
+  </template>
   <template id="charge-now">
-    <p>You will be charged ${charge.amount} now.</p>
+    <p>You will be billed ${plan.amountFormatted} now and .</p>
   </template>
   <template id="charge-later">
-    <p>You will be charged after the ${charge.trial} day trial period.</p>
+    <p>Recurring charges of ${plan.amountFormatted} begin in ${plan.trial_period_days} days.</p>
   </template>
   <template id="day-period">
     <span>daily</span>
@@ -72,27 +92,26 @@
   </template>
   <template id="plan-row">
     <tr>
-      <td>${plan.name}</td>
-      <td>${plan.quantity}x</td>
-      <td>${plan.price}</td>
-      <td>${plan.interval}</td>
+      <td>${plan.id}</td>
+      <td>${plan.amountFormatted}</td>
+      <td>${plan.interval_count}x ${plan.interval}</td>
     </tr>
   </template>
   <template id="subscription-row">
     <tr id="${item.accountid}">
-      <td>${item.email}</td>
+      <td class="included">${item.email}</td>
     </tr>
   </template>
   <template id="unknown-error">
-    <div class="error-message">Error!  An error occurred installing the app.</div>
+    <div class="error message">Error!  An error occurred installing the app.</div>
   </template>
   <template id="invalid-cardid">
-    <div class="error-message">Error!  You have not added <a href="/account/subscriptions/edit-payment-information">payment information</a>.</div>
+    <div class="error message">Error!  You have not added <a href="/account/subscriptions/edit-payment-information">payment information</a>.</div>
   </template>
   <template id="invalid-organization">
-    <div class="error-message">Error!  An invalid organization was provided.</div>
+    <div class="error message">Error!  An invalid organization was provided.</div>
   </template>
   <template id="invalid-collectionid">
-    <div class="error-message">Error!  An invalid collection was provided.</div>
+    <div class="error message">Error!  An invalid collection was provided.</div>
   </template>
 </html>

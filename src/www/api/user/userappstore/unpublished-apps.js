@@ -18,12 +18,15 @@ module.exports = {
     if (!appids || !appids.length) {
       return null
     }
+    const query = req.query
+    req.query = {}
     const apps = []
     for (const appid of appids) {
       req.query.appid = appid
       const app = await global.api.user.userappstore.App.get(req)
       apps.push(app)
     }
+    req.query = query
     return apps
   }
 }

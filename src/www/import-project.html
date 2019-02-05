@@ -30,7 +30,7 @@
           <label for="text">Navigation text</label>
           <input require id="text" placeholder="" name="text" type="text" maxlength="50" size="40" />
         </div>
-        <div class="pure-control-group">
+        <div id="collection-container" class="pure-control-group">
           <label for="collectionid">Collection</label>
           <select name="collectionid" id="collectionid">
             <option value="">Default navigation</option>
@@ -42,19 +42,46 @@
       </form>
     </div>
   </body>
+  <template id="profile-option">
+    <option value="${profile.profileid}">${profile.email} / ${profile.firstName} ${profile.lastName}</option>
+  </template>
+  <template id="collection-option">
+    <option value="${collection.collectionid}">${collection.name}</option>
+  </template>
+  <template id="invalid-profile-first-name">
+    <div class="error message">Error! A missing or invalid first name provided.</div>
+  </template>
+  <template id="invalid-profile-first-name-length">
+    <div class="error message">Error! An invalid first name was provided.</div>
+  </template>
+  <template id="invalid-profile-last-name">
+    <div class="error message">Error! A missing or invalid last name was provided.</div>
+  </template>
+  <template id="invalid-profile-last-name-length">
+    <div class="error message">Error! An invalid last name was provided.</div>
+  </template>
+  <template id="invalid-profile-email">
+    <div class="error message">Error! Invalid email address.</div>
+  </template>
+  <template id="invalid-profile">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
+  <template id="invalid-profileid">
+    <div class="error message">Error! An invalid profile was selected.</div>
+  </template>
   <template id="invalid-projectid">
-    <div class="error-message">Error!  An invalid project ID was provided.</div>
+    <div class="error message">Error!  An invalid project ID was provided.</div>
   </template>
   <template id="invalid-text">
-    <div class="error-message">Error!  Invalid link text was provided.</div>
+    <div class="error message">Error!  Invalid link text was provided.</div>
   </template>
   <template id="invalid-project">
-    <div class="error-message">Error!  An invalid project was provided.</div>
+    <div class="error message">Error!  An invalid project was provided.</div>
   </template>
   <template id="unknown-error">
-    <div class="error-message">Error!  An error occurred importing the project.</div>
+    <div class="error message">Error!  An error occurred importing the project.</div>
   </template>
   <template id="success">
-    <div class="success-message">Success!  The project has been installed.</div>
+    <div class="success message">Success!  The project has been installed.</div>
   </template>
 </html>

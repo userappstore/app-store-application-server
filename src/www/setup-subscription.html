@@ -24,7 +24,7 @@
     <h1>Setup subscription for ${install.text}</h1>
     <p>Select any members of your organization you wish to subscribe for:</p>
     <div id="message-container"></div>
-    <form class="pure-form pure-form-stacked" method="POST">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
       <ul id="memberships-list" class="memberships"></ul>
       <div class="pure-g">
         <div class="submit" class="pure-u-1-2">
@@ -52,15 +52,15 @@
     <option value="${organization.organizationid}">${organization.name} [organization]</option>
   </template>
   <template id="unknown-error">
-    <div class="error-message">Error! An error occurred saving the settings.</div>
+    <div class="error message">Error! An error occurred saving the settings.</div>
   </template>
   <template id="invalid-membershipid">
-    <div class="error-message">Error! An invalid membership was included.</div>
+    <div class="error message">Error! An invalid membership was included.</div>
   </template>
   <template id="invalid-organization">
-    <div class="error-message">Error! An invalid organization was provided.</div>
+    <div class="error message">Error! An invalid organization was provided.</div>
   </template>
   <template id="invalid-collectionid">
-    <div class="error-message">Error! An invalid collection was provided.</div>
+    <div class="error message">Error! An invalid collection was provided.</div>
   </template>
 </html>

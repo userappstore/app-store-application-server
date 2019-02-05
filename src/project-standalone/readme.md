@@ -47,7 +47,7 @@ There are configuration differences between production and development:
     # be stored securely and indexed so it can be found when the 
     # original text is provided
     $ node
-    > const bcrypt = require('bcrypt-node')
+    > const bcrypt = require('bcryptjs')
     > bcrypt.genSaltSync(10) // BCRYPT_WORKLOAD_FACTOR
       '$2a$10$abcdef'
     $ heroku config:set BCRYPT_FIXED_SALT="\$2a\$10\$abcdef"

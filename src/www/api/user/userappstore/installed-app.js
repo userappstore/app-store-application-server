@@ -24,9 +24,6 @@ module.exports = {
       throw new Error('invalid-appid')
     }
     app = JSON.parse(app)
-    if (app.accountid !== req.account.accountid) {
-      throw new Error('invalid-account')
-    }
     return app
   }
 }

@@ -10,21 +10,8 @@ module.exports = {
     if (req.query.accountid !== req.account.accountid) {
       throw new Error('invalid-account')
     }
-    if (!req.body.projectid && !req.body.url) {
-      throw new Error('invalid-source')
-    }
-    if (req.body.projectid) {
-      req.query.projectid = req.body.projectid
-      const project = await global.api.user.userappstore.Project.get(req)
-      if (!project) {
-        throw new Error('invalid-projectid')
-      }
-    } else if (req.body.url) {
-      if (req.body.url.indexOf('https://') !== 0) {
-        throw new Error('invalid-url')
-      }
-    } else {
-      throw new Error('invalid-source')
+    if (!req.body.serverid || !req.body.serverid.length) {
+      throw new Error('invalid-application-serverid')
     }
     if (req.body.appid) {
       if (!req.body.appid.match(/^[a-zA-Z0-9\-]+$/)) {
@@ -33,6 +20,14 @@ module.exports = {
     }
     if (!req.body.stripeid || !req.body.stripeid.length) {
       throw new Error('invalid-stripeid')
+    }
+    req.query.serverid = req.body.serverid
+    const server = await global.api.user.userappstore.ApplicationServer.get(req)
+    if (!server) {
+      throw new Error('invalid-application-serverid')
+    }
+    if (server.appid) {
+      throw new Error('duplicate-application-serverid')
     }
     req.query.stripeid = req.body.stripeid
     const stripeAccount = await dashboardServer.get(`/api/user/connect/stripe-account?stripeid=${req.body.stripeid}`, req.account.accountid, req.session.sessionid)
@@ -59,18 +54,24 @@ module.exports = {
     const appInfo = {
       object: 'app',
       stripeid: req.body.stripeid,
+      serverid: req.body.serverid,
       appid,
       accountid: req.query.accountid,
-      timestamp: userAppStore.Timestamp.now
+      created: userAppStore.Timestamp.now
     }
-    if (req.body.projectid) {
-      appInfo.projectid = req.body.projectid
-    } else {
-      appInfo.url = req.body.url
+    if (server.projectid) {
+      appInfo.projectid = server.projectid
+    } else if (server.url) {
+      appInfo.url = server.url
     }
     await userAppStore.Storage.write(`app/${appid}`, appInfo)
+    await userAppStore.StorageObject.setProperties(`server/${req.body.serverid}`, {
+      appid,
+      stripeid: req.body.stripeid
+    })
     await userAppStore.StorageList.add(`account/apps/${req.query.accountid}`, appid)
-    await userAppStore.StorageList.add(`apps/${req.query.accountid}`, appid)
+    await userAppStore.StorageList.add(`stripeid/apps/${req.body.stripeid}`, appid)
+    await userAppStore.StorageList.add(`apps`, appid)
     req.success = true
     return appInfo
   }

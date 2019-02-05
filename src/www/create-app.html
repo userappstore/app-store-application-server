@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="/public/content.css" />
     <base target="_top" href="/" />
     <style>
-      form { max-width: 40rem }
+      p { max-width: 40rem }
       </style>
   </head>
   <body>
     <h1>Create app</h1>
-    <p>An active, completed <a href="/account/connect">Connect registration</a> is required for creating apps.</p>
+    <p>An an accepted <a href="/account/connect">Connect registration</a> is required for creating apps.  Projects must be shared to activate their application servers.  You may unshare the project to prevent installing or copying by ID.</p>
     <div id="message-container"></div>
     <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
       <div class="pure-control-group">
@@ -20,16 +20,14 @@
         <input type="text" id="appid" name="appid" />
         <span>Letters and numbers, and hyphens except at the start and finish.</span>
       </div>
-      <h2>Publisher</h2>
       <div class="pure-control-group">
-        <label for="name">Stripe Connect registration</label>
+        <label for="striepid">Stripe Connect registration</label>
         <select id="stripeid" name="stripeid">
           <option>Select approved registration</option>
         </select>
       </div>
-      <h2>Platform fee</h2>
       <div class="pure-control-group">
-        <label for="name">Commission for our services</label>
+        <label for="application_fee">Commission for our services</label>
         <select id="application_fee" name="application_fee">
           <option>Select commission amount</option>
           <option value="0.05">5%</option>
@@ -38,16 +36,11 @@
           <option value="0.2">20%</option>
         </select>
       </div>
-      <h2>Source</h2>
       <div class="pure-control-group">
-        <label for="name">Project</label>
-        <select id="projectid" name="projectid">
-          <option>Select project</option>
+        <label for="serverid">Project or application server</label>
+        <select id="serverid" name="serverid">
+          <option>Select project or claimed server</option>
         </select>
-      </div>
-      <div class="pure-control-group">
-        <label for="url">Hosted app URL</label>
-        <input type="text" id="url" name="url" />
       </div>
       <div class="pure-controls">
         <button id="submit-button" class="pure-button pure-button-primary" type="submit">Create</button>
@@ -60,38 +53,37 @@
     </ul>
   </body>
   <template id="account-option">
-    <option id="individual-${account.id}" value="${account.id}">${account.legal_entity.first_name}
-      ${account.legal_entity.last_name}</option>
+    <option id="individual-${account.id}" value="${account.id}">${account.legal_entity.first_name} ${account.legal_entity.last_name}</option>
     <option id="business-${account.id}" value="${account.id}">${account.legal_entity.business_name}</option>
   </template>
   <template id="project-option">
     <option value="${project.projectid}">${project.projectid}</option>
   </template>
-  <template id="invalid-projectid">
-    <div class="error-message">Error! An invalid project was selected.</div>
+  <template id="server-option">
+    <option value="${server.serverid}">${server.applicationServer}</option>
   </template>
-  <template id="invalid-url">
-    <div class="error-message">Error! An invalid or non-HTTPS URL was provided.</div>
+  <template id="invalid-application-serverid">
+    <div class="error message">Error! An invalid application server was selected.</div>
   </template>
   <template id="invalid-application_fee">
-    <div class="error-message">Error! An invalid platform commission was specified.</div>
+    <div class="error message">Error! An invalid platform commission was specified.</div>
   </template>
-  <template id="invalid-source">
-    <div class="error-message">Error! No project or URL was provided.</div>
-  </template>
-  <template id="invalid-name">
-    <div class="error-message">Error! Invalid app name.</div>
-  </template>
-  <template id="invalid-stripeid">
-    <div class="error-message">Error! An invalid Connect account was provided.</div>
+  <template id="duplicate-application-serverid">
+    <div class="error message">Error! The selected application server already has an app.</div>
   </template>
   <template id="invalid-appid">
-    <div class="error-message">Error! A non-alphanumeric app ID was specified.</div>
+    <div class="error message">Error! Invalid app id.</div>
+  </template>
+  <template id="invalid-stripeid">
+    <div class="error message">Error! An invalid Connect account was provided.</div>
+  </template>
+  <template id="invalid-appid">
+    <div class="error message">Error! A non-alphanumeric app ID was specified.</div>
   </template>
   <template id="duplicate-appid">
-    <div class="error-message">Error! The app ID is being used by something else.</div>
+    <div class="error message">Error! The app ID is being used by something else.</div>
   </template>
   <template id="unknown-error">
-    <div class="error-message">An error occurred creating the app.</div>
+    <div class="error message">An error occurred creating the app.</div>
   </template>
 </html>

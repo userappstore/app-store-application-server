@@ -12,9 +12,14 @@ async function beforeRequest (req) {
     throw new Error('invalid-appid')
   }
   const app = await global.api.user.userappstore.PublishedApp.get(req)
-  const organizations = await dashboardServer.get(`/api/user/organizations/organizations?accountid=${req.account.accountid}`, req.account.accountid, req.session.sessionid)
-  const plans = await dashboardServer.get(`/api/user/${app.appid}/subscriptions/published-plans`, req.account.accountid, req.session.sessionid)
-  req.data = { app, plans, organizations }
+  req.query.serverid = app.serverid
+  const server = await global.api.user.userappstore.ApplicationServer.get(req)
+  req.query.all = true
+  const plans = await dashboardServer.get(`/api/user/subscriptions/published-plans?all=true`, null, null, server.applicationServer, server.applicationServerToken)
+  const organizations = await dashboardServer.get(`/api/user/organizations/organizations?accountid=${req.account.accountid}&all=true`, req.account.accountid, req.session.sessionid)
+  req.query.accountid = req.account.accountid
+  const collections = await global.api.user.userappstore.Collections.get(req)
+  req.data = { app, plans, organizations, collections }
 }
 
 function renderPage(req, res, messageTemplate) {
@@ -36,7 +41,8 @@ function renderPage(req, res, messageTemplate) {
       userAppStore.HTML.setSelectedOptionByValue(doc, 'organizations-list', req.body.organizationid)
     }
   } else {
-    userAppStore.HTML.setSelectedOptionByValue(doc, 'organizations-list', 'personal')
+    const organizationsContainer = doc.getElementById('organizations-container')
+    organizationsContainer.parentNode.removeChild(organizationsContainer)
   }
   if (req.data.plans && req.data.plans.length) {
     userAppStore.HTML.renderList(doc, req.data.plans, 'plan-option', 'plans-list')
@@ -45,6 +51,17 @@ function renderPage(req, res, messageTemplate) {
     } else {
       userAppStore.HTML.setSelectedOptionByValue(doc, 'plans-list', req.body.planid || '')
     }
+  }
+  if (req.data.collections && req.data.collections.length) {
+    userAppStore.HTML.renderList(doc, req.data.collections, 'collection-option', 'collections-list')
+    if (req.method === 'GET') {
+      userAppStore.HTML.setSelectedOptionByValue(doc, 'collections-list', req.query.collectionid || '')
+    } else {
+      userAppStore.HTML.setSelectedOptionByValue(doc, 'collections-list', req.body.collectionid || '')
+    }
+  } else {
+    const collectionContainer =doc.getElementById('collection-container')
+    collectionContainer.parentNode.removeChild(collectionContainer)
   }
   return res.end(doc.toString())
 }

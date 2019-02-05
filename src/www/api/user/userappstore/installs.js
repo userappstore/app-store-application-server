@@ -18,12 +18,15 @@ module.exports = {
     if (!installids || !installids.length) {
       return null
     }
+    const query = req.query
+    req.query = {}
     const installs = []
     for (const installid of installids) {
       req.query.installid = installid
       const install = await global.api.user.userappstore.Install.get(req)
       installs.push(install)
     }
+    req.query = query
     return installs
   }
 }

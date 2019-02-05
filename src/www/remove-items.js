@@ -46,7 +46,7 @@ async function submitForm (req, res) {
       continue
     }
     try {
-      await global.api.user.userappstore.DeleteCollectionItem.delete(req)
+      await global.api.user.userappstore.DeleteCollectionInstall.delete(req)
       req.data.collectionInstalls.splice(req.data.collectionInstalls.indexOf(app), 1)
       return renderPage(req, res, 'success')
     } catch (error) {

@@ -163,7 +163,7 @@ function renderTemplate (doc, dataObject, template, parent) {
     template = doc.getElementById(template)
     if (!template) {
       if (process.env.DEBUG_ERRORS) {
-        console.log('missing template', templateName, template)
+        console.log('[html]', ' issing template', templateName)
       }
       throw new Error('invalid-template')
     }
@@ -318,7 +318,9 @@ function createCopy (dataObject, dataObjectName, element) {
   try {
     formatted = require(tempPath)
   } catch (error) {
-    console.log('[html]', error.message)
+    if (process.env.DEBUG_ERRORS) {
+      console.log('[html]', error.message)
+    }
   }
   fs.unlinkSync(tempPath)
   if (!formatted) {

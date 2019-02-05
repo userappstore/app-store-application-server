@@ -117,7 +117,7 @@ async function createInstall(user, installInfo) {
 }
 
 async function addCollectionItem (user, collection, install) {
-  const req = createRequest(`/api/user/userappstore/add-collection-item?collectionid=${collection.collectionid}`, 'POST')
+  const req = createRequest(`/api/user/userappstore/add-collection-install?collectionid=${collection.collectionid}`, 'POST')
   req.account = user.account
   req.session = user.session
   req.body = {

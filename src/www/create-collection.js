@@ -23,6 +23,12 @@ async function submitForm (req, res) {
   if (!req.body.background || !req.body.background.length) {
     return renderPage(req, res, 'invalid-background')
   }
+  if (req.body.text.length === 3 || req.body.text.length === 6) {
+    req.body.text = `#${req.body.text}`
+  }
+  if (req.body.background.length === 3 || req.body.background.length === 6) {
+    req.body.background = `#${req.body.background}`
+  }
   if (!req.body.text.startsWith('#') &&
       !req.body.text.startsWith('rgb(') &&
       !req.body.text.startsWith('rgba(')) {

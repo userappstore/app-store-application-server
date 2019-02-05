@@ -28,6 +28,9 @@ async function submitForm (req, res) {
   if (!req.body.url || !req.body.url.length || !req.body.url.startsWith('https://')) {
     return renderPage(req, res, 'invalid-url')
   }
+  if (req.body.url.length > 200) {
+    return renderPage(req, res, 'invalid-url-length')
+  }
   if (!req.body.text || !req.body.text.length) {
     return renderPage(req, res, 'invalid-text')
   }

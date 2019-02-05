@@ -32,7 +32,9 @@ async function renderPage (req, res, messageTemplate) {
 async function submitForm (req, res) {
   try {
     await global.api.user.userappstore.DeleteProject.delete(req)
-    return renderPage(req, res, 'success')
+    res.statusCode = 302
+    res.setHeader('location', `/projects`)
+    return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
   }

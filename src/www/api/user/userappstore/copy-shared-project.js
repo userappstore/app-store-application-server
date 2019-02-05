@@ -12,23 +12,21 @@ module.exports = {
     if (!sharedProject) {
       throw new Error('invalid-projectid')
     }
-    const projectReq = { 
-      account: req.account,
-      query: { 
-        accountid: req.account.accountid 
-      }, 
-      body: {
-        projectid: req.body.projectid
-      }
+    req.query.accountid = req.account.accountid
+    const project = await global.api.user.userappstore.CreateProject.post(req)
+    req.body = {
+      'app.js': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.js`) || '',
+      'app.css': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.css`) || '',
+      'home.html': await userAppStore.Storage.read(`project-files/${req.query.projectid}/home.html`) || ''
     }
-    const project = await global.api.user.userappstore.CreateProject._post(projectReq)
-    projectReq.body = {
-      'app.js': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.js`),
-      'app.css': await userAppStore.Storage.read(`project-files/${req.query.projectid}/app.css`),
-      'home.html': await userAppStore.Storage.read(`project-files/${req.query.projectid}/home.html`)
+    if ((req.body['app.js'] && req.body['app.js'].length) ||
+        (req.body['app.css'] && req.body['app.css'].length) ||
+        (req.body['app.html'] && req.body['app.html'].length)) {
+      req.query.projectid = req.body.projectid
+      await global.api.user.userappstore.UpdateProjectFiles.patch(req)
     }
-    await global.api.user.userappstore.UpdateProjectFiles.patch(projectReq)
     req.success = true
+
     return project
   }
 }

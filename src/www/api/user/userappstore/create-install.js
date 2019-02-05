@@ -23,6 +23,12 @@ module.exports = {
       sources++
     }
     if (req.body.url) {
+      if (!req.body.url.length || !req.body.url.startsWith('https://')) {
+        throw new Error('invalid-url')
+      }
+      if (req.body.url.length > 200) {
+        throw new Error('invalid-url-length')
+      }
       sources++
     }
     if (sources > 1) {
@@ -39,6 +45,7 @@ module.exports = {
         exists = await userAppStore.Storage.exists(`install/${installid}`)
       }
     }
+    let applicationServer
     const installInfo = {
       object: 'install',
       installid: installid,
@@ -46,27 +53,60 @@ module.exports = {
       accountid: req.query.accountid,
       text: req.body.text
     }
-    // installing a project
+    // installing a shared project
     if (req.body.projectid) {
       installInfo.projectid = req.body.projectid
+      installInfo.type = 'project'
       req.query.projectid = req.body.projectid
-      await global.api.user.userappstore.SharedProject.get(req)
+      const project = await global.api.user.userappstore.SharedProject.get(req)
+      if (!project) {
+        throw new Error('invalid-projectid')
+      }
+      // load or create the application server
+      try {
+        req.query.projectid = req.body.projectid
+        applicationServer = await global.api.user.userappstore.ProjectApplicationServer.get(req)
+      } catch (error) {
+        if (error.message !== 'invalid-projectid') {
+          throw error
+        }
+      }
     }
-    // installing an app
+    // installing from the app store
     if (req.body.appid) {
       installInfo.appid = req.body.appid
+      installInfo.type = 'app'
+      installInfo.server = 'proxy'
       req.query.appid = req.body.appid
-      await global.api.user.userappstore.PublishedApp.get(req)
-    }
-    // installing a URL
-    if (req.body.url) {
-      if (!req.body.url.startsWith('https://')) {
-        throw new Error('invalid-url')
+      const app = await global.api.user.userappstore.PublishedApp.get(req)
+      if (!app) {
+        throw new Error('invalid-appid')
       }
-      installInfo.url = req.body.url
+      // load the application server
+      req.query.serverid = app.serverid
+      applicationServer = await global.api.user.userappstore.ApplicationServer.get(req)
     }
-    if (!installInfo.appid && !installInfo.projectid && !installInfo.url) {
-      throw new Error('invalid-source')
+    // importing a URL
+    if (req.body.url && req.body['application-server'] === 'proxy') {
+      installInfo.url = req.body.url
+      installInfo.type = 'url'
+      // load or create the application server
+      try {
+        req.query.url = req.body.url
+        applicationServer = await global.api.user.userappstore.UrlApplicationServer.get(req)
+      } catch (error) {
+        if (error.message !== 'invalid-url') {
+          throw error
+        }
+      }
+    }
+    if (req.body['application-server'] !== 'iframe') {
+      if (!applicationServer) {
+        applicationServer = await global.api.user.userappstore.CreateApplicationServer.post(req)
+      }
+      installInfo.serverid = applicationServer.serverid
+    } else {
+      installInfo.url = req.body.url
     }
     // putting the link in a collection
     if (req.body.collectionid) {
@@ -80,10 +120,13 @@ module.exports = {
     // installing for an organization
     if (req.body.organizationid && req.body.organizationid !== 'personal') {
       installInfo.organizationid = req.body.organizationid
+      let organization
       try {
-        await dashboardServer.get(`/api/user/organizations/organization?organizationid=${req.body.organizationid}`, req.account.accountid, req.session.sessionid)
+        organization = await dashboardServer.get(`/api/user/organizations/organization?organizationid=${req.body.organizationid}`, req.account.accountid, req.session.sessionid)
       } catch (error) {
-        throw new Error('invalid-organizationid')
+      }
+      if(!organization) {
+        throw new Error('invalid-organization')
       }
     }
     // setting up a paid or free subscription
@@ -108,9 +151,10 @@ module.exports = {
       }
     }
     await userAppStore.Storage.write(`install/${installid}`, installInfo)
+    await userAppStore.StorageList.add(`installs`, installid)
     await userAppStore.StorageList.add(`account/installs/${req.query.accountid}`, installid)
     if (req.body.collectionid) {
-      req.body.installid = install.installid
+      req.body.installid = installid
       await global.api.user.userappstore.AddCollectionItem.post(req)
     }
     req.success = true
