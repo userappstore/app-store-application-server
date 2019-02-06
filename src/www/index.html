@@ -5,7 +5,8 @@
     <link href="/public/pure-min.css" rel="stylesheet" />
     <link href="/public/custom.css" rel="stylesheet" />
     <style>
-      .index { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40rem; text-align: center; box-shadow: 0 0 2rem #CCC }
+      .index { width: 100%; height: 75% }
+      .index .block { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40rem; text-align: center; box-shadow: 0 0 2rem #CCC }
       .index header { background-color: #036; padding: 1rem }
       .index header p { margin: 0; color: rgba(255, 255, 255, 0.75) }
       .index h1 { margin: 0 0 0.5rem 0; padding: 0; font-size: 1.8rem; color: #FFF; font-weight: normal }
@@ -25,54 +26,129 @@
       .index .checkbox { margin-bottom: 0 }
       .index .pure-g { padding: 1rem }
       .index form { margin-left: 3rem }
+      .images img { display: inline-block; margin-bottom: 2rem }
+      .sitemap h2 { font-size: 0.9rem; margin-left: 0.5rem; color: #666 }
+      .sitemap td { font-size: 0.8rem }
+      .sitemap th,
+      .sitemap td { vertical-align: top; padding: 0.5rem }
+      .sitemap ul { list-style-type: none; padding: 0.25rem; background-color: #DDD }
+      .sitemap th { text-align: left }
+      .sitemap th a { display: inline-block }
+      .sitemap, .images { width: 80rem; margin: 0px auto; text-align: center }
+      .images img { max-width: 100% }
     </style>
   </head>
-  <body class="index">
-    <header>
-      <h1>UserAppStore</h1>
-      <p>An open platform and app store for coders</p>
-    </header>
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <h2>Create your own apps</h2>
-        <p>Code projects with HTML5 and share them with people to install.</p>
-        <h2>An app store for SaaS</h2>
-        <p>Publish your project or self-hosted web app with Stripe subscriptions.</p>
-        <h2>Subscriptions made easy</h2>
-        <p>Easily manage or cancel subscriptions for yourself and organizations.</p>
-        <h2>Powered by open source</h2>
-        <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> is a user account system for any web app.</p>
-      </div>
-      <div class="pure-u-1-2">
-        <form action="/account/register" method="POST">
-          <h3>Register your free account</h3>
-          <div class="pure-control-group">
-            <label for="username">Secret username (8+)</label>
-            <input name="username" id="username" type="text" maxlength="1000" />
+  <body>
+    <div class="index">
+      <div class="block">
+        <header>
+          <h1>UserAppStore</h1>
+          <p>An open platform and app store for coders</p>
+        </header>
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <h2>Create your own apps</h2>
+            <p>Code projects with HTML5 and share them with people to install.</p>
+            <h2>An app store for SaaS</h2>
+            <p>Publish your project or self-hosted web app with Stripe subscriptions.</p>
+            <h2>Subscriptions made easy</h2>
+            <p>Easily manage or cancel subscriptions for yourself and organizations.</p>
+            <h2>Powered by open source</h2>
+            <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> is a user account system for any web app.</p>
           </div>
-          <div class="pure-control-group">
-            <label for="password">Secret password (8+)</label>
-            <input name="password" id="password" type="password" maxlength="1000" />
+          <div class="pure-u-1-2">
+            <form action="/account/register" method="POST">
+              <h3>Register your free account</h3>
+              <div class="pure-control-group">
+                <label for="username">Secret username (8+)</label>
+                <input name="username" id="username" type="text" maxlength="1000" />
+              </div>
+              <div class="pure-control-group">
+                <label for="password">Secret password (8+)</label>
+                <input name="password" id="password" type="password" maxlength="1000" />
+              </div>
+              <div class="pure-control-group">
+                <label for="confirm">Confirm your password</label>
+                <input name="confirm" id="confirm" type="password" maxlength="1000" />
+              </div>
+              <div class="pure-controls">
+                <button id="submit-button" type="submit" class="pure-button pure-button-primary">Register</button>
+                <a class="pure-button" href="/home">Sign in</a>
+              </div>
+              <div class="pure-control-group checkbox">
+                <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/Privacy-Policy.md">I understand the privacy policy</a>
+              </div>
+              <div class="pure-control-group checkbox">
+                <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/User-Guidelines.md">I understand the user guidelines</a>
+              </div>
+              <div class="pure-control-group checkbox">
+                <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/Terms-of-Service.md">I accept the terms of service</a>
+              </div>
+            </form>
           </div>
-          <div class="pure-control-group">
-            <label for="confirm">Confirm your password</label>
-            <input name="confirm" id="confirm" type="password" maxlength="1000" />
-          </div>
-          <div class="pure-controls">
-            <button id="submit-button" type="submit" class="pure-button pure-button-primary">Register</button>
-            <a class="pure-button" href="/home">Sign in</a>
-          </div>
-          <div class="pure-control-group checkbox">
-            <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/Privacy-Policy.md">I understand the privacy policy</a>
-          </div>
-          <div class="pure-control-group checkbox">
-            <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/User-Guidelines.md">I understand the user guidelines</a>
-          </div>
-          <div class="pure-control-group checkbox">
-            <input checked disabled type="checkbox" /> <a href="https://github.com/userappstore/policies/blob/master/Terms-of-Service.md">I accept the terms of service</a>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
+    <div class="images">
+      <img src="/public/1-how-userappstore-works.png" />
+      <img src="/public/2-powered-by-dashboard.png" />
+      <img src="/public/3-how-dashboard-works.png" />
+      <img src="/public/4-what-dashboard-and-modules-provide.png" />
+    </div>
+    <div class="sitemap">
+      <h1>How UserAppStore builds on Dashboard</h1>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Web UI</th>
+            <th>NodeJS / HTTP API</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th><a href="https://github.com/userappstore/userappstore-dashboard-server">UserAppStore Dashboard server</a></th>
+            <td>
+              <ul>
+                <li>+ Dashboard</li>
+                <li>+ Organizations module</li>
+                <li>+ Subscriptions module</li>
+                <li>+ Connect module</li>
+                <li>+ GeoIP module</li>
+              </ul>
+            </td>
+            <td><ul id="dashboard-server-api"></ul></td>
+          </tr>
+          <tr>
+            <th><a href="https://github.com/userappstore/userappstore-application-server">UserAppStore Application server</a></th>
+            <td><ul id="application-server-pages"></ul></td>
+            <td><ul id="application-server-api"></ul></td>
+          </tr>
+          <tr>
+            <th><a href="https://github.com/userappstore/dashboard">Dashboard</a></th>
+            <td><ul id="dashboard-pages"></ul></td>
+            <td><ul id="dashboard-api"></ul></td>
+          </tr>
+          <tr>
+            <th><a href="https://github.com/userappstore/organizations">Organizations module</a></th>
+            <td><ul id="organizations-module-pages"></ul></td>
+            <td><ul id="organizations-module-api"></ul></td>
+          </tr>
+          <tr>
+            <th><a href="https://github.com/userappstore/stripe-connect">Stripe Connect module</a></th>
+            <td><ul id="connect-module-pages"></ul></td>
+            <td><ul id="connect-module-api"></ul></td>
+          </tr>
+          <tr>
+            <th><a href="https://github.com/userappstore/stripe-subscriptions">Stripe Subscriptions module</a></th>
+            <td><ul id="subscriptions-module-pages"></ul></td>
+            <td><ul id="subscriptions-module-api"></ul></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </body>
+  <template id="url-data">
+    <li>${data.url}</li>
+  </template>
 </html>
