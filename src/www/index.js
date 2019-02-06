@@ -15,23 +15,60 @@ async function renderPage (req, res) {
       dashboard[url] = 'application-server'
     }
     const object = 'data'
+    const roots = [
+      '/',
+      '/account',
+      '/account/organizations',
+      '/account/subscriptions',
+      '/account/connect',
+      '/administrator',
+      '/administrator/organizations',
+      '/administrator/subscriptions',
+      '/administrator/connect'
+    ]
     for (const url in dashboard) {
       const origin = dashboard[url]
       sitemap[origin] = sitemap[origin] || {
-        web: [],
-        api: []
+        webAdministrator: [],
+        webUser: [],
+        apiAdministrator: [],
+        apiUser: []
       }
       if (url.startsWith('/api/')) {
-        sitemap[origin].api.push({ url })
-      } else {
-        if (url === '/') {
-          sitemap[origin].web.unshift({ url, object })
+        if (url.startsWith('/api/user/')) {
+          sitemap[origin].apiUser.push({ url })
         } else {
-          sitemap[origin].web.push({ url, object })  
+          sitemap[origin].apiAdministrator.push({ url })
+        }
+        continue
+      }
+      if (roots.indexOf(url) > 1) {
+        if (url.startsWith('/administrator')) {
+          sitemap[origin].webAdministrator.unshift({ url, object })
+        } else {
+          sitemap[origin].webUser.unshift({ url, object })
+        }
+      } else { 
+        if (url.startsWith('/administrator')) {
+          sitemap[origin].webAdministrator.push({ url, object })  
+        } else {
+          sitemap[origin].webUser.push({ url, object })
         }
       }
     }
   }
+  sitemap['@userappstore/dashboard'].web = sitemap['@userappstore/dashboard'].webUser.concat(sitemap['@userappstore/dashboard'].webAdministrator)
+  sitemap['@userappstore/dashboard'].api = sitemap['@userappstore/dashboard'].apiUser.concat(sitemap['@userappstore/dashboard'].apiAdministrator)
+  sitemap['@userappstore/organizations'].web = sitemap['@userappstore/organizations'].webUser.concat(sitemap['@userappstore/organizations'].webAdministrator)
+  sitemap['@userappstore/organizations'].api = sitemap['@userappstore/organizations'].apiUser.concat(sitemap['@userappstore/organizations'].apiAdministrator)
+  sitemap['@userappstore/stripe-subscriptions'].web = sitemap['@userappstore/stripe-subscriptions'].webUser.concat(sitemap['@userappstore/stripe-subscrpitions'].webAdministrator)
+  sitemap['@userappstore/stripe-subscriptions'].api = sitemap['@userappstore/stripe-subscriptions'].apiUser.concat(sitemap['@userappstore/stripe-subscrpitions'].apiAdministrator)
+  sitemap['@userappstore/stripe-connect'].web = sitemap['@userappstore/stripe-connect'].webUser.concat(sitemap['@userappstore/stripe-connect'].webAdministrator)
+  sitemap['@userappstore/stripe-connect'].api = sitemap['@userappstore/stripe-connect'].apiUser.concat(sitemap['@userappstore/stripe-connect'].apiAdministrator)
+  sitemap['@userappstore/application-server'].web = sitemap['@userappstore/application-server'].webUser.concat(sitemap['@userappstore/application-server'].webAdministrator)
+  sitemap['@userappstore/application-server'].api = sitemap['@userappstore/application-server'].apiUser.concat(sitemap['@userappstore/application-server'].apiAdministrator)
+  sitemap['@userappstore/dashboard-server'].web = sitemap['@userappstore/dashboard-server'].webUser.concat(sitemap['@userappstore/dashboard-server'].webAdministrator)
+  sitemap['@userappstore/dashboard-server'].api = sitemap['@userappstore/dashboard-server'].apiUser.concat(sitemap['@userappstore/dashboard-server'].apiAdministrator)
   userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].web, 'url-data', 'dashboard-pages')
   userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].api, 'url-data', 'dashboard-api')
   userAppStore.HTML.renderList(doc, sitemap['@userappstore/organizations'].web, 'url-data', 'organizations-module-pages')
