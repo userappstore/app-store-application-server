@@ -8,25 +8,19 @@ module.exports = {
 
 async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
-  const sitemap = await dashboardServer.get(`/api/application-server/sitemap`, null, null)
-  for (const url in global.sitemap) {
-    sitemap[url] = 'application-server'
-  }
   if (!sitemap) {
     sitemap = {}
+    const dashboard = await dashboardServer.get(`/api/application-server/sitemap`, null, null)
+    for (const url in global.sitemap) {
+      dashboard[url] = 'application-server'
+    }
     const object = 'data'
-    for (const url in sitemap) {
-      const origin = sitemap[url]
-      if (sitemap[origin]) {
-        continue
-      }
-      sitemap[origin] = {
+    for (const url in dashboard) {
+      const origin = dashboard[url]
+      sitemap[origin] = sitemap[origin] || {
         web: [],
         api: []
       }
-    }
-    for (const url in sitemap) {
-      const origin = sitemap[url]
       if (url.startsWith('/api/')) {
         sitemap[origin].api.push({ url })
       } else {
