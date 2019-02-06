@@ -67,7 +67,7 @@ async function renderPage (req, res) {
   sitemap['@userappstore/stripe-connect'].api = sitemap['@userappstore/stripe-connect'].apiUser.concat(sitemap['@userappstore/stripe-connect'].apiAdministrator)
   sitemap['application-server'].web = sitemap['application-server'].webUser.concat(sitemap['application-server'].webAdministrator)
   sitemap['application-server'].api = sitemap['application-server'].apiUser.concat(sitemap['application-server'].apiAdministrator)
-  sitemap['dashboard-server'].web = sitemap['dashboard-server'].webUser.concat(sitemap['dashboard-server'].webAdministrator)
+  // sitemap['dashboard-server'].web = sitemap['dashboard-server'].webUser.concat(sitemap['dashboard-server'].webAdministrator)
   sitemap['dashboard-server'].api = sitemap['dashboard-server'].apiUser.concat(sitemap['dashboard-server'].apiAdministrator)
   userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].web, 'url-data', 'dashboard-pages')
   userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].api, 'url-data', 'dashboard-api')
