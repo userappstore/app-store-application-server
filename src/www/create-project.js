@@ -17,6 +17,9 @@ async function renderPage (req, res, messageTemplate) {
 }
 
 async function submitForm (req, res) {
+  if( !req.body) {
+    return renderPage(req, res)
+  }
   if (!req.body.projectid || !req.body.projectid.length || !req.body.projectid.match(/[a-zA-Z0-9]+/)) {
     return renderPage(req, res, 'invalid-projectid')
   }
