@@ -53,7 +53,7 @@ async function renderPage (req, res) {
         }
         continue
       }
-      if (roots.indexOf(url) > 1) {
+      if (roots.indexOf(url) > -1) {
         if (url.startsWith('/administrator')) {
           sitemap[key].webAdministrator.unshift(route)
         } else {
