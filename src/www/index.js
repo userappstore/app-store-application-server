@@ -34,25 +34,28 @@ async function renderPage (req, res) {
         apiAdministrator: [],
         apiUser: []
       }
+      const githubNodeJSURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.js`
+      const githubHTMLURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.html`
+      const githubTestsURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.test.js`
       if (url.startsWith('/api/')) {
         if (url.startsWith('/api/user/')) {
           sitemap[origin].apiUser.push({ url })
         } else {
-          sitemap[origin].apiAdministrator.push({ url })
+          sitemap[origin].apiAdministrator.push({ url, githubNodeJSURL, githubTestsURL })
         }
         continue
       }
       if (roots.indexOf(url) > 1) {
         if (url.startsWith('/administrator')) {
-          sitemap[origin].webAdministrator.unshift({ url, object })
+          sitemap[origin].webAdministrator.unshift({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
         } else {
-          sitemap[origin].webUser.unshift({ url, object })
+          sitemap[origin].webUser.unshift({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
         }
       } else { 
         if (url.startsWith('/administrator')) {
-          sitemap[origin].webAdministrator.push({ url, object })  
+          sitemap[origin].webAdministrator.push({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })  
         } else {
-          sitemap[origin].webUser.push({ url, object })
+          sitemap[origin].webUser.push({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
         }
       }
     }
@@ -69,14 +72,14 @@ async function renderPage (req, res) {
   // sitemap['application-server'].api = sitemap['application-server'].apiUser.concat(sitemap['application-server'].apiAdministrator)
   // sitemap['dashboard-server'].web = sitemap['dashboard-server'].webUser.concat(sitemap['dashboard-server'].webAdministrator)
   // sitemap['dashboard-server'].api = sitemap['dashboard-server'].apiUser.concat(sitemap['dashboard-server'].apiAdministrator)
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].web, 'url-data', 'dashboard-pages')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].api, 'url-data', 'dashboard-api')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/organizations'].web, 'url-data', 'organizations-module-pages')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/organizations'].api, 'url-data', 'organizations-module-api')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-subscriptions'].web, 'url-data', 'subscriptions-module-pages')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-subscriptions'].api, 'url-data', 'subscriptions-module-api')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-connect'].web, 'url-data', 'connect-module-pages')
-  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-connect'].api, 'url-data', 'connect-module-api')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].web, 'page-data', 'dashboard-pages')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/dashboard'].api, 'api-data', 'dashboard-api')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/organizations'].web, 'page-data', 'organizations-module-pages')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/organizations'].api, 'api-data', 'organizations-module-api')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-subscriptions'].web, 'page-data', 'subscriptions-module-pages')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-subscriptions'].api, 'api-data', 'subscriptions-module-api')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-connect'].web, 'page-data', 'connect-module-pages')
+  userAppStore.HTML.renderList(doc, sitemap['@userappstore/stripe-connect'].api, 'api-data', 'connect-module-api')
   // userAppStore.HTML.renderList(doc, sitemap['dashboard-server'].web, 'url-data', 'dashboard-server-pages')
   // userAppStore.HTML.renderList(doc, sitemap['dashboard-server'].api, 'url-data', 'dashboard-server-api')
   // userAppStore.HTML.renderList(doc, sitemap['application-server'].web, 'url-data', 'application-server-pages')

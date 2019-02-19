@@ -35,6 +35,7 @@
       .sitemap th,
       .sitemap td { vertical-align: top; padding: 0.5rem }
       .sitemap ul { list-style-type: none; padding: 0.25rem; margin: 0; background-color: #DDD }
+      .sitemap ul span { line-height: 1.2rem }
       .sitemap th { text-align: left }
       .sitemap th a { display: inline-block }
       .sitemap, .images { width: 80rem; margin: 0px auto; text-align: center }
@@ -138,7 +139,19 @@
       </table>
     </div>
   </body>
-  <template id="url-data">
-    <li>${data.url}</li>
+  <template id="page-data">
+    <li>
+      <span>${data.url}</span>
+      <a href="${data.githubHTMLURL}">html</a>
+      <a href="${data.githubNodeJSURL}">nodejs</a>
+      <a href="${data.githubTestsURL}">tests</a>
+  </li>
+  </template>
+  <template id="api-data">
+    <li>
+      <span>${data.url}</span>
+      <a href="${data.githubNodeJSURL}">nodejs</a>
+      <a href="${data.githubTestsURL}">tests</a>
+    </li>
   </template>
 </html>
