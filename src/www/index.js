@@ -11,9 +11,6 @@ async function renderPage (req, res) {
   if (!sitemap) {
     sitemap = {}
     const dashboard = await dashboardServer.get(`/api/application-server/sitemap`, null, null)
-    for (const url in global.sitemap) {
-      dashboard[url] = 'application-server'
-    }
     const object = 'data'
     const roots = [
       '/',
@@ -26,37 +23,48 @@ async function renderPage (req, res) {
       '/administrator/subscriptions',
       '/administrator/connect'
     ]
+    let i = 0
     for (const url in dashboard) {
-      const origin = dashboard[url]
-      sitemap[origin] = sitemap[origin] || {
+      const route = dashboard[url]
+      route.id = i++
+      route.object = 'route'
+      route.url = url
+      sitemap[route.origin] = sitemap[route.origin] || {
         webAdministrator: [],
         webUser: [],
         apiAdministrator: [],
         apiUser: []
       }
-      const repo = origin.substring(1)
-      const githubNodeJSURL = `https://github.com/${repo}/blob/master/src/www${url}.js`
-      const githubHTMLURL = `https://github.com/${repo}/blob/master/src/www${url}.html`
-      const githubTestsURL = `https://github.com/${repo}/blob/master/src/www${url}.test.js`
+      const repo = route.origin.substring(1)
+      let githubNodeJSURL, githubHTMLURL, githubTestURL
+      if (route.nodejs) {
+        route.githubNodeJSURL = `https://github.com/${repo}/blob/master/src/www${url}.js`
+      }
+      if (route.html) {
+        route.githubHTMLURL = `https://github.com/${repo}/blob/master/src/www${url}.html`
+      }
+      if (route.test) {
+        route.githubTestURL = `https://github.com/${repo}/blob/master/src/www${url}.test.js`
+      }
       if (url.startsWith('/api/')) {
         if (url.startsWith('/api/user/')) {
-          sitemap[origin].apiUser.push({ url })
+          sitemap[route.origin].apiUser.push(route)
         } else {
-          sitemap[origin].apiAdministrator.push({ url, githubNodeJSURL, githubTestsURL })
+          sitemap[route.origin].apiAdministrator.push(route)
         }
         continue
       }
       if (roots.indexOf(url) > 1) {
         if (url.startsWith('/administrator')) {
-          sitemap[origin].webAdministrator.unshift({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
+          sitemap[route.origin].webAdministrator.unshift(route)
         } else {
-          sitemap[origin].webUser.unshift({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
+          sitemap[route.origin].webUser.unshift(route)
         }
       } else { 
         if (url.startsWith('/administrator')) {
-          sitemap[origin].webAdministrator.push({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })  
+          sitemap[route.origin].webAdministrator.push(route)  
         } else {
-          sitemap[origin].webUser.push({ url, object, githubNodeJSURL, githubHTMLURL, githubTestsURL })
+          sitemap[route.origin].webUser.push(route)
         }
       }
     }
@@ -85,5 +93,21 @@ async function renderPage (req, res) {
   // userAppStore.HTML.renderList(doc, sitemap['dashboard-server'].api, 'url-data', 'dashboard-server-api')
   // userAppStore.HTML.renderList(doc, sitemap['application-server'].web, 'url-data', 'application-server-pages')
   // userAppStore.HTML.renderList(doc, sitemap['application-server'].api, 'url-data', 'application-server-api')
+  const removeLinks = []
+  for (const route of sitemap) {
+    if (!route.html) {
+      removeLinks.push(`html-${route.id}`)
+    }
+    if (!route.js) {
+      removeLinks.push(`nodejs-${route.id}`)
+    }
+    if (!route.test) {
+      removeLinks.push(`test-${route.id}`)
+    }
+  }
+  for (const id of removeLinks) {
+    const link = doc.getElementById(id)
+    link.parentNode.removeChild(link)
+  }
   return res.end(doc.toString())
 }
