@@ -11,7 +11,6 @@ async function renderPage (req, res) {
   if (!sitemap) {
     sitemap = {}
     const dashboard = await dashboardServer.get(`/api/application-server/sitemap`, null, null)
-    const object = 'data'
     const roots = [
       '/',
       '/account',
@@ -94,7 +93,8 @@ async function renderPage (req, res) {
   // userAppStore.HTML.renderList(doc, sitemap['application-server'].web, 'url-data', 'application-server-pages')
   // userAppStore.HTML.renderList(doc, sitemap['application-server'].api, 'url-data', 'application-server-api')
   const removeLinks = []
-  for (const route of sitemap) {
+  for (const origin in sitemap) {
+    const route = sitemap[origin]
     if (!route.html) {
       removeLinks.push(`html-${route.id}`)
     }
