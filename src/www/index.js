@@ -34,9 +34,10 @@ async function renderPage (req, res) {
         apiAdministrator: [],
         apiUser: []
       }
-      const githubNodeJSURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.js`
-      const githubHTMLURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.html`
-      const githubTestsURL = `https://github.com/userappstore/blob/master/${origin}/src/www${url}.test.js`
+      const repo = origin.substring(1)
+      const githubNodeJSURL = `https://github.com/${repo}/blob/master/src/www${url}.js`
+      const githubHTMLURL = `https://github.com/${repo}/blob/master/src/www${url}.html`
+      const githubTestsURL = `https://github.com/${repo}/blob/master/src/www${url}.test.js`
       if (url.startsWith('/api/')) {
         if (url.startsWith('/api/user/')) {
           sitemap[origin].apiUser.push({ url })
