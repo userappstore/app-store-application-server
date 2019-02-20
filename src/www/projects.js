@@ -37,7 +37,7 @@ async function renderPage (req, res) {
     projectsTable.parentNode.removeChild(projectsTable)
   }
   if (req.data.sampleProjects && req.data.sampleProjects.length) {
-    userAppStore.HTML.renderTable(doc, req.data.sampleProjects, 'sampe-project-row', 'samples-table')
+    userAppStore.HTML.renderTable(doc, req.data.sampleProjects, 'sample-project-row', 'sample-projects-table')
   }
   return res.end(doc.toString())
 }
