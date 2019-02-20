@@ -26,6 +26,17 @@
       </thead>
     </table>
     <ul id="page-links" class="pagination"></ul>
+    
+    <h2>Sample projects</h2>
+    <p>Copy these into your own account to edit them, or download them and run them as your own website.</p>
+    <table id="sample-projects-table" class="pure-table pure-table-striped list-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
   </body>
   <template id="page-link">
     <li><a href="/projects?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
@@ -35,6 +46,16 @@
       <td><a href="/project?projectid=${project.projectid}">${project.projectid}</a></td>
       <td>${project.created}</td>
       <td class="pure-button-group">
+      </td>
+    </tr>
+  </template>
+  <template id="sample-project-row">
+    <tr id="${project.projectid}">
+      <td>${project.projectid}</td>
+      <td class="pure-button-group">
+        <a href="/copy-project?projectid=${project.projectid}" class="pure-button pure-button-primary">Copy</a>
+        <a href="/download-project?projectid=${project.projectid}" class="pure-button pure-button-primary">Download</a>
+        <a href="https://github.com/userappstore/${project.projectid}" class="pure-button">Github</a>
       </td>
     </tr>
   </template>

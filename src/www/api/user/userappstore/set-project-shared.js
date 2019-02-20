@@ -28,6 +28,10 @@ module.exports = {
       project.serverid = server.serverid
      }
     await userAppStore.Storage.write(`project/${req.query.projectid}`, project)
+
+    if (req.body.organizationid) {
+      await userAppStore.StorageList.add(`organization/projects/${req.body.organizationid}`, req.query.projectid)
+    }
     req.success = true
     return project
   }

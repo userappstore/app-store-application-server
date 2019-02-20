@@ -12,7 +12,7 @@ global.minimumProfileFirstNameLength = parseInt(process.env.MINIMUM_PROFILE_FIRS
 global.maximumProfileFirstNameLength = parseInt(process.env.MAXIMUM_PROFILE_FIRST_NAME_LENGTH || '50', 10)
 global.minimumProfileLastNameLength = parseInt(process.env.MINIMUM_PROFILE_LAST_NAME_LENGTH || '1', 10)
 global.maximumProfileLastNameLength = parseInt(process.env.MAXIMUM_PROFILE_LAST_NAME_LENGTH || '50', 10)
-
+global.sampleProjectOrganization = process.env.SAMPLE_PROJECT_ORGANIZATION || ''
 
 module.exports = {
   start: async () => {
@@ -26,7 +26,6 @@ module.exports = {
     Timestamp.interval = null
   }
 }
-
 
 if (process.env.NODE_ENV !== 'testing') {
   module.exports.start()

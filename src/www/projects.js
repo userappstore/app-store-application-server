@@ -16,7 +16,8 @@ async function beforeRequest (req) {
     }
   }
   const offset = req.query ? parseInt(req.query.offset, 10) || 0 : 0
-  req.data = { projects, total, offset }
+  const sampleProjects = await global.api.user.userappstore.SampleProjects.get(req)
+  req.data = { projects, total, offset, sampleProjects }
 }
 
 async function renderPage (req, res) {
@@ -34,6 +35,9 @@ async function renderPage (req, res) {
   } else {
     const projectsTable = doc.getElementById('projects-table')
     projectsTable.parentNode.removeChild(projectsTable)
+  }
+  if (req.data.sampleProjects && req.data.sampleProjects.length) {
+    userAppStore.HTML.renderTable(doc, req.data.sampleProjects, 'sampe-project-row', 'samples-table')
   }
   return res.end(doc.toString())
 }

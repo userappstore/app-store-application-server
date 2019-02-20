@@ -7,9 +7,11 @@ module.exports = {
 
 async function renderPage(req, res, messageTemplate) {
   const doc = userAppStore.HTML.parse(req.route.html)
-  if (req.body) {
-    const input = doc.getElementById('projectid')
+  const input = doc.getElementById('projectid')
+  if (req.body) {  
     input.setAttribute('value', req.body.projectid || '')
+  } else if (req.query) {
+    input.setAttribute('value', req.query.rojectid || '')
   }
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, null, messageTemplate, 'message-container')
