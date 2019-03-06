@@ -20,7 +20,7 @@
   <body class="entry-form">
     <h1>Install ${app.name}</h1>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+    <form action="/install-app?appid=${app.appid}" id="submit-form" class="pure-form pure-form-stacked" method="POST">
       <div class="pure-control-group">
         <label for="text">Link text</label>
         <input id="text" name="text" type="text" maxlength="30" />
