@@ -9,7 +9,6 @@ module.exports = {
     if (req.query.all) {
       projectids = await userAppStore.StorageList.listAll(`organization/projects/${global.sampleProjectOrganization}`)
     } else {
-      projectids = await userAppStore.StorageList.list(`organization/projects/${global.sampleProjectOrganization}`)
       const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0
       projectids = await userAppStore.StorageList.list(`organization/projects/${global.sampleProjectOrganization}`, offset)
     }
