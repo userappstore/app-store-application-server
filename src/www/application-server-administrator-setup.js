@@ -19,7 +19,7 @@ async function beforeRequest(req) {
     throw new Error('invalid-application-server')
   }
   req.query.organizationid = server.organizationid
-  const membership = await dashboardServer.get(`/api/user/organizations/organization-membership?membershipid=${server.organizationid}`, req.account.accountid, req.session.sessionid)
+  const membership = await dashboardServer.get(`/api/user/organizations/organization-membership?organizationid=${server.organizationid}`, req.account.accountid, req.session.sessionid)
   if (!membership) {
     throw new Error('invalid-account')
   }
@@ -116,9 +116,9 @@ async function submitForm(req, res) {
     }
   }
   try {
-    await dashboardServer.post(`/api/application-server/create-administrator?serverid=${server.serverid}`, req.body, req.account.accountid, req.session.sessionid)
+    await dashboardServer.post(`/api/application-server/create-administrator?serverid=${req.query.serverid}`, req.body, req.account.accountid, req.session.sessionid)
     res.statusCode = 302
-    res.setHeader('location', `/administrator/${server.serverid}`)
+    res.setHeader('location', `/administrator/${req.query.serverid}`)
     return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
