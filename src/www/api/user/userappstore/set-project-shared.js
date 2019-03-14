@@ -26,9 +26,8 @@ module.exports = {
       req.query.accountid = req.account.accountid
       const server = await global.api.user.userappstore.CreateApplicationServer.post(req)
       project.serverid = server.serverid
-     }
+    }
     await userAppStore.Storage.write(`project/${req.query.projectid}`, project)
-
     if (req.body.organizationid) {
       await userAppStore.StorageList.add(`organization/projects/${req.body.organizationid}`, req.query.projectid)
     }

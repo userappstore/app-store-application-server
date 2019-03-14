@@ -60,7 +60,7 @@ function renderPage(req, res, messageTemplate) {
       userAppStore.HTML.setSelectedOptionByValue(doc, 'collections-list', req.body.collectionid || '')
     }
   } else {
-    const collectionContainer =doc.getElementById('collection-container')
+    const collectionContainer = doc.getElementById('collection-container')
     collectionContainer.parentNode.removeChild(collectionContainer)
   }
   return res.end(doc.toString())
