@@ -103,7 +103,7 @@ module.exports = {
       await userAppStore.StorageList.add(`account/servers/${req.account.accountid}`, server.serverid)
     }
     if (req.body.organizationid) {
-      await userAppStore.StorageList.add(`organization/applicationServers/${server.organizationid}`, server.serverid)
+      await userAppStore.StorageList.add(`organization/servers/${server.organizationid}`, server.serverid)
     }
     req.success = true
     return server

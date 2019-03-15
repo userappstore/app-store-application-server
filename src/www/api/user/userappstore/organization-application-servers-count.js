@@ -16,6 +16,6 @@ module.exports = {
         throw new Error('invalid-account')
       }
     }
-    return userAppStore.StorageList.count(`organization/applicationServers/${req.query.organizationid}`)
+    return userAppStore.StorageList.count(`organization/servers/${req.query.organizationid}`)
   }
 }

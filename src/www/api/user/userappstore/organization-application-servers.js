@@ -18,11 +18,11 @@ module.exports = {
     }
     let serverids
     if (req.query.all) {
-      serverids = await userAppStore.StorageList.listAll(`organization/applicationServers/${req.query.organizationid}`)
+      serverids = await userAppStore.StorageList.listAll(`organization/servers/${req.query.organizationid}`)
     } else {
-      serverids = await userAppStore.StorageList.list(`organization/applicationServers/${req.query.organizationid}`)
+      serverids = await userAppStore.StorageList.list(`organization/servers/${req.query.organizationid}`)
       const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0
-      serverids = await userAppStore.StorageList.list(`organization/applicationServers/${req.query.organizationid}`, offset)
+      serverids = await userAppStore.StorageList.list(`organization/servers/${req.query.organizationid}`, offset)
     }
     if (!serverids || !serverids.length) {
       return null
