@@ -1,10 +1,19 @@
 const bcrypt = require('../bcrypt.js')
+const dashboardServer = require('../dashboard-server.js')
 const userAppStore = require('../../index.js')
 const exampleToken = bcrypt.hashSync(new Date().toUTCString(), bcrypt.genSaltSync(4))
 
 module.exports = {
+  before: beforeRequest,
   get: renderPage,
   post: submitForm
+}
+
+async function beforeRequest (req) {
+  const organizations = await dashboardServer.get(`/api/user/organizations/organizations?accountid=${req.account.accountid}`, req.account.accountid, req.session.sessionid)
+  if (organizations && organizations.length) {
+    req.data = { organizations }
+  }
 }
 
 async function renderPage(req, res, messageTemplate) {
@@ -50,6 +59,12 @@ async function renderPage(req, res, messageTemplate) {
       return res.end(doc.toString())
     }
   }
+  if (req.data && req.data.organizations && req.data.organizations.length) {
+    userAppStore.HTML.renderList(doc, req.data.organizations, 'organization-option', 'organizationid')
+  } else {
+    const organizationContainer = doc.getElementById('organization-container')
+    organizationContainer.parentNode.removeChild(organizationContainer)
+  }
   // step 1: url form and integration guide
   if (req.method === 'GET' || !req.body) {
     const header = {
@@ -86,7 +101,15 @@ async function renderPage(req, res, messageTemplate) {
     const usageGuide = doc.getElementById('usage-guide')
     usageGuide.parentNode.removeChild(usageGuide)
     const organizationContainer = doc.getElementById('organization-container')
-    organizationContainer.parentNode.removeChild(organizationContainer)
+    if (organizationContainer) {
+      organizationContainer.parentNode.removeChild(organizationContainer)
+    }
+    const selectedOrganizationid = doc.getElementById('selected-organizationid')
+    if (req.body.organizationid) {
+      selectedOrganizationid.setAttribute('value', req.body.organizationid)
+    } else {
+      selectedOrganizationid.parentNode.removeChild(selectedOrganizationid)
+    }
   }
   return res.end(doc.toString())
 }
@@ -113,6 +136,21 @@ async function submitForm(req, res) {
       return renderPage(req, res, error.message)
     }
   }
+  if (req.body.organizationid) {
+    if (!req.data || !req.data.organizations || !req.data.organizations.length) {
+      return renderPage(req, res, 'invalid-organizationid')
+    }
+    let found = false
+    for (const organization of req.data.organizations) {
+      found = organization.organizationid === req.body.organizationid
+      if (found) {
+        break
+      }
+    }
+    if (!found) {
+      return renderPage(req, res, 'invalid-organizationid')
+    }
+  }
   if (req.body.refresh === 'true') {
     return renderPage(req, res)
   }
@@ -124,11 +162,16 @@ async function submitForm(req, res) {
     } catch (error) {
       return renderPage(req, res, error.message)
     }
+  } else if (applicationServer.ownerid) {
+    return renderPage(req, res, 'invalid-application-server')
   }
   req.query.serverid = applicationServer.serverid
   req.body.accountid = req.account.accountid
   try {
-    await global.api.user.userappstore.SetApplicationServerOwner.patch(req)
+    const server = await global.api.user.userappstore.SetApplicationServerOwner.patch(req)
+    if (req.body.organizationid && req.body.organizationid !== server.organizationid) {
+      await global.api.user.userappstore.SetApplicationServerOrganization.patch(req)
+    }
     req.data = { applicationServer }
     return renderPage(req, res, 'success')
   } catch (error) {
