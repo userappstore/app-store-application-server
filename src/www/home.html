@@ -240,8 +240,8 @@
     <li><a href="/home?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
   </template>
   <template id="trial-item">
-    <li id="${subscription.subscriptionid}">
-      <a href="/account/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.subscriptionid}">
+    <li id="${subscription.id}">
+      <a href="/account/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.id}">
         ${subscription.metadata.appid}
       </a>
     </li>
@@ -253,8 +253,8 @@
     </li>
   </template>
   <template id="charging-item">
-    <li id="${app.appid}">
-      <a href="/account/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.subscriptionid}">
+    <li id="${subscription.id}">
+      <a href="/account/${subscription.metadata.appid}/subscriptions/subscription?subscriptionid=${subscription.id}">
         ${subscription.metadata.appid}
       </a>
     </li>

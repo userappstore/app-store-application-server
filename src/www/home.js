@@ -1,4 +1,3 @@
-const dashboardServer = require('../dashboard-server.js')
 const sevenDaysInSeconds = 7 * 24 * 60 * 60
 const userAppStore = require('../../index.js')
 
@@ -16,7 +15,7 @@ async function beforeRequest (req) {
   if (!apps || !apps.length) {
     return
   }
-  const subscriptions = await dashboardServer.get(`/api/user/subscriptions/subscriptions?accountid=${req.account.accountid}&all=true`, req.account.accountid, req.session.sessionid)
+  const subscriptions = await global.api.user.userappstore.Subscriptions.get(req)
   let trialsEnding, subscriptionsCharging
   if (subscriptions && subscriptions.length) {
     trialsEnding = []
@@ -25,20 +24,19 @@ async function beforeRequest (req) {
       if (subscription.status === 'trialing' && subscription.trial_end >= userAppStore.Timestampw.now - sevenDaysInSeconds) {
         trialsEnding.push(subscription)
       }
-      if (subscription.status === 'active' && subscription.current_period_end  >= userAppStore.Timestampw.now - sevenDaysInSeconds) {
+      if (subscription.status === 'active' && subscription.current_period_end  >= userAppStore.Timestamp.now - sevenDaysInSeconds) {
         subscriptionsCharging.push(subscription)
       }
     }
   }
-  // organization installs
   req.query.all = true
-  const pending = await global.api.user.userappstore.UnconfiguredOrganizationInstalls.get(req)
-  req.data = { apps, total, offset, trialsEnding, subscriptionsCharging, pending }
+  const pending = await global.api.user.userappstore.OrganizationInstalls.get(req)
+  req.data = { apps, total, offset, trialsEnding, subscriptionsCharging, pending, subscriptions }
 }
 
 async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
-  if (req.data && req.data.trialsEnding && req.trialsEnding.trials.length) {
+  if (req.data && req.data.trialsEnding && req.data.trialsEnding.length) {
     userAppStore.HTML.renderList(doc, req.data.trialsEnding, 'trial-item', 'trials-list')
   } else {
     const trials = doc.getElementById('trials-list')

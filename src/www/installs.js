@@ -24,17 +24,21 @@ async function renderPage(req, res) {
   if (req.data.installs && req.data.installs.length) {
     userAppStore.HTML.renderTable(doc, req.data.installs, 'install-row', 'installs-table')
     for (const install of req.data.installs) {
-      if (!install.projectid) {
+      if (install.appid) {
         const projectCell = doc.getElementById(`project-${install.installid}`)
         projectCell.parentNode.removeChild(projectCell)
-      }
-      if (!install.appid) {
-        const appCell = doc.getElementById(`app-${install.installid}`)
-        appCell.parentNode.removeChild(appCell)
-      }
-      if (!install.url) {
         const urlCell = doc.getElementById(`url-${install.installid}`)
         urlCell.parentNode.removeChild(urlCell)
+      } else if (install.projectid) {
+        const urlCell = doc.getElementById(`url-${install.installid}`)
+        urlCell.parentNode.removeChild(urlCell)
+        const appCell = doc.getElementById(`app-${install.installid}`)
+        appCell.parentNode.removeChild(appCell)
+      } else {
+        const projectCell = doc.getElementById(`project-${install.installid}`)
+        projectCell.parentNode.removeChild(projectCell)
+        const appCell = doc.getElementById(`app-${install.installid}`)
+        appCell.parentNode.removeChild(appCell)
       }
     }
     if (req.data.total <= global.pageSize) {

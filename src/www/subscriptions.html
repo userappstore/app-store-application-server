@@ -17,37 +17,70 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Plan</th>
+          <th>Install</th>
+          <th>Source</th>
+          <th>Type</th>
           <th>Price</th>
-          <th>Started</th>
           <th>Next charge</th>
           <th>Status</th>
           <th></th>
         </tr>
       </thead>
     </table>
-    <ul id="page-links" class="pagination"></ul>
+    <h2>Organization subscriptions</h2>
+    <div id="no-organization-subscriptions">
+      <p>You are not subscribed through any organizations.</p>
+    </div>
+    <table id="organization-subscriptions-table" class="pure-table pure-table-striped list-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Organization</th>
+          <th>Subscriber</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
   </body>
-  <template id='page-link'>
-    <li><a href="/account/subscriptions/subscriptions?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>
-  </template>
   <template id="subscription-row">
     <tr id="${subscription.id}">
       <td><a href="/account/subscriptions/subscription?subscriptionid=${subscription.id}">${subscription.id}</a></td>
-      <td>${subscription.plan_name}</td>
-      <td>${subscription.priceFormatted} ${subscription.currency}</td>
-      <td>${subscription.created}</td>
+      <td><a href="/install?installid=${subscription.install.installid}">${subscription.install.installid}</a></td>
+      <td id="app-${subscription.id}"><a href="/about?appid=${subscription.install.appid}">App</a></td>
+      <td id="import-${subscription.id}">URL</td>
+      <td id="project-${subscription.id}">Project</td>
+      <td id="personal-${subscription.id}">Personal</td>
+      <td id="organization-${subscription.id}"><a href="/account/organizations/organization?organizationid=${subscription.metadata.organizationid}">Organization</a> (+${subscription.install.subscriptions.length} members)</td>
+      <td>${subscription.amountFormatted} ${subscription.plan.currency}</td>
       <td>${subscription.nextCharge}</td>
       <td id='active-subscription-${subscription.id}'>Active</td>
       <td id='canceling-subscription-${subscription.id}'>Active (canceling)</td>
       <td id='trialing-subscription-${subscription.id}' title="Trial ending ${subscription.trial_end}">Trial (ending in ${subscription.trialEnd})</td>
-      <td id='past_due-subscription-${subscription.id}'>Past due</td>
-      <td id='canceled-subscription-${subscription.id}'>Canceled</td>
-      <td id='unpaid-subscription-${subscription.id}'>Unpaid</td>
+      <td id='inactive-subscription-${subscription.id}'>Inactive</td>
       <td class="pure-button-group" role="group">
-        <a class="pure-button" href="/account/subscriptions/invoices?subscriptionid=${subscription.id}">Invoices</a>
-        <a id="change-plan-link-${subscription.id}" class="pure-button" href="/account/subscriptions/change-plan?subscriptionid=${subscription.id}">Change plan</a>
-        <a id="cancel-subscription-link-${subscription.id}" class="pure-button" href="/account/subscriptions/cancel-subscription?subscriptionid=${subscription.id}">Cancel</a>
+        <a id="cancel-subscription-link-${subscription.id}" class="pure-button" href="/account/${subscription.install.installid}/subscriptions/cancel-subscription?subscriptionid=${subscription.id}">Cancel</a>
+      </td>
+    </tr>
+  </template>
+  <template id="organization-subscription-row">
+    <tr id="${subscription.id}">
+      <td>${subscription.id}</td>
+      <td id="app-installed-${subscription.id}"><a href="/about?appid=${subscription.install.appid}">App</a></td>
+      <td id="app-pending-${subscription.id}"><a href="/about?appid=${subscription.install.appid}">App</a></td>
+      <td id="import-installed-${subscription.id}">URL</td>
+      <td id="import-pending-${subscription.id}">URL</td>
+      <td id="project-installed-${subscription.id}">Project</td>
+      <td id="project-pending-${subscription.id}">Project</td>
+      <td id='active-subscription-${subscription.id}'>Active</td>
+      <td id='canceling-subscription-${subscription.id}'>Active (canceling)</td>
+      <td id='trialing-subscription-${subscription.id}' title="Trial ending ${subscription.trial_end}">Trial (ending in ${subscription.trialEnd})</td>
+      <td id='inactive-subscription-${subscription.id}'>Inactive</td>
+      <td><a href="/account/organizations/organization?organizationid=${subscription.metadata.organizationid}">${subscription.organization.name}</a></td>
+      <td><a href="/account/organizations/membership?membershipid=${subscription.metadata.membershipid}">${subscription.membership.email}</a></td>
+      <td class="pure-button-group" role="group">
+        <a id="cancel-subscription-link-${subscription.id}" class="pure-button" href="/remove-organization-subscription?subscriptionid=${subscription.id}">Remove</a>
       </td>
     </tr>
   </template>

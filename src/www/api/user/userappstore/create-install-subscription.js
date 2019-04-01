@@ -56,13 +56,6 @@ module.exports = {
     install.configured = userAppStore.Timestamp.now
     install.serverid = app.serverid
     await userAppStore.Storage.write(`install/${req.query.installid}`, install)
-    if (install.subscriptions && install.subscriptions.length) {
-      for (const membershipid of install.subscriptions) {
-        const membership = await dashboardServer.get(`/api/user/organizations/membership?membershipid=${membershipid}`, req.account.accountid, req.session.sessionid)
-        await userAppStore.StorageList.add(`account/organization-installs/${membership.accountid}`, install.installid)
-        await userAppStore.StorageList.add(`account/organization-installs-unconfigured/${membership.accountid}`, install.installid)
-      }
-    }
     req.success = true
     return install
   }

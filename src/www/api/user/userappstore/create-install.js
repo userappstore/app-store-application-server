@@ -128,18 +128,6 @@ module.exports = {
       if(!organization) {
         throw new Error('invalid-organization')
       }
-    }
-    // setting up a paid or free subscription
-    if (req.body.planid) {
-      installInfo.planid = req.body.planid
-      try {
-        await dashboardServer.get(`/api/user/${req.query.appid}/subscriptions/published-plan?planid=${req.body.planid}`, req.account.accountid, req.session.sessionid)
-      } catch (error) {
-        throw new Error('invalid-planid')
-      }
-    }
-    // subscribing for organization members
-    if (req.body.organizationid && req.body.organizationid !== 'personal' && req.body.planid) {
       installInfo.subscriptions = []
       const memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${req.body.organizationid}`, req.account.accountid, req.session.sessionid)
       if (memberships && memberships.length) {
@@ -150,12 +138,24 @@ module.exports = {
         }
       }
     }
+    // setting up a paid or free subscription
+    if (req.body.planid) {
+      installInfo.planid = req.body.planid
+      try {
+        await dashboardServer.get(`/api/user/${req.query.appid}/subscriptions/published-plan?planid=${req.body.planid}`, req.account.accountid, req.session.sessionid)
+      } catch (error) {
+        throw new Error('invalid-planid')
+      }
+    }
     await userAppStore.Storage.write(`install/${installid}`, installInfo)
     await userAppStore.StorageList.add(`installs`, installid)
     await userAppStore.StorageList.add(`account/installs/${req.query.accountid}`, installid)
     if (req.body.collectionid) {
       req.body.installid = installid
       await global.api.user.userappstore.AddCollectionItem.post(req)
+    }
+    if (installInfo.organizationid) {
+      await userAppStore.StorageList.add(`organization/installs/${installInfo.organizationid}`, installid)
     }
     req.success = true
     return installInfo

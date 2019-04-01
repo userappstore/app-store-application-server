@@ -97,7 +97,6 @@ module.exports = {
     await userAppStore.Storage.write(`install/${installid}`, installInfo)
     await userAppStore.StorageList.add(`installs`, installid)
     await userAppStore.StorageList.add(`account/installs/${req.query.accountid}`, installid)
-    await userAppStore.StorageList.remove(`account/organization-installs-unconfigured/${req.account.accountid}`, install.installid)
     if (req.body.collectionid) {
       req.body.installid = installid
       await global.api.user.userappstore.AddCollectionItem.post(req)

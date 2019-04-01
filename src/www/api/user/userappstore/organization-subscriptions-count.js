@@ -1,4 +1,4 @@
-const userAppStore = require('../../../../../index.js')
+const dashboardServer = require('../../../../dashboard-server.js')
 
 module.exports = {
   get: async (req) => {
@@ -8,6 +8,6 @@ module.exports = {
     if (req.query.accountid !== req.account.accountid) {
       throw new Error('invalid-account')
     }
-    return userAppStore.StorageList.count(`account/organization-installs-unconfigured/${req.query.accountid}`)
+    return dashboardServer.get(`/api/application-server/organization-subscriptions-count?accountid=${req.query.accountid}`, req.account.accountid, req.session.sessionid)
   }
 }

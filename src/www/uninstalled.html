@@ -23,9 +23,7 @@
           <th>ID</th>
           <th>Install</th>
           <th>Created</th>
-          <th>App</th>
-          <th>Project</th>
-          <th>URL</th>
+          <th>Source</th>
           <th></th>
         </tr>
       </thead>
@@ -37,12 +35,12 @@
   </template>
   <template id="uninstall-row">
     <tr id="${uninstall.uninstallid}">
-      <td><a href="/account/profile?profileid=${uninstall.uninstallid}">${uninstall.uninstallid}</a></td>
-      <td><a href="/account/profile?profileid=${uninstall.uninstallid}">${uninstall.install.installid}</a></td>
+      <td><a href="/uninstalled?uninstallid=${uninstall.uninstallid}">${uninstall.uninstallid}</a></td>
+      <td><a href="/install?installid=${uninstall.installid}">${uninstall.installid}</a></td>
       <td>${uninstall.created}</td>
-      <td>${uninstall.install.appid}</td>
-      <td>${uninstall.install.projectid}</td>
-      <td>${uninstall.install.url}</td>
+      <td id="app-${uninstall.uninstallid}"><a href="/about?appid=${uninstall.install.appid}">${uninstall.install.appid}</a></td>
+      <td id="project-${uninstall.uninstallid}">${uninstall.install.projectid}</td>
+      <td id="url-${uninstall.uninstallid}">${uninstall.install.url}</td>
       <td></td>
     </tr>
   </template>

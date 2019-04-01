@@ -30,6 +30,9 @@ module.exports = {
     await userAppStore.Storage.deleteFile(`install/${req.query.installid}`)
     await userAppStore.StorageList.remove(`installs`, req.query.installid)
     await userAppStore.StorageList.remove(`account/installs/${req.account.accountid}`, req.query.installid)
+    if (install.organizationid) {
+      await userAppStore.StorageList.remove(`organization/installs/${install.organizationid}`, req.query.installid)
+    }
     req.success = true
     return uninstall
   }

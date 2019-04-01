@@ -23,6 +23,20 @@ async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
   if (req.data.uninstalls && req.data.uninstalls.length) {
     userAppStore.HTML.renderTable(doc, req.data.uninstalls, 'uninstall-row', 'uninstalls-table')
+    const removeElements = []
+    for (const uninstall of req.data.uninstalls) {
+      if (uninstall.install.appid) {
+        removeElements.push(`project-${uninstall.uninstallid}`, `url-${uninstall.uninstallid}`)
+      } else if (uninstall.install.projectid) {
+        removeElements.push(`app-${uninstall.uninstallid}`, `url-${uninstall.uninstallid}`)
+      } else {
+        removeElements.push(`project-${uninstall.uninstallid}`, `app-${uninstall.uninstallid}`)
+      }
+    }
+    for (const id of removeElements) {
+      const element = doc.getElementById(id)
+      element.parentNode.removeChild(element)
+    }
     if (req.data.total <= global.pageSize) {
       const pageLinks = doc.getElementById('page-links')
       pageLinks.parentNode.removeChild(pageLinks)

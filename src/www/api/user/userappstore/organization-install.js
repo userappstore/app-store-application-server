@@ -14,18 +14,7 @@ module.exports = {
     if (!install.organizationid) {
       throw new Error('invalid-install')
     }
-    const memberships = await dashboardServer.get(`/api/user/organizations/memberships?accountid=${req.account.accountid}&all=true`, req.account.accountid, req.session.sessionid)
-    if (!memberships || !memberships.length) {
-      throw new Error('invalid-install')
-    }
-    let membership
-    for (const item of memberships) {
-      if (install.subscriptions.indexOf(item.membershipid) === -1) {
-        continue
-      }
-      membership = item
-      break
-    }
+    const membership = await dashboardServer.get(`/api/user/organizations/organization-membership?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
     if (!membership) {
       throw new Error('invalid-install')
     }

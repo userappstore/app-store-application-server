@@ -8,6 +8,6 @@ module.exports = {
     if (req.query.accountid !== req.account.accountid) {
       throw new Error('invalid-account')
     }
-    return dashboardServer.get(`/api/application-server/organization-subscriptions-count?accountid=${req.query.accountid}`, req.account.accountid, req.session.sessionid)
+    return dashboardServer.get(`/api/application-server/subscriptions-count?accountid=${req.query.accountid}`, req.account.accountid, req.session.sessionid)
   }
 }
