@@ -21,7 +21,7 @@ async function beforeRequest (req) {
     trialsEnding = []
     subscriptionsCharging = []
     for (const subscription of subscriptions) {
-      if (subscription.status === 'trialing' && subscription.trial_end >= userAppStore.Timestampw.now - sevenDaysInSeconds) {
+      if (subscription.status === 'trialing' && subscription.trial_end >= userAppStore.Timestamp.now - sevenDaysInSeconds) {
         trialsEnding.push(subscription)
       }
       if (subscription.status === 'active' && subscription.current_period_end  >= userAppStore.Timestamp.now - sevenDaysInSeconds) {

@@ -47,14 +47,10 @@ async function beforeRequest (req) {
 
 async function renderPage (req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
-  console.log('rendering', req.data)
-
   const removeFields = []
   if (req.data.subscriptions && req.data.subscriptions.length) {
-    console.log('rendering organiztaoin subscriptions')
     userAppStore.HTML.renderTable(doc, req.data.subscriptions, 'subscription-row', 'subscriptions-table')
     for (const subscription of req.data.subscriptions) {
-      console.log('fixing', subscription.id)
       if (subscription.install.organizationid) {
         removeFields.push(`personal-${subscription.id}`)
       } else {
@@ -78,7 +74,7 @@ async function renderPage (req, res) {
           }
         }
       } else {
-        removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `canceling-subscription-${req.data.subscription.id}`)
+        removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`)
       }
     }
     const noSubscriptions = doc.getElementById('no-subscriptions')
@@ -139,7 +135,7 @@ function money (amount, quantity, currency) {
   if (!currency) {
     return null
   }
-  quantity = quantity ? quantity + 1 : 1
+  quantity = quantity || 1
   amount *= quantity
   currency = currency.toLowerCase()
   switch (currency) {

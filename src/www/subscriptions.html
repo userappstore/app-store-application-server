@@ -46,9 +46,9 @@
   </body>
   <template id="subscription-row">
     <tr id="${subscription.id}">
-      <td><a href="/account/subscriptions/subscription?subscriptionid=${subscription.id}">${subscription.id}</a></td>
+      <td><a href="/account/${subscription.install.installid}/subscriptions/subscription?subscriptionid=${subscription.id}">${subscription.id}</a></td>
       <td><a href="/install?installid=${subscription.install.installid}">${subscription.install.installid}</a></td>
-      <td id="app-${subscription.id}"><a href="/about?appid=${subscription.install.appid}">App</a></td>
+      <td id="app-${subscription.id}"><a href="/about?appid=${subscription.install.appid}">${subscription.install.appid} (app store)</a></td>
       <td id="import-${subscription.id}">URL</td>
       <td id="project-${subscription.id}">Project</td>
       <td id="personal-${subscription.id}">Personal</td>
@@ -56,6 +56,7 @@
       <td>${subscription.amountFormatted} ${subscription.plan.currency}</td>
       <td>${subscription.nextCharge}</td>
       <td id='active-subscription-${subscription.id}'>Active</td>
+      <td id='active-trial-subscription-${subscription.id}'>Active (trial)</td>
       <td id='canceling-subscription-${subscription.id}'>Active (canceling)</td>
       <td id='trialing-subscription-${subscription.id}' title="Trial ending ${subscription.trial_end}">Trial (ending in ${subscription.trialEnd})</td>
       <td id='inactive-subscription-${subscription.id}'>Inactive</td>
