@@ -57,7 +57,7 @@ function renderPage (req, res, messageTemplate) {
   }
   // plan information
   userAppStore.HTML.renderTemplate(doc, req.data.plan, 'plan-row', 'plan-table')
-  if (req.data.plan.trial_free_days) {
+  if (req.data.plan.trial_period_days) {
     userAppStore.HTML.renderTemplate(doc, req.data.plan, 'charge-later', 'charge')
   } else {
     userAppStore.HTML.renderTemplate(doc, req.data.plan, 'charge-now', 'charge')
