@@ -73,22 +73,10 @@
     <option value="${customer.id}">${customer.description} (${customer.defaultSource.brand} exp ${customer.defaultSource.exp_month}/${customer.defaultSource.exp_year})</option>
   </template>
   <template id="charge-now">
-    <p>You will be billed ${plan.amountFormatted} now and .</p>
+    <p>You will be billed ${plan.amountFormatted} now and each ${plan.interval}.</p>
   </template>
   <template id="charge-later">
     <p>Recurring charges of ${plan.amountFormatted} begin in ${plan.trial_period_days} days.</p>
-  </template>
-  <template id="day-period">
-    <span>daily</span>
-  </template>
-  <template id="week-period">
-    <span>weekly</span>
-  </template>
-  <template id="month-period">
-    <span>monthly</span>
-  </template>
-  <template id="annual-period">
-    <span>anually</span>
   </template>
   <template id="plan-row">
     <tr>
