@@ -65,7 +65,7 @@ async function renderPage (req, res) {
       }
       if (subscription.status === 'active') {
         if (subscription.cancel_at_period_end) {
-          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`, `cancelsubscription-link-${subscription.id}`)
+          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`, `cancel-subscription-link-${subscription.id}`)
         } else {
           if (subscription.trial_end > userAppStore.Timestamp.now) {
             removeFields.push(`active-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
@@ -125,7 +125,11 @@ async function renderPage (req, res) {
     organizationsSubscriptionsTable.parentNode.removeChild(organizationsSubscriptionsTable)
   }
   for (const field of removeFields) {
+    console.log('removing field', field)
     const element = doc.getElementById(field)
+    if (!element || !element.parentNode) {
+      console.log('bad field', field)
+    }
     element.parentNode.removeChild(element)
   }
   return res.end(doc.toString())
