@@ -1,0 +1,61 @@
+<!doctype html>
+<html navbar="/navbar-application-server.html">
+  <head>
+    <title>Generate application token</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base target="_top" />
+    <style>
+    p { margin-bottom: 1rem; max-width: 60rem }
+    pre { padding: 1rem; background-color: #EEE; margin-bottom: 2rem }
+    code span { color: darkgreen}
+    .box { padding: 1rem; margin: 1rem 0; border: 1px dashed #666; display: inline-block }
+    .token { padding: 1rem; background-color: #333; color: #FFF; border: none; font-family: mono }
+  </style>
+  </head>
+  <body>
+    <h1>Generate application server token</h1>
+    <p>This token can be used to communicate with the API to retrieve organization and subscription information.</p>
+    <div id="message-container"></div>
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+      <div class="pure-controls">
+        <button id="submit-button" class="pure-button pure-button-primary" type="submit">Generate new token</button>
+      </div>
+    </form>
+  </body>
+  <template id="unknown-error">
+    <div class="error message">Error! An error occurred updating the token.</div>
+  </template>
+  <template id="success">
+    <div class="success message">Success! The application server token has been updated.</div>
+  </template>
+  <template id="token-usage">
+    <div id="usage-guide">
+      <h2>Using your application server token</h2>
+      <p>Your new token enables your server to make requests to our API on behalf of your users.</p>
+      <div class="box">
+        <input readonly id="token" name="token" require type="text" size="80" class="token" value="${server.applicationServerToken}" />
+      </div>
+      <p>Use the same headers to make HTTP requests to Dashboard's API on behalf of your users.</p>
+      <pre id="usage-headers"><code><span># make API requests on behalf of users</span>
+x-application-server: "${server.applicationServer}"
+x-dashboard-token: bcrypt.hash("${server.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", bcrypt.genSalt(4))
+x-accountid: "account_aaaaaaaaa"
+x-sessionid: "session_bbbbbbbbb"
+GET ${server.dashboardServer}/api/user/organizations/organization?organizationid=organization_ccccccccc
+GET ${server.dashboardServer}/api/user/subscriptions/subscription?subscriptionid=subscription_ddddddddd
+
+<span># verify requests made to your server</span>
+x-dashboard-server: "${server.dashboardServer}"
+x-dashboard-token: "${server.dashboardServerToken}"
+x-accountid: "account_aaaaaaaaa"
+x-sessionid: "session_bbbbbbbbb"
+x-organizationid: "organization_ccccccccc" <span># if user installed for organization</span>
+x-subscriptionid: "subscription_ddddddddd" <span># if user installed from app store</span>
+
+if (x-dashboard-server === "${server.dashboardServer}") {
+  valid = bcrypt.compare("${server.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", x-dashboard-token)
+}
+</code></pre></div></template>
+</html>

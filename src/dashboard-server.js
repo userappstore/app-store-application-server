@@ -86,7 +86,11 @@ const proxy = util.promisify((method, path, data, accountid, sessionid, alternat
         return callback()
       }
       if (proxyResponse.statusCode === 200) {
-        return callback(null, JSON.parse(body))
+        if (proxyResponse.headers['content-type'] === 'application/json') {
+          return callback(null, JSON.parse(body))
+        } else {
+          return callback(null, body)
+        }
       }
       if (body && proxyResponse.headers['content-type'] === 'application/json') {
         body = JSON.parse(body)

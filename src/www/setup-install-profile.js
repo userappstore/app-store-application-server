@@ -105,9 +105,12 @@ async function submitForm(req, res) {
     if (!profile) {
       return renderPage(req, res, 'invalid-profileid')
     }
+    req.body.profileid = profile.profileid
   }
   try {
-    await dashboardServer.post(`/api/application-server/create-user?serverid=${req.data.install.serverid}`, req.body, req.account.accountid, req.session.sessionid)
+    req.query.accountid = req.account.accountid
+    req.body.appid = req.query.appid
+    await global.api.user.userappstore.CreateInstallAccount.post(req)
     res.statusCode = 302
     res.setHeader('location', `/install/${req.data.install.installid}/home`)
     return res.end()

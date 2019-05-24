@@ -71,7 +71,7 @@
   </body>
   <template id="token-usage"><code><span># make API requests on behalf of users</span>
 x-application-server: "${header.applicationServer}"
-x-dashboard-token: bcrypt.hash("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", bcrypt.genSalt(1))
+x-dashboard-token: bcrypt.hash("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", bcrypt.genSalt(4))
 x-accountid: "account_aaaaaaaaa"
 x-sessionid: "session_bbbbbbbbb"
 GET ${header.dashboardServer}/api/user/organizations/organization?organizationid=organization_ccccccccc

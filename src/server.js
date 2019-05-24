@@ -69,7 +69,7 @@ async function receiveRequest(req, res) {
   }
   req.urlPath = req.url.split('?')[0]
   // serve public files
-  if (req.urlPath.startsWith('/public/') || req.urlPath === '/favicion.ico') {
+  if (req.urlPath.startsWith('/public/') || req.urlPath === '/favicon.ico') {
     const extension = req.urlPath.split('.').pop()
     if (!mimeTypes[extension]) {
       res.statusCode = 404
@@ -99,24 +99,24 @@ async function receiveRequest(req, res) {
   }
   // parse query string
   req.query = url.parse(req.url, true).query
-  // remap opened install paths
-  if (req.urlPath.startsWith('/install/')) {
-    const parts = req.urlPath.split('/')
-    const installid = parts[2]
-    parts.splice(0, 3)
-    req.urlPath = `/install/${parts.join('/')}`
-    req.url = `${req.urlPath}?installid=${installid}`
-    req.query = req.query || {}
-    req.query.installid = installid
-  }
-  // remap previewed project paths
-  if (req.urlPath.startsWith('/project/')) {
-    const parts = req.urlPath.split('/')
-    req.urlPath = '/project/' + parts[3]
-    req.url = '/project/home?projectid=' + parts[2]
-    req.query = req.query || {}
-    req.query.projectid = parts[2]
-  }
+  // // remap opened install paths
+  // if (req.urlPath.startsWith('/install/')) {
+  //   const parts = req.urlPath.split('/')
+  //   const installid = parts[2]
+  //   parts.splice(0, 3)
+  //   req.urlPath = `/install/${parts.join('/')}`
+  //   req.url = `${req.urlPath}?installid=${installid}`
+  //   req.query = req.query || {}
+  //   req.query.installid = installid
+  // }
+  // // remap previewed project paths
+  // if (req.urlPath.startsWith('/project/')) {
+  //   const parts = req.urlPath.split('/')
+  //   req.urlPath = '/project/' + parts[3]
+  //   req.url = '/project/home?projectid=' + parts[2]
+  //   req.query = req.query || {}
+  //   req.query.projectid = parts[2]
+  // }
   // load up the route files
   req.route = global.sitemap[req.urlPath]
   if (!req.route) {

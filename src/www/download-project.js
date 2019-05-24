@@ -20,11 +20,11 @@ async function beforeRequest (req) {
   if (!req.query || !req.query.projectid) {
     throw new Error('invalid-projectid')
   }
-  const project = await global.api.user.userappstore.SharedProject.get(req)
+  const project = await global.api.user.userappstore.Project.get(req)
   if (project.accountid !== req.account.accountid) {
     throw new Error('invalid-account')
   }
-  const files = await global.api.user.userappstore.SharedProjectFiles.get(req)
+  const files = await global.api.user.userappstore.ProjectFiles.get(req)
   if (files['app.html'] === null) {
     files['app.html'] = ''
   }

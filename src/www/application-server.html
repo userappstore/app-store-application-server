@@ -1,0 +1,36 @@
+<!doctype html>
+<html navbar="/navbar-application-server.html">
+  <head>
+    <title>Application server ${server.serverid}</title>
+    <link href="/public/pure-min.css" rel="stylesheet" />
+    <link href="/public/content.css" rel="stylesheet" />
+    <base target="_top" href="/" />
+  </head>
+  <body>
+    <h1>Application server ${server.serverid}</h1>
+    <table id="servers-table" class="pure-table data-table">
+      <tbody id="${server.serverid}">
+        <tr id="${server.serverid}">
+          <th>ID</th>
+          <td>${server.serverid}</td>
+        </tr>
+        <tr>
+          <th>Created</th>
+          <td>${server.createdFormatted}</td>
+        </tr>
+        <tr id="url">
+          <th>URL</th>
+          <td>${server.applicationServer}</td>
+        </tr>
+        <tr id="project">
+          <th>Project</th>
+          <td><a href="/project?projectid=${server.projectid}">${server.projectid}</a></td>
+        </tr>
+        <tr id="app">
+          <th>App</th>
+          <td><a href="/app?appid=${server.appid}">${server.appid}</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

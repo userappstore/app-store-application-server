@@ -12,6 +12,8 @@
       .padder { padding: 1rem }
       .padder form { margin-bottom: 2rem }
       .padder p { margin: 0 0 1rem 0; max-width: 30rem }
+      th.url { width: 20rem }
+      td input { width: 100% }
       </style>
       <base target="_top" />
   </head>
@@ -49,6 +51,67 @@
           <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
         </div>
       </form>
+      <h2>Samples</h2>
+      <p>You can import these URLs as iframes:</p>
+      <table id="imports-table" class="pure-table pure-table-striped list-table">
+        <thead>
+          <tr>
+            <th class="url">URL</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input class="pure-text" type="text" value="https://jsonlint.com/" /></td>
+            <td>JSON Lint</td>
+            <td>
+              <form method="POST" action="">
+                <input type="hidden" name="url" value="https://jsonlint.com/" />
+                <input type="hidden" name="text" value="JSON Lint" />
+                <input type="hidden" name="application-server" value="iframe" >
+                <button class="pure-button pure-button-primary" type="submit">Install</button>
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td><input class="pure-text" type="text" value="https://google.com/?igu=1" /></td>
+            <td>Google search</td>
+            <td>
+              <form method="POST" action="">
+                <input type="hidden" name="url" value="https://google.com/?igu=1" />
+                <input type="hidden" name="text" value="Google" />
+                <input type="hidden" name="application-server" value="iframe">
+                <button class="pure-button pure-button-primary" type="submit">Install</button>
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td><input class="pure-text" type="text" value="https://ellisonleao.github.io/clumsy-bird/" /></td>
+            <td><a href="https://github.com/ellisonleao/clumsy-bird">Clumsy Bird (game)</a></td>
+            <td>
+              <form method="POST" action="">
+                <input type="hidden" name="url" value="https://ellisonleao.github.io/clumsy-bird/" />
+                <input type="hidden" name="text" value="Clumsy Bird" />
+                <input type="hidden" name="application-server" value="iframe">
+                <button class="pure-button pure-button-primary" type="submit">Install</button>
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td><input class="pure-text" type="text" value="https://wwwtyro.github.io/Astray/" /></td>
+            <td><a href="https://github.com/wwwtyro/Astray">Astray (game)</a></td>
+            <td>
+              <form method="POST" action="">
+                <input type="hidden" name="url" value="https://wwwtyro.github.io/Astray/" />
+                <input type="hidden" name="text" value="Astray" />
+                <input type="hidden" name="application-server" value="iframe">
+                <button class="pure-button pure-button-primary" type="submit">Install</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </body>
   <template id="invalid-text">

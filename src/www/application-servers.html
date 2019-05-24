@@ -8,7 +8,6 @@
   </head>
   <body>
     <h1>Application servers</h1>
-    <p>Claim your Dashboard-integrated web applications to administrate your users and access the API.</p>
     <p class="pure-button-group">
       <a href="/claim-application-server" class="pure-button pure-button-primary">Claim a server</a>
     </p>
@@ -33,7 +32,7 @@
   </template>
   <template id="application-server-row">
     <tr id="${server.serverid}">
-      <td><a href="/server?serverid=${server.serverid}">${server.serverid}</a></td>
+      <td><a href="/application-server?serverid=${server.serverid}">${server.serverid}</a></td>
       <td>${server.applicationServer}</td>
       <td>${server.createdFormatted}</td>
       <td>${server.claimedFormatted}</td>

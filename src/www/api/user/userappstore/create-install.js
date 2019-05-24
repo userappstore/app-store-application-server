@@ -152,7 +152,7 @@ module.exports = {
     await userAppStore.StorageList.add(`account/installs/${req.query.accountid}`, installid)
     if (req.body.collectionid) {
       req.body.installid = installid
-      await global.api.user.userappstore.AddCollectionItem.post(req)
+      await global.api.user.userappstore.AddCollectionInstall.post(req)
     }
     if (installInfo.organizationid) {
       await userAppStore.StorageList.add(`organization/installs/${installInfo.organizationid}`, installid)

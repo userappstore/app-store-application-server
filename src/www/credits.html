@@ -1,0 +1,45 @@
+<!doctype html>
+<html navbar="/navbar.html">
+  <head>
+    <title>All credits</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/public/pure-min.css" />
+    <link rel="stylesheet" href="/public/content.css" />
+    <base href="/" target="_top" />
+  </head>
+  <body>
+    <h1>All credits</h1>
+    <div id="message-container"></div>
+    <div id="no-credits">
+      <p>You have not any credits.</p>
+    </div>
+    <table id="credits-table" class="pure-table pure-table-striped list-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Install</th>
+          <th>Uninstall</th>
+          <th>Reason</th>
+          <th>Amount</th>
+          <th>Balance</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+  </body>
+  <template id="credit-row">
+    <tr id="${credit.creditid}">
+      <td><a href="/account/${credit.info.installid}/credits/credit?creditid=${credit.creditid}">${credit.creditid}</a></td>
+      <td><a href="/install?installid=${credit.info.installid}">${credit.info.installid}</a></td>
+      <td><a href="/uninstall?uninstallid=${credit.info.uninstallid}">${credit.info.uninstallid}</a></td>
+      <td>${credit.reason}</td>
+      <td>${credit.amountFormatted}</td>
+      <td>${credit.balanceFormatted}</td>
+      <td>${credit.createdFormatted}</td>
+      <td class="pure-button-group" role="group">
+        <a id="refund-credit-link-${credit.id}" class="pure-button" href="/account/${credit.info.installid}/credits/refund-credit?creditid=${credit.creditid}">Refund</a>
+      </td>
+    </tr>
+  </template>
+</html>

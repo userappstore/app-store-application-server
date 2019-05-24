@@ -1,4 +1,4 @@
-var projectid, filename, submitForm, formTarget
+var projectid, filename, submitForm
 var linkids = [ 'home.html-link', 'app.css-link', 'app.js-link' ]
 var inputids = [ 'home.html', 'app.css', 'app.js' ]
 var statusids = [ 'home.html-status', 'app.css-status', 'app.js-status' ]
@@ -6,24 +6,19 @@ var editors = {}
 var links = {}
 var statuses = {}
 var lastSent = {}
+var layout
+var previewFrame
 var nextAutoSave = (new Date().getTime() / 1000) + 1
 
 window.addEventListener('load', startIDE)
 
 function startIDE (e) {
   window.removeEventListener('load', startIDE)
-  const searchParams = new URLSearchParams(e.srcElement.baseURI.substring(e.srcElement.baseURI.indexOf('?')))
+  var searchParams = new URLSearchParams(e.srcElement.baseURI.substring(e.srcElement.baseURI.indexOf('?')))
   projectid = searchParams.get('projectid')
   filename = searchParams.get('filename')
-  formTarget = document.createElement('iframe')
-  formTarget.style.width = 0
-  formTarget.style.height = 0
-  formTarget.style.overflow = 'hidden'
-  formTarget.name = 'formTarget'
   submitForm = document.getElementById('submit-form')
   submitForm.onsubmit = saveChangedFiles
-  submitForm.target = 'formTarget'
-  submitForm.parentNode.appendChild(formTarget)
   for (var i = 0, len = linkids.length; i < len; i++) {
     var link = document.getElementById(linkids[i])
     link.onclick = switchEditor
@@ -41,12 +36,70 @@ function startIDE (e) {
   window.parent.postMessage('app.css=' + appCSS, '*')
   window.parent.postMessage('app.js=' + appJS, '*')
   switchEditor({target: links[filename + '-link']})
+  layout = new GoldenLayout({
+    content: [{
+      type: 'row',
+      content: [{
+        type: 'stack',
+        content: [{
+          type: 'component',
+          title: 'Project IDE',
+          componentName: 'ide'
+        }]
+      }, {
+        type: 'stack',
+        content: [{
+          type: 'component',
+          title: 'Project preview',
+          componentName: 'preview'
+        }]
+      }]
+    }]
+  })
+  layout.registerComponent('ide', function (container) {
+    const navigationForm = document.getElementById('submit-form')
+    var containerElement = container.getElement()
+    containerElement.append(navigationForm)
+  })
+  layout.registerComponent('preview', function (container) {
+    previewFrame = document.createElement('iframe')
+    previewFrame.frameBorder = 0
+    previewFrame.style.backgroundColor = '#FFF'
+    previewFrame.sandbox = 'allow-top-navigation allow-scripts allow-forms allow-same-origin allow-popups'
+    previewFrame.width = '100%'
+    previewFrame.height = '100%'
+    updatePreview()
+    const navigationForm = document.getElementById('preview-form')
+    navigationForm.onsubmit = updatePreview
+    var containerElement = container.getElement()
+    containerElement.append(navigationForm)
+    containerElement.append(previewFrame)
+  })
+  layout.init()
   setInterval(toggleUnsavedMark, 100)
   return setInterval(autoSaveChanges, 1000)
 }
 
 function autoSaveChanges (e) {
   saveChangedFiles(null)
+}
+
+function updatePreview (e) {
+  if (e && e.preventDefault) {
+    e.preventDefault()
+  }
+  var html = lastSent['home.html'] || ''
+  if(html) {
+    if (lastSent['app.css']) {
+      html += '<style>' + lastSent['app.css'] + '</style>'
+    }
+    if (lastSent['app.js']) {
+      html += '<script>' + lastSent['app.js'] + '</script>'
+    }
+    if (html !== previewFrame.srcdoc) {
+      previewFrame.srcdoc = html
+    }
+  }
 }
 
 function toggleUnsavedMark (e) {
@@ -66,7 +119,7 @@ function toggleUnsavedMark (e) {
 }
 
 function saveChangedFiles (e) {
-  const now = new Date().getTime() / 1000
+  var now = new Date().getTime() / 1000
   if (now < nextAutoSave) {
     return
   }

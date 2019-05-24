@@ -40,7 +40,7 @@ module.exports = {
       ['first-name']: firstName,
       ['last-name']: otherNames
     }
-    const account = await dashboardServer.post(`/api/application-server/create-user?serverid=${install.serverid}`, req.body, req.account.accountid, req.session.sessionid)
+    const account = await global.api.user.userappstore.CreateInstallAccount.post(req)
     if (!account) {
       throw new Error('invalid-account')
     }
@@ -50,6 +50,7 @@ module.exports = {
     if(!subscription) {
       throw new Error('invalid-subscription')
     }
+    install.accountidSignedIn = account.accountid
     install.stripeid = app.stripeid
     install.customerid = installCustomer.id
     install.subscriptionid = subscription.id

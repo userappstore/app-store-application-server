@@ -16,7 +16,7 @@ module.exports = {
       // add the link to a collection
       req.query.collectionid = req.body.collectionid
       req.body.installid = install.installid
-      await global.api.user.userappstore.AddCollectionItem.post(req)
+      await global.api.user.userappstore.AddCollectionInstall.post(req)
       if (install.collectionid && install.collectionid !== req.body.collectionid) {
         // changed collection
         req.query.collectionid = install.collectionid

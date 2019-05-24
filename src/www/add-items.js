@@ -70,7 +70,7 @@ async function submitForm (req, res) {
       continue
     }
     try {
-      await global.api.user.userappstore.AddCollectionItem.post(req)
+      await global.api.user.userappstore.AddCollectionInstall.post(req)
       req.data.collectionInstalls = req.data.collectionInstalls || []
       req.data.collectionInstalls.unshift(install)
       req.data.installs.splice(req.data.installs.indexOf(install), 1)

@@ -89,7 +89,6 @@ async function submitForm(req, res) {
           break
         }
       }
-      let profile
       if (!defaultProfile.email) {
         await dashboardServer.patch(`/api/application-server/update-default-profile?accountid=${req.account.accountid}`, req.body, req.account.accountid, req.session.sessionid)
         defaultProfile.email = req.body.email
@@ -99,12 +98,12 @@ async function submitForm(req, res) {
       } else {
         profile = await dashboardServer.post(`/api/application-server/create-profile?accountid=${req.account.accountid}`, req.body, req.account.accountid, req.session.sessionid)
       }
-      req.body.profileid = profile.profileid
     }
   } else {
     if (!req.data.profiles || !req.data.profiles.length) {
       return renderPage(req, res, 'invalid-profileid')
     }
+    let profile
     for (const item of req.data.profiles) {
       profile = item.profileid === req.body.profileid ? item : false
       if (profile) {
@@ -114,6 +113,9 @@ async function submitForm(req, res) {
     if (!profile) {
       return renderPage(req, res, 'invalid-profileid')
     }
+    req.body.email = profile.email
+    req.body['first-name'] = profile.firstName
+    req.body['last-name'] = profile.lastName
   }
   try {
     await dashboardServer.post(`/api/application-server/create-administrator?serverid=${req.query.serverid}`, req.body, req.account.accountid, req.session.sessionid)

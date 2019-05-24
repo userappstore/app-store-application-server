@@ -65,13 +65,15 @@ async function renderPage (req, res) {
       }
       if (subscription.status === 'active') {
         if (subscription.cancel_at_period_end) {
-          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`, `cancel-subscription-link-${subscription.id}`)
+          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
         } else {
-          if (subscription.trial_end > userAppStore.Timestamp.now) {
-            removeFields.push(`active-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
-          } else {
-            removeFields.push(`trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
-          }
+          removeFields.push(`trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
+        }
+      } if (subscription.status === 'trialing') {
+        if (subscription.cancel_at_period_end) {
+          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
+        } else {
+          removeFields.push(`active-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
         }
       } else {
         removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`)
@@ -84,8 +86,6 @@ async function renderPage (req, res) {
     subscriptionsTable.parentNode.removeChild(subscriptionsTable)
   }
   if (req.data.organizationSubscriptions && req.data.organizationSubscriptions.length) {
-    console.log('rendering organiztaoin subscriptions')
-    console.log('fixing', subscription.id)
     userAppStore.HTML.renderTable(doc, req.data.organizationSubscriptions, 'organization-subscription-row', 'organization-subscriptions-table')
     for (const subscription of req.data.organizationSubscriptions) {
       if (subscription.install.type === 'project') {
@@ -108,14 +108,16 @@ async function renderPage (req, res) {
         if (subscription.cancel_at_period_end) {
           removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
         } else {
-          if (subscription.trial_end > userAppStore.Timestamp.now) {
-            removeFields.push(`active-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
-          } else {
-            removeFields.push(`trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
-          }
+          removeFields.push(`trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
+        }
+      } if (subscription.status === 'trialing') {
+        if (subscription.cancel_at_period_end) {
+          removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
+        } else {
+          removeFields.push(`active-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`, `inactive-subscription-${subscription.id}`)
         }
       } else {
-        removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `canceling-subscription-${req.data.subscription.id}`)
+        removeFields.push(`active-subscription-${subscription.id}`, `trialing-subscription-${subscription.id}`, `canceling-subscription-${subscription.id}`)
       }
     }
     const noOrganizationSubscriptions = doc.getElementById('no-organization-subscriptions')
@@ -125,10 +127,9 @@ async function renderPage (req, res) {
     organizationsSubscriptionsTable.parentNode.removeChild(organizationsSubscriptionsTable)
   }
   for (const field of removeFields) {
-    console.log('removing field', field)
     const element = doc.getElementById(field)
     if (!element || !element.parentNode) {
-      console.log('bad field', field)
+      continue
     }
     element.parentNode.removeChild(element)
   }
