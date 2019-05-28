@@ -1,5 +1,5 @@
 {
-  "name": "userappstore.com",
+  "name": "@userappstore/app-store-application-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userappstore/storage-s3": "git+https://github.com/userappstore/storage-s3.git",
     "bcryptjs": "^2.4.3",
     "calipers": "^2.0.1",
     "calipers-jpeg": "^2.0.0",
