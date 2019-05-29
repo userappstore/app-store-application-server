@@ -1,65 +1,46 @@
-# UserAppStore
-UserAppStore is a NodeJS project for publishing and sharing web apps.  Developers may register and publish their apps within UserAppStore, via [Dashboard]() coupled with [Stripe Connect]() and [Stripe Subscriptions]() modules. 
+# App Store Application Server
+The app store software is divided into two separate projects that must both be setup and configured, this application server and the dashboard server.
 
-Users may browse and install apps, individually or with group access, and access the apps within a single inteface.  Users may also import  apps from anwhere on the internet, or create them themselves.
+The corresponding dashboard server integrates Dashboard with its modules for Stripe subscriptions, Stripe Connect for publishing to the app store, and organizations for sharing access to apps and administrative tools.
 
-UserAppStore is covered by Dashboard.  The Dashboard server sits in front of the UserAppStore server and proxies content from it on behalf of the user to serve a single, combined website.
+The Application server provides a project editor, subscription and free app store, and panelled interface for using installed projects, app and imported URLs.
 
-Dashboard provides:
-- registration and account management
-- developer registration via Stripe Connect module
-- paid subscriptions via Stripe Subscriptions module
-- user groups via Organizations module
+Projects can be shared, published to the app store, or downloaded and run elsewhere as independent web apps powered by Dashboard with Stripe subscriptions.
 
-## Installation part 1: Dashboard
+Importing URLs can be used to bring in third-party web apps via iframe or as application servers compatible with Dashboard proxying content on behalf of users.
 
-Dashboard is a NodeJS project that accompanies a web app you build and provides a complete account system for your users and administration tools.  Dashboard divides your application into two components: a header with account and administrative menus and navigation bar; and a frame for serving content.
+The server is NodeJS and storage may be local file system, Redis, PostgreSQL or Amazon S3.  Redis may be used as a cache where that makes sense.
 
-You must install [Redis](https://redis.io) and [NodeJS](https://nodejs.org) 8.1.4+ prior to these steps.  UserAppStore does not currently support operating without the Stripe Subscriptions and Stripe Connect modules.
+## Installation part 1: Dashboard Server
 
-1. Create an account at [Stripe](https://stripe.com/), you will need their API key for the STRIPE_KEY
-2. If you require sending credit card numbers to your server enable 'Process payments unsafely' in Integrations, within Business settings, otherwise client-side JavaScript will post directly to Stripe
-4. Setup a webhook in your Stripe account to `/api/webhooks/subscriptions/index-stripe-data`, you will need the signing secret for `SUBSCRIPTIONS_ENDPOINT_SECRET`
-5. Setup a Connect webhook in your Stripe account to `/api/webhooks/connect/index-payout-data`, you will need the signing secret for `CONNECT_ENDPOINT_SECRET`
+Visit the [App Store Dashboard Server](https://github.com/userappstore/app-store-dashboard-server) for setup information.
 
-        $ git clone https://github.com/userappstore/userappstore-dashboard
-        $ STRIPE_KEY=abc \
-          SUBSCRIPTIONS_ENDPOINT_SECRET=wxy \
-          CONNCET_ENDPOINT_SECRET=xyz \
-          APPLICATION_SERVER=https://your_application_server \
-          node main.js
+## Installation part 2: Application server
+
+You must install [NodeJS](https://nodejs.org) 8.1.4+ prior to these steps.
+
+    $ git clone https://github.com/userappstore/app-store-application-server
+    $ cd app-store-application-server
+    $ npm install --only=production
+    $ APPLICATION_SERVER=http://localhost:3000 \
+      APPLICATION_SERVER_TOKEN="a shared secret" \
+      DASHBOARD_SERVER=http://localhost:8000 \
+      node main.js
+
+    # npm install git+https://github.com/userappstore/storage-redis
+    # STORAGE_ENGINE="@userappstore/storage-redis"
+    # REDIS_URL="..."
+
+    # npm install git+https://github.com/userappstore/storage-s3
+    # STORAGE_ENGINE="@userappstore/storage-s3"
+    # S3_BUCKET_NAME=the_name
+    # ACCESS_KEY_ID=secret from amazon
+    # SECRET_ACCESS_KEY=secret from amazon
+
+    # npm install git+https://github.com/userappstore/storage-postgresql
+    # STORAGE_ENGINE="@userappstore/storage-redis"
+    # DATABASE_URL="..."
       
-## Installation part 2: UserAppStore
-Dashboard will proxy all URLs it does not recognize from your `APPLICATION_SERVER`.  
-
-UserAppStore can use local storage for data storage as long as you have a single server, such as during development.  A production deployment of Dashboard should include more than one server for basic redundancy.
-
-UserAppStore can use [Amazon S3](https://aws.amazon.com/s3) for data storage.  S3 was chosen over an RDBMS to ensure the data will always be highly available.  Your S3 bucket should be configured as private and encrypted.  
-
-UserAppStore can optionally encrypt files prior to writing to your storage.
-
-### Local file system
-        $ git clone https://github.com/userappstore/userappstore
-        $ npm install
-        $ DASHBOARD_SERVER=https://your_dashboard_server \
-          node main.js
-
-### S3 file storage
-1. Create an account at [Amazon Web Services](https://aws.amazon.com/)
-2. Create [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started.html) with access to [Amazon S3](https://aws.amazon.com/s3), you will need the ACCESS_KEY_ID and ACCESS_SECRET
-4. Create an S3 bucket with no public access and your IAM user, you will need the BUCKET_NAME
-
-        $ git clone https://github.com/userappstore/userappstore
-        $ npm install 
-        $ npm install aws-sdk --no-save
-        $ DASHBOARD_SERVER=https://your_dashboard_server \
-          STORAGE_ENGINE=s3 \
-          BUCKET_NAME= \
-          S3_PREFIX=optional \
-          ACCESS_KEY_ID=optional \
-          ACCESS_SECRET=optional \
-          node main.js
-
 ### BYO storage engine
 The storage interface is a basic read, write, list and delete API.  Check `storage-fs.js` and `storage-s3.js` for examples you can copy.
 
