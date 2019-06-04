@@ -12,11 +12,10 @@ var nextAutoSave = (new Date().getTime() / 1000) + 1
 
 window.addEventListener('load', startIDE)
 
-function startIDE (e) {
+function startIDE() {
   window.removeEventListener('load', startIDE)
-  var searchParams = new URLSearchParams(e.srcElement.baseURI.substring(e.srcElement.baseURI.indexOf('?')))
-  projectid = searchParams.get('projectid')
-  filename = searchParams.get('filename')
+  projectid = window.projectid
+  filename = window.filename
   submitForm = document.getElementById('submit-form')
   submitForm.onsubmit = saveChangedFiles
   for (var i = 0, len = linkids.length; i < len; i++) {
