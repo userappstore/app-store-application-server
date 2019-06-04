@@ -27,3 +27,44 @@ module.exports = {
     return server
   }
 }
+
+const fetch = util.promisify((url, callback) => {
+  let baseURL = url.split('://')[1]
+  const baseSlash = baseURL.indexOf('/')
+  if (baseSlash > -1) {
+    baseURL = baseURL.substring(0, baseSlash)
+  }
+  let port = 443
+  const colon = baseURL.indexOf(':')
+  if (colon > -1) {
+    port = baseURL.substring(colon + 1)
+    baseURL = baseURL.substring(0, colon)
+  }
+  const path = url.substring(url.indexOf('://') + 3 + baseURL.length)
+
+  const requestOptions = {
+    host: baseURL,
+    path: path,
+    port: port,
+    method: 'GET',
+    headers: {
+      'x-dashboard-server': process.env.DASHBOARD_SERVER
+    }
+  }
+  const req = https.request(requestOptions, (proxyResponse) => {
+    let body
+    proxyResponse.on('data', (chunk) => {
+      body = body ? Buffer.concat([chunk, body]) : chunk
+    })
+    proxyResponse.on('end', () => {
+      return callback(null, body.toString('utf-8'))
+    })
+    proxyResponse.on('error', (error) => {
+      return callback(error)
+    })
+  })
+  req.on('error', (error) => {
+    return callback(error)
+  })
+  return req.end()
+})
