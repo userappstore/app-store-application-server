@@ -27,6 +27,4 @@ module.exports = {
   }
 }
 
-if (process.env.NODE_ENV !== 'testing') {
-  module.exports.start()
-}
+module.exports.start()
