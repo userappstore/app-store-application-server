@@ -15,6 +15,11 @@ async function beforeRequest(req) {
   const organizations = await dashboardServer.get(`/api/user/organizations/organizations?accountid=${req.account.accountid}&all=true`, req.account.accountid, req.session.sessionid)
   if (organizations && organizations.length) {
     applicationServers = applicationServers || []
+    for (const i in applicationServers) {
+      if (applicationServers[i].organizationid) {
+        applicationServers.splice(i, 1)
+      }
+    }
     req.query.all = true
     for (const organization of organizations) {
       req.query.organizationid = organization.organizationid
