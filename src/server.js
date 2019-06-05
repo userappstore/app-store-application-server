@@ -145,11 +145,12 @@ async function receiveRequest(req, res) {
     return res.end(req.route.html)
   }
   if (req.method !== 'GET' && req.method !== 'HEAD' && req.method !== 'OPTION') {
-    req.bodyRaw = await parseBody(req)
-    if (req.bodyRaw) {
-      req.body = qs.parse(req.bodyRaw)
-    } else {
-      await parseMultiPartData(req)
+    await parseMultiPartData(req)
+    if (!req.body) {
+      req.bodyRaw = await parseBody(req)
+      if (req.bodyRaw) {
+        req.body = qs.parse(req.bodyRaw)
+      }
     }
   }
   const handler = req.route.api[req.method.toLowerCase()]
