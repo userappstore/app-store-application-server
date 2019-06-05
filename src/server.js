@@ -6,6 +6,7 @@ const bcrypt = require('./bcrypt.js')
 const crypto = require('crypto')
 const fs = require('fs')
 const http = require('http')
+const Multiparty = require('multiparty')
 const qs = require('querystring')
 const url = require('url')
 const util = require('util')
@@ -144,7 +145,12 @@ async function receiveRequest(req, res) {
     return res.end(req.route.html)
   }
   if (req.method !== 'GET' && req.method !== 'HEAD' && req.method !== 'OPTION') {
-    await parseBody(req, res)
+    req.bodyRaw = await parseBody(req)
+    if (req.bodyRaw) {
+      req.body = qs.parse(req.bodyRaw)
+    } else {
+      await parseMultiPartData(req)
+    }
   }
   const handler = req.route.api[req.method.toLowerCase()]
   if (!handler) {
@@ -159,7 +165,7 @@ async function receiveRequest(req, res) {
   }
 }
 
-const parseBody = util.promisify((req, _, callback) => {
+const parseBody = util.promisify((req, callback) => {
   if (req.headers['content-length'] && req.headers['content-length'] > 2000000) {
     return callback(new Error('invalid-post-size'))
   }
@@ -176,8 +182,33 @@ const parseBody = util.promisify((req, _, callback) => {
   })
   return req.on('end', () => {
     if (raw) {
-      req.bodyRaw = raw.toString('utf-8')
-      req.body = qs.parse(req.bodyRaw)
+      return callback(null, raw.toString('utf-8'))
+    }
+    return callback()
+  })
+})
+
+const parseMultiPartData = util.promisify((req, callback) => {
+  const form = new Multiparty.Form()
+  return form.parse(req, async (error, fields, files) => {
+    if (error) {
+      return callback(error)
+    }
+    req.body = {}
+    for (const field in fields) {
+      req.body[field] = fields[field][0]
+    }
+    req.uploads = {}
+    for (const filename in files) {
+      const file = files[filename][0]
+      const extension = file.originalFilename.toLowerCase().split('.').pop()
+      const type = extension === 'png' ? 'image/png' : 'image/jpeg'
+      req.uploads[filename] = {
+        type,
+        buffer: fs.readFileSync(file.path),
+        name: file.name
+      }
+      fs.unlinkSync(file.path)
     }
     return callback()
   })
