@@ -12,7 +12,7 @@ async function beforeRequest (req) {
   const accounts = []
   if (stripeAccounts && stripeAccounts.length) {
     for (const stripeAccount of stripeAccounts) {
-      if (!stripeAccount.payouts_enabled) {
+      if (!stripeAccount.payouts_enabled || !stripeAccount.metadata.submitted) {
         continue
       }
       accounts.push(stripeAccount)
