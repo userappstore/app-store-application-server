@@ -13,7 +13,7 @@
   <body>
     <h1>Install setup for ${install.installid}</h1>
     <div id="message-container"></div>
-    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked" action="/setup-install-profile?installid=${install.installid}">
       <h2>User profile</h2>
       <p>This information is shared with the app owner and administrators.</p>
       <div id="existing-profile" class="pure-control-group">

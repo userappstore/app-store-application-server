@@ -24,7 +24,7 @@
     <h1>Setup subscription for ${install.text}</h1>
     <p>Select any members of your organization you wish to subscribe for:</p>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/setup-subscription?installid=${install.installid}">
       <ul id="memberships-list" class="memberships"></ul>
       <div class="pure-g">
         <div class="submit" class="pure-u-1-2">

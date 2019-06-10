@@ -32,7 +32,7 @@
   </body>
   <template id="addable-item">
     <li>
-      <form id="${install.installid}" method="POST">
+      <form id="${install.installid}" method="POST" action="/add-items?collectionid=${collection.collectionid}">
         <button type="submit" name="installid" value="${install.installid}">
           <img src="/install/${install.installid}/icon.png" />
           ${install.installid}

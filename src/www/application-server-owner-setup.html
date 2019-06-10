@@ -20,7 +20,7 @@
     <h1>Owner profile for ${server.serverid}</h1>
     <p>Setup your profile to continue.</p>
     <div id="message-container"></div>
-    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked" action="/application-server-owner-setup?serverid=${server.serverid}">
       <h2>Owner profile</h2>
       <p>This information is shared with users.</p>
       <div id="existing-profile" class="pure-control-group">

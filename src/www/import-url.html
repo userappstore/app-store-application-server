@@ -24,7 +24,7 @@
     <div class="padder">
       <h1>Import URL</h1>
       <div id="message-container"></div>
-      <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+      <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/import-url">
         <div id="url-container" class="pure-control-group">       
           <label for="url">Application server URL (https only)</label>
           <input require id="url" placeholder="https://application.example.com" name="url" type="text" maxlength="200" size="40" />
@@ -66,7 +66,7 @@
             <td><input class="pure-text" type="text" value="https://jsonlint.com/" /></td>
             <td>JSON Lint</td>
             <td>
-              <form method="POST" action="">
+              <form method="POST" action="/import-url">
                 <input type="hidden" name="url" value="https://jsonlint.com/" />
                 <input type="hidden" name="text" value="JSON Lint" />
                 <input type="hidden" name="application-server" value="iframe" >
@@ -78,7 +78,7 @@
             <td><input class="pure-text" type="text" value="https://google.com/?igu=1" /></td>
             <td>Google search</td>
             <td>
-              <form method="POST" action="">
+              <form method="POST" action="/import-url">
                 <input type="hidden" name="url" value="https://google.com/?igu=1" />
                 <input type="hidden" name="text" value="Google" />
                 <input type="hidden" name="application-server" value="iframe">
@@ -90,7 +90,7 @@
             <td><input class="pure-text" type="text" value="https://ellisonleao.github.io/clumsy-bird/" /></td>
             <td><a href="https://github.com/ellisonleao/clumsy-bird">Clumsy Bird (game)</a></td>
             <td>
-              <form method="POST" action="">
+              <form method="POST" action="/import-url">
                 <input type="hidden" name="url" value="https://ellisonleao.github.io/clumsy-bird/" />
                 <input type="hidden" name="text" value="Clumsy Bird" />
                 <input type="hidden" name="application-server" value="iframe">
@@ -102,7 +102,7 @@
             <td><input class="pure-text" type="text" value="https://wwwtyro.github.io/Astray/" /></td>
             <td><a href="https://github.com/wwwtyro/Astray">Astray (game)</a></td>
             <td>
-              <form method="POST" action="">
+              <form method="POST" action="/import-url">
                 <input type="hidden" name="url" value="https://wwwtyro.github.io/Astray/" />
                 <input type="hidden" name="text" value="Astray" />
                 <input type="hidden" name="application-server" value="iframe">

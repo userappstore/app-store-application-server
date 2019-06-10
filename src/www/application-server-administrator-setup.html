@@ -20,7 +20,7 @@
     <h1>Administrator profile for ${server.serverid}</h1>
     <p>An organization you are in administrates this application server.  Setup your profile to continue.</p>
     <div id="message-container"></div>
-    <form id="submit-form" method="POST" class="pure-form pure-form-stacked">
+    <form id="submit-form" method="POST" class="pure-form pure-form-stacked" action="/application-server-administrator-setup?serverid=${server.serverid}">
       <h2>Administrator profile</h2>
       <p>This information is shared with users and other administrators.</p>
       <div id="existing-profile" class="pure-control-group">

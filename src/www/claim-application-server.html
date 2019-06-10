@@ -20,7 +20,7 @@
     <p id="claiming-start">Users can import your web application without claiming it, but you need to claim it to access the administration interface and APIs.</p>
     <p id="claiming-guide">When your web app is ready to serve the text at the required URL submit your claim. Afterwards you will become the owner of the application server and you may publish it on our app store to enable subscriptions.</p>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/claim-application-server?serverid=${server.serverid}">
       <div class="pure-control-group">
         <label>Application server domain (https)</label>
         <input id="url" name="url" placeholder="https://application.example.com" require type="text" size="40" maxlength="200" />

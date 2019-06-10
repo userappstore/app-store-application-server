@@ -11,7 +11,7 @@
     <h1>Change application server URL</h1>
     <p>This will update both the domain and the home path of your application-server.  Your Dashboards.json path will not change.</p>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/change-application-server-url?serverid=${server.serverid}">
       <div class="pure-control-group">
         <label for="url">Mew application home URL (https)</label>
         <input required value="${application-server.url}" type="text" size="40" maxlength="200" name="url" id="url" />

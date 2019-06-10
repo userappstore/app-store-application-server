@@ -50,7 +50,7 @@
     <base target="_top" />
   </head>
   <body>
-    <form id="submit-form" method="POST">
+    <form id="submit-form" method="POST" action="/project-ide?projectid=${project.projectid}">
       <ul id="files-menu" class="files">
         <li id="project">${project.projectid}</li>
         <li><a id="home.html-link" href="/project-ide?filename=home.html&projectid=${project.projectid}">/home.html <sup id="home.html-status" class="saved">*</sup></a></li>
@@ -63,7 +63,7 @@
         <div id="app.css-editor" class="editor"></div>
       </div>
     </form>
-    <form id="preview-form" method="POST">
+    <form id="preview-form" method="POST" action="/project-ide?projectid=${project.projectid}">
       <ul class="files">
         <li>Running preview</li>
         <li><button id="reload-link" type="submit">Reload</button></li>
