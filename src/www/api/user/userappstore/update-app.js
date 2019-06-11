@@ -1,8 +1,6 @@
 const Calipers = require('calipers')('png', 'jpeg')
 const fs = require('fs')
-const Multiparty = require('multiparty')
 const userAppStore = require('../../../../../index.js')
-const util = require('util')
 
 module.exports = {
   patch: async (req) => {
@@ -16,9 +14,13 @@ module.exports = {
       throw new Error('invalid-description')
     }
     if (req.uploads) {
+      req.screenshots = []
       for (const filename in req.uploads) {
-        const image = await Calipers.measure(req.uploads[filename].path)
-        if (file === 'icon') {
+        const filePath = fs.mkdtempSync(filename) + '/' + req.uploads[filename].name
+        fs.writeFileSync(filePath, req.uploads[filename].buffer)
+        const image = await Calipers.measure(filePath)
+        fs.unlinkSync(filePath)
+        if (filename === 'icon.png') {
           if (image.type !== 'png' || image.pages[0].width !== 512 || image.pages[0].height !== 512) {
             error = 'invalid-icon'
             break
@@ -31,7 +33,6 @@ module.exports = {
           }
           req.screenshots.push(true)
         }
-
       }
     }
     const app = await global.api.user.userappstore.App.get(req)

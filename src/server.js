@@ -207,7 +207,7 @@ const parseMultiPartData = util.promisify((req, callback) => {
       req.uploads[filename] = {
         type,
         buffer: fs.readFileSync(file.path),
-        name: file.name
+        name: filename
       }
       fs.unlinkSync(file.path)
     }
