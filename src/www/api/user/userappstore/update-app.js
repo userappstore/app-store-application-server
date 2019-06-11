@@ -54,11 +54,14 @@ module.exports = {
       app.tags.push(tag)
     }
     if (req.icon) {
-      app.icon = req.icon
+      app.icon = true
+      await userAppStore.Storage.writeImage(`assets/${app.appid}/icon.png`, req.uploads['icon.png'].buffer)
     }
-    req.uploads = req.uploads || []
     for (let i = 0; i < 4; i++) {
-      app.screenshots[i] = req.uploads[`screenshot${i}`]
+      app.screenshots[i] = req.screenshots[`screenshot${i}`]
+      if (req.screenshots[i]) {
+        await userAppStore.Storage.writeImage(`assets/${app.appid}/screenshot${i + 1}.jpg`, req.uploads[`screenshot${i + 1}.jpg`].buffer)
+      }
     }
     await userAppStore.Storage.write(`app/${req.query.appid}`, app)
     req.success = true
