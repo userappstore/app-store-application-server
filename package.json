@@ -22,6 +22,6 @@
     "monaco-editor": "^0.15.6",
     "multiparty": "^4.2.1",
     "server-html": "^9.0.0",
-    "uglify-js": "^3.5.3"
+    "uglify-js": "^3.6.0"
   }
 }
