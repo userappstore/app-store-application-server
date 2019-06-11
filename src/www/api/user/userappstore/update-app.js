@@ -1,5 +1,4 @@
 const Calipers = require('calipers')('png', 'jpeg')
-const dashboard = require('@userappstore/dashboard')
 const fs = require('fs')
 const userAppStore = require('../../../../../index.js')
 
@@ -17,7 +16,7 @@ module.exports = {
     if (req.uploads) {
       req.screenshots = []
       for (const filename in req.uploads) {
-        const filePath = process.env.TMPDIR + '/' + dashboard.UUID.random(8) + req.uploads[filename].name
+        const filePath = process.env.TMPDIR + '/' + userAppStore.UUID.random(32) + req.uploads[filename].name
         fs.writeFileSync(filePath, req.uploads[filename].buffer)
         const image = await Calipers.measure(filePath)
         fs.unlinkSync(filePath)
