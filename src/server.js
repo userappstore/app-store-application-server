@@ -1,7 +1,6 @@
 // The UserAppStore application server receives requests from
 // the Dashboard server and verifies their authenticity, then
 // passes the request to the corresponding route or file
-const API = require('./api.js')
 const bcrypt = require('./bcrypt.js')
 const crypto = require('crypto')
 const fs = require('fs')
@@ -145,11 +144,16 @@ async function receiveRequest(req, res) {
     return res.end(req.route.html)
   }
   if (req.method !== 'GET' && req.method !== 'HEAD' && req.method !== 'OPTION') {
-    await parseMultiPartData(req)
-    if (!req.body) {
+    try {
       req.bodyRaw = await parseBody(req)
-      if (req.bodyRaw) {
-        req.body = qs.parse(req.bodyRaw)
+    } catch (error) {
+    }
+    if (req.bodyRaw) {
+      req.body = qs.parse(req.bodyRaw)
+    } else {
+      try {
+        await parseMultiPartData(req)
+      } catch (error) {
       }
     }
   }
