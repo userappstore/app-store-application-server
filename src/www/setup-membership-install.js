@@ -17,6 +17,7 @@ async function beforeRequest(req) {
   }
   req.query.appid = install.appid
   const app = await global.api.user.userappstore.PublishedApp.get(req)
+  install.app = app
   req.query.serverid = app.serverid
   const server = await global.api.user.userappstore.ApplicationServer.get(req)
   req.query.all = true
@@ -28,7 +29,7 @@ async function beforeRequest(req) {
 }
 
 function renderPage(req, res, messageTemplate) {
-  const doc = userAppStore.HTML.parse(req.route.html, req.data.app, 'app')
+  const doc = userAppStore.HTML.parse(req.route.html, req.data.install, 'install')
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, null, messageTemplate, 'message-container')
   }

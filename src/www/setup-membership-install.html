@@ -1,7 +1,7 @@
 <!doctype html>
 <html template="false">
   <head>
-    <title>Membership install of app ${app.name}</title>
+    <title>Membership install of app ${install.app.name}</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <link rel="stylesheet" href="/public/pure-min.css" />
     <link rel="stylesheet" href="/public/content.css" />
@@ -18,9 +18,9 @@
     </style>
   </head>
   <body class="entry-form">
-    <h1>Membership install of ${app.name}</h1>
+    <h1>Membership install of ${install.app.name}</h1>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/setup-membership-install?appid=${app.appid}">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/setup-membership-install?installid=${install.installid}">
       <div id="organizations-container" class="pure-control-group">
         <label for="organizations-list">Install type</label>
         <select id="organizations-list" name="organizationid"></select>
@@ -44,7 +44,7 @@
           <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
         </div>
         <div class="cancel" class="pure-u-1-2">
-          <a href="/about?appid=${app.appid}" class="pure-button">About this app</a>
+          <a href="/about?appid=${install.appid}" class="pure-button">About this app</a>
         </div>
       </div>
     </form>
