@@ -1,6 +1,7 @@
 // const Account = require('./account.js')
 const fs = require('fs')
 const HTML = require('./html.js')
+const path = require('path')
 
 module.exports = {
   generate
@@ -10,7 +11,11 @@ function generate() {
   let routes = {}
   // Dashboard defaults, if the server is a module then these are
   // files located within node_modules otherwise they are the root app
-  attachRoutes(routes, `${__dirname}/www`)
+  const defaultRoot = path.join(__dirname, '..')
+  if (global.rootPath !== defaultRoot) {
+    routes = attachRoutes(routes, `${global.rootPath}/node_modules/@userappstore/app-store-application-server/src/www`)
+  }
+  routes = attachRoutes(routes, `${global.rootPath}/src/www`)
   return routes
 }
 
@@ -116,7 +121,7 @@ async function wrapBeforeFunction(nodejsHandler) {
       try {
         await nodejsHandler.before(req)
       } catch (error) {
-        if (process.env.DEBUG_ERRORS) {  
+        if (process.env.DEBUG_ERRORS) {
           console.log('sitemap.before', error)
         }
         res.statusCode = 500

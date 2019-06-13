@@ -67,8 +67,13 @@ function parse (fileOrHTML, dataObject, dataObjectName) {
   }
   const htmlTag = doc.tag === 'html' ? doc : null
   if (htmlTag && htmlTag.attr && htmlTag.attr.navbar) {
-    let navbarPath = path.join(global.rootPath, htmlTag.attr.navbar)
-    if (navbarPath) {
+    let navbarPath = path.join(global.rootPath, 'src/www', htmlTag.attr.navbar)
+    let navbarExists = fs.existsSync(navbarPath)
+    if (!fs.existsSync(navbarPath)) {
+      navbarPath = path.join(global.rootPath, 'node_modules/@userappstore/app-store-application-server/src/www', htmlTag.attr.navbar)
+      navbarExists = fs.existsSync(navbarPath)
+    }
+    if (navbarExists) {
       const navbarHTML = fs.readFileSync(navbarPath).toString('utf-8')
       if (navbarHTML) {
         let template = doc.getElementById('navbar') || doc.createElement('template')

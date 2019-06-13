@@ -127,6 +127,9 @@ async function receiveRequest(req, res) {
     res.setHeader('content-type', mimeTypes.html)
   }
   if (!req.route.api) {
+    if (req.route.html) {
+      return res.end(req.route.html)
+    }
     res.statusCode = 404
     return res.end()
   }
