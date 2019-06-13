@@ -20,7 +20,7 @@
   <body class="entry-form">
     <h1>Membership install of ${app.name}</h1>
     <div id="message-container"></div>
-    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/setup-membership-install?installid=${install.installid}">
+    <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/setup-membership-install?appid=${app.appid}">
       <div id="organizations-container" class="pure-control-group">
         <label for="organizations-list">Install type</label>
         <select id="organizations-list" name="organizationid"></select>
