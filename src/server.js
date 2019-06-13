@@ -41,6 +41,9 @@ module.exports = {
 }
 
 async function receiveRequest(req, res) {
+  if (process.env.DEBUG_ERRORS) {
+    console.log('[request]', req.method, req.url, req.headers['x-dashboard-server'])
+  }
   res.statusCode = 200
   // confirm it came from the Dashboard server
   if (req.headers['x-dashboard-server'] === process.env.DASHBOARD_SERVER) {
@@ -75,7 +78,10 @@ async function receiveRequest(req, res) {
       res.statusCode = 404
       return res.end()
     }
-    const filePath = `${global.rootPath}${req.urlPath}`
+    let filePath = `${global.rootPath}/src/www${req.urlPath}`
+    if (!fs.existsSync(filePath)) {
+      filePath = `${global.rootPath}/node_modules/@userappstore/app-store-application-server/src/www${req.urlPath}`
+    }
     if (!fs.existsSync(filePath)) {
       res.statusCode = 404
       return res.end()
