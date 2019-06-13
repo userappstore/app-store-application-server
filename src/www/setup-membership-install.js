@@ -25,7 +25,7 @@ async function beforeRequest(req) {
   const organization = await dashboardServer.get(`/api/user/organizations/organization?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
  req.query.accountid = req.account.accountid
   const collections = await global.api.user.userappstore.Collections.get(req)
-  req.data = { app, plan, organization, collections }
+  req.data = { app, plan, organization, collections, install }
 }
 
 function renderPage(req, res, messageTemplate) {
