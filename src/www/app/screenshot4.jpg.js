@@ -9,6 +9,9 @@ async function beforeRequest (req) {
   if (!req.query || !req.query.appid) {
     throw new Error('invalid-appid')
   }
+  if (req.query.appid === '${app.appid}') {
+    return res.end()
+  }
   let app
   try {
     app = await global.api.user.userappstore.PublishedApp.get(req)
