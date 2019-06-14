@@ -145,7 +145,11 @@ function saveChangedFiles (e) {
   if (sending === 0) {
     return
   }
-  return window.Request.post('/project-ide?projectid=' + projectid, postData)
+  var formData = new FormData()
+  for(var key in postData) {
+    formData.append(key, postData[key])
+  }
+  return window.Request.post('/project-ide?projectid=' + projectid, formData, console.log)
 }
 
 function switchEditor (e) {
@@ -153,7 +157,7 @@ function switchEditor (e) {
   var linkids = ['home.html-link', 'app.css-link', 'app.js-link']
   for (var i = 0, len = linkids.length; i < len; i++) {
     var link = links[linkids[i]]
-    if (link.id !== e.target.id) {
+    if (e.target && e.target.id && link.id !== e.target.id) {
       link.className = ''
       document.getElementById(filenames[i] + '-editor').style.display = 'none'
       continue
