@@ -6,7 +6,7 @@ module.exports = {
   get: renderPage
 }
 
-async function beforeRequest (req) {
+async function beforeRequest(req) {
   if (!req.query || !req.query.appid) {
     throw new Error('invalid-appid')
   }
@@ -28,6 +28,7 @@ async function beforeRequest (req) {
   }
   req.query.stripeid = app.stripeid
   const publisher = await global.api.user.userappstore.Publisher.get(req)
+  publisher.registeredFormatted = new Date(publisher.registered)
   req.query.serverid = app.serverid
   const server = await global.api.user.userappstore.ApplicationServer.get(req)
   const plans = await dashboardServer.get(`/api/user/subscriptions/published-plans`, null, null, server.applicationServer, server.applicationServerToken)
@@ -41,14 +42,15 @@ async function beforeRequest (req) {
         default:
           plan.amountFormatted = plan.amount
           break
-      }      
+      }
     }
   }
   req.data = { app, screenshots, tags, publisher, plans }
 }
 
-async function renderPage (req, res) {
+async function renderPage(req, res) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.app, 'app')
+  userAppStore.HTML.renderTemplate(doc, req.data.publisher, 'publisher-template', 'publisher')
   if (req.data.tags && req.data.tags.length) {
     userAppStore.HTML.renderList(doc, req.data.tags, 'tag-item', 'tags')
   }
@@ -57,11 +59,6 @@ async function renderPage (req, res) {
   }
   if (req.data.screenshots && req.data.screenshots.length) {
     userAppStore.HTML.renderList(doc, req.data.screenshots, 'screenshot-item', 'screenshots')
-  }
-  if (req.data.publisher.type === 'individual') {
-    userAppStore.HTML.renderTemplate(doc, req.data.publisher, 'individual-publisher', 'publisher')
-  } else {
-    userAppStore.HTML.renderTemplate(doc, req.data.publisher, 'company-publisher', 'publisher')
   }
   return res.end(doc.toString())
 }

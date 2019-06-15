@@ -52,11 +52,11 @@
       </td>
     </tr>
   </template>
-  <template id="individual-publisher">
+  <template id="publisher-template">
     <table id="${publisher.stripeid}">
       <tr>
         <th>Publisher</th>
-        <td>${publisher.first_name} ${publisher.last_name} (${publisher.type})</td>
+        <td>${publisher.name} (${publisher.type})</td>
       </tr>
       <tr>
         <th>Country</th>
@@ -64,23 +64,7 @@
       </tr>
       <tr>
         <th>Registered</th>
-        <td>${publisher.created}</td>
-      </tr>
-    </table>
-  </template>
-  <template id="company-publisher">
-    <table id="${publisher.stripeid}">
-      <tr>
-        <th>Publisher</th>
-        <td>${publisher.business_name}(${publisher.type})</td>
-      </tr>
-      <tr>
-        <th>Country</th>
-        <td>${publisher.country}</td>
-      </tr>
-      <tr>
-        <th>Registered</th>
-        <td>${publisher.created}</td>
+        <td>${publisher.registered}</td>
       </tr>
     </table>
   </template>
