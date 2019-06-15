@@ -54,9 +54,9 @@
       <h2>Free trial</h2>
       <div id="trial-period"></div>
     </div>
-    <div id="charge-container">
-      <h2>Next charge</h2>
-      <div id="next-charge"></div>
+    <div id="next-invoice-container">
+      <h2>Next invoice</h2>
+      <ul id="next-invoice"></ul>
     </div>
     <div id="invoices-container">
       <h2>Invoices</h2>
@@ -87,11 +87,11 @@
     <p>${charge.amount} on ${charge.brand} ${charge.last4}</p>
   </template>
   <template id="invoice">
-    <li id="${invoice.id}"><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.date</a></li>
+    <li id="${invoice.id}"><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.date}</a></li>
   </template>
   <template id="membership">
     <tr id="${membership.membershipid}">
-      <td>${email}</td>
+      <td>${membership.email}</td>
     </tr>
   </template>
 </html>

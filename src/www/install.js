@@ -21,10 +21,10 @@ async function beforeRequest (req) {
   // get the next invoice for the subscription
   let subscription, invoices, nextInvoice
   if (install.subscriptionid) {
-    subscription = await dashboardServer.get(`/api/user/subscriptions/subscription?subscriptionid=${install.subscriptionid}`, req.account.accountid, req.session.sessionid)
-    invoices = await dashboardServer.get(`/api/user/subscriptions/subscription-invoices?subscriptionid=${install.subscriptionid}`, req.account.accountid, req.session.sessionid)
+    subscription = await dashboardServer.get(`/api/application-server/subscription?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
+    invoices = await dashboardServer.get(`/api/application-server/subscription-invoices?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
     if (!install.uninstalled) {
-      nextInvoice = await dashboardServer.get(`/api/user/subscriptions/upcoming-invoice?subscriptionid=${install.subscriptionid}`, req.account.accountid, req.session.sessionid)
+      nextInvoice = await dashboardServer.get(`/api/application-server/upcoming-invoice?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
     }
   }
   // get the organization and members
@@ -53,10 +53,11 @@ async function renderPage (req, res, messageTemplate) {
       free.parentNode.removeChild(free)
       if (req.data.subscription.trial_start && !req.data.subscription.trial_end) {
         userAppStore.HTML.renderTemplate(doc, req.data.subscription, 'trial', 'trial-period')
-        const charge = doc.getElementById('charge-container')
+        const charge = doc.getElementById('invoice-container')
         charge.parentNode.removeChild(charge)
       } else {
-        userAppStore.HTML.renderTemplate(doc, req.data.nextInvoice, 'charge', 'next-charge')
+        req.data.nextInvoice.object = 'invoice'
+        userAppStore.HTML.renderTemplate(doc, req.data.nextInvoice, 'invoice', 'next-invoice')
         const trial = doc.getElementById('trial-container')
         trial.parentNode.removeChild(trial)
       }
@@ -77,7 +78,7 @@ async function renderPage (req, res, messageTemplate) {
     charge.parentNode.removeChild(charge)
   }
   if (req.data.organization) {
-    userAppStore.HTML.renderList(doc, req.data.memberships, 'member', 'memberships')
+    userAppStore.HTML.renderList(doc, req.data.memberships, 'membership', 'memberships')
     const individual = doc.getElementById('individual')
     individual.parentNode.removeChild(individual)
   } else {
