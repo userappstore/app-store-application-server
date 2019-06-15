@@ -15,7 +15,7 @@
   </head>
   <body>
     <h1>${install.installid}</h1>
-    <table id="installs-table" class="pure-table">
+    <table id="installs-table" class="pure-table data-table">
       <tbody id="${install.installid}">
         <tr>
           <th>Status</th>
@@ -35,14 +35,11 @@
         </tr>
         <tr id="appstore">
           <th>Source</th>
-          <td id="published"><a href="/about?appid=${install.appid}">App store</a></td>
-          <td id="unpublished">App store (unpublished)</td>
-          <td><a href="/appstore/developer?stripeid=${install.stripeid}">Developer</a></td>
+          <td><a href="/about?appid=${install.appid}">App store</a></td>
         </tr>
         <tr id="project">
           <th>Source</th>
-          <td id="shared">${install.projectid} (shared project)</td>
-          <td id="owned">${install.projectid} (<a href="/project?projectid=${install.projectid}">project</a>)</td>
+          <td>${install.projectid} (shared project)</td>
         </tr>
         <tr id="url">
           <th>URL</th>
@@ -56,26 +53,36 @@
     </div>
     <div id="next-invoice-container">
       <h2>Next invoice</h2>
-      <ul id="next-invoice"></ul>
+      <table id="next-invoice-table" class="pure-table pure-table-striped list-table">
+        <thead>
+          <tr>
+            <th>Invoice number</th>
+            <th>Charge date</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+      </table>
     </div>
     <div id="invoices-container">
       <h2>Invoices</h2>
-      <ul id="invoices"></ul>
+      <table id="invoices-table" class="pure-table pure-table-striped list-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Invoice number</th>
+            <th>Charge date</th>
+            <th>Total</th>
+            <th>Billing period</th>
+          </tr>
+        </thead>
+      </table>
     </div>
     <div id="memberships-container">
       <h2>Organization</h2>
-      <table id="memberships">
+      <table id="memberships" class="pure-table list-table">
         <tr>
           <th>Email</th>
           <th>Status</th>
-        </tr>
-        <tr>
-          <td><a href="#">email@address</a></td>
-          <td>Installed</td>
-          <td>Not installed</td>
-          <td>
-            <a class="pure-button" href="#">Create subscription</a>
-          </td>
         </tr>
       </table>
     </div>
@@ -86,12 +93,27 @@
   <template id="charge">
     <p>${charge.amount} on ${charge.brand} ${charge.last4}</p>
   </template>
-  <template id="invoice">
-    <li id="${invoice.id}"><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.date}</a></li>
+  <template id="invoice-row">
+    <tr id="${invoice.id}">
+      <td><a href="/account/subscriptions/invoice?invoiceid=${invoice.id}">${invoice.id}</a></td>
+      <td>${invoice.number}</td>
+      <td>${invoice.date}</td>
+      <td>${invoice.totalFormatted}</td>
+      <td>${invoice.periodStart} - ${invoice.periodEnd}</td>
+    </tr>
+  </template>
+  <template id="upcoming-invoice-row">
+    <tr id="${invoice.id}">
+      <td>${invoice.number}</td>
+      <td>${invoice.date}</td>
+      <td>${invoice.totalFormatted}</td>
+    </tr>
   </template>
   <template id="membership">
     <tr id="${membership.membershipid}">
       <td>${membership.email}</td>
+      <td id="included-${membership.membershipid}">Included in subscription</td>
+      <td id="not-included-${membership.membershipid}">Not included</td>
     </tr>
   </template>
 </html>

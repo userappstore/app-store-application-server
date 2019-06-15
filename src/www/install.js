@@ -18,13 +18,21 @@ async function beforeRequest (req) {
   if (install.uninstalled) {
     install.uninstalled = userAppStore.Timestamp.date(install.uninstalled)
   }
-  // get the next invoice for the subscription
-  let subscription, invoices, nextInvoice
-  if (install.subscriptionid) {
     subscription = await dashboardServer.get(`/api/application-server/subscription?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
     invoices = await dashboardServer.get(`/api/application-server/subscription-invoices?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
+    if (invoices && invoices.length) {
+      for (const invoice of invoices) {
+        invoice.totalFormatted = userAppStore.Format.money(invoice.total, invoice.currency)
+        invoice.periodStart = userAppStore.Timestamp.date(invoice.period_start * 1000)
+        invoice.periodEnd = userAppStore.Timestamp.date(invoice.period_end * 1000)
+      }
+    }
     if (!install.uninstalled) {
       nextInvoice = await dashboardServer.get(`/api/application-server/upcoming-invoice?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
+      if (nextInvoice) {
+        nextInvoice.date = userAppStore.Timestamp.date(nextInvoice.date)
+        nextInvoice.totalFormatted = userAppStore.Format.money(nextInvoice.total, nextInvoice.currency)
+      }
     }
   }
   // get the organization and members
@@ -38,83 +46,59 @@ async function beforeRequest (req) {
 
 async function renderPage (req, res, messageTemplate) {
   const doc = userAppStore.HTML.parse(req.route.html, req.data.install, 'install')
+  const removeElements = []
   if (req.data.install.uninstalled) {
-    const installed = doc.getElementById('installed')
-    installed.parentNode.removeChild(installed)
+    removeElements.push('installed')
   } else {
-    const uninstalled = doc.getElementById('uninstalled')
-    uninstalled.parentNode.removeChild(uninstalled)
+    removeElements.push('uninstalled')
   }
   if (req.data.subscription) {
-    const unknown = doc.getElementById('unknown')
-    unknown.parentNode.removeChild(unknown)
+    removeElements.push('unknown')
     if (req.data.subscription.plan.amount) {
-      const free = doc.getElementById('free')
-      free.parentNode.removeChild(free)
+      removeElements.push('free')
       if (req.data.subscription.trial_start && !req.data.subscription.trial_end) {
         userAppStore.HTML.renderTemplate(doc, req.data.subscription, 'trial', 'trial-period')
-        const charge = doc.getElementById('invoice-container')
-        charge.parentNode.removeChild(charge)
+        removeElements.push('invoice-container')
       } else {
-        req.data.nextInvoice.object = 'invoice'
-        userAppStore.HTML.renderTemplate(doc, req.data.nextInvoice, 'invoice', 'next-invoice')
-        const trial = doc.getElementById('trial-container')
-        trial.parentNode.removeChild(trial)
+        userAppStore.HTML.renderTemplate(doc, req.data.nextInvoice, 'upcoming-invoice-row', 'next-invoice-table')
+        removeElements.push('trial-container')
       }
     } else {
-      const paid = doc.getElementById('paid')
-      paid.parentNode.removeChild(paid)
-      const charge = doc.getElementById('charge-container')
-      charge.parentNode.removeChild(charge)
+      removeElements.push('paid', 'charge-container')
     }
   } else {
-    const free = doc.getElementById('free')
-    free.parentNode.removeChild(free)
-    const paid = doc.getElementById('paid')
-    paid.parentNode.removeChild(paid)
-    const trial = doc.getElementById('trial-container')
-    trial.parentNode.removeChild(trial)
-    const charge = doc.getElementById('charge-container')
-    charge.parentNode.removeChild(charge)
+    removeElements.push('free', 'paid', 'trial-container', 'charge-container')
   }
   if (req.data.organization) {
     userAppStore.HTML.renderList(doc, req.data.memberships, 'membership', 'memberships')
-    const individual = doc.getElementById('individual')
-    individual.parentNode.removeChild(individual)
+    for (const membership of req.data.memberships) {
+      const included = req.data.install.subscriptions && req.data.install.subscriptions.indexOf(membership.membershipid) > -1
+      const own = membership.accountid === req.account.accountid
+      if (included || own) {
+        removeElements.push(`not-included-${membership.membershipid}`)
+      } else {
+        removeElements.push(`included-${membership.membershipid}`)
+      }
+    }
+    removeElements.push('individual')
   } else {
-    const organization = doc.getElementById('organization')
-    organization.parentNode.removeChild(organization)
-    const memberships = doc.getElementById('memberships-container')
-    memberships.parentNode.removeChild(memberships)
+    removeElements.push('organization', 'memberships-container')
   }
   if (req.data.invoices && req.data.invoices.length) {
-    userAppStore.HTML.renderList(doc, req.data.invoices, 'invoice', 'invoices')
+    userAppStore.HTML.renderTable(doc, req.data.invoices, 'invoice-row', 'invoices-table')
   } else {
-    const invoices = doc.getElementById('invoices-container')
-    invoices.parentNode.removeChild(invoices)
+    removeElements.push('invoices-container')
   }
   if (req.data.install.projectid) {
-    const url = doc.getElementById('url')
-    url.parentNode.removeChild(url)
-    const appStore = doc.getElementById('appstore')
-    appStore.parentNode.removeChild(appStore)
-    if (req.data.install.copied) {
-      const shared = doc.getElementById('shared')
-      shared.parentNode.removeChild(shared)
-    } else {
-      const owned = doc.getElementById('owned')
-      owned.parentNode.removeChild(owned)
-    }
+    removeElements.push('url', 'appstore')
   } else if (req.data.install.url) {
-    const appStore = doc.getElementById('appstore')
-    appStore.parentNode.removeChild(appStore)
-    const project = doc.getElementById('project')
-    project.parentNode.removeChild(project)
+    removeElements.push('appstore', 'project')
   } else {
-    const project = doc.getElementById('project')
-    project.parentNode.removeChild(project)
-    const url = doc.getElementById('url')
-    url.parentNode.removeChild(url)
+    removeElements.push('project', 'url')
+  }
+  for (const id of removeElements) {
+    const element = doc.getElementById(id)
+    element.parentNode.removeChild(element)
   }
   return res.end(doc.toString())
 }
