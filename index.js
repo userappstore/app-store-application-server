@@ -16,6 +16,7 @@ global.sampleProjectOrganization = process.env.SAMPLE_PROJECT_ORGANIZATION || ''
 
 module.exports = {
   HTML: require('./src/html.js'),
+  Format: require('./src/format.js'),
   Storage: require('./src/storage.js'),
   StorageList: require('./src/storage-list.js'),
   StorageObject: require('./src/storage-object.js'),
