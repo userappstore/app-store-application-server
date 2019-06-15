@@ -32,12 +32,11 @@
       </div>
     </div>
     <h2>Subscription plans</h2>
-    <table id="plans-table">
+    <table id="plans-table" class="pure-table list-table">
       <tr>
         <th>Plan</th>
         <th>Description</th>
         <th>Price</th>
-        <th></th>
       </tr>
     </table>
     <h2>Screenshots</h2>
@@ -53,7 +52,7 @@
     </tr>
   </template>
   <template id="publisher-template">
-    <table id="${publisher.stripeid}">
+    <table id="${publisher.stripeid}" class="pure-table data-table">
       <tr>
         <th>Publisher</th>
         <td>${publisher.name} (${publisher.type})</td>
