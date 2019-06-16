@@ -81,8 +81,10 @@
   </template>
   <template id="pending-item">
     <li id="${install.installid}">
-      <img src="/app/icon.png?appid=${install.appid}" />
-      <a href="/setup-membership-install?installid=${install.installid}">Install</a>
+      <a href="/setup-membership-install?installid=${install.installid}">
+        <img src="/app/icon.png?appid=${install.appid}" />
+        Setup ${install.app.name}
+      </a>
     </li>
   </template>
   <template id="charging-item">

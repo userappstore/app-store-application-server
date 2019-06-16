@@ -38,10 +38,22 @@ async function beforeRequest (req) {
         pending.splice(pending.indexOf(install), 1)
         continue
       }
-      for (const ownInstall of ownInstalls) {
-        if (ownInstall.organizationInstall === install.installid) {
-          pending.splice(pending.indexOf(install), 1)
-          break
+      if (ownInstalls && ownInstalls.length) {
+        for (const ownInstall of ownInstalls) {
+          if (ownInstall.organizationInstall === install.installid) {
+            pending.splice(pending.indexOf(install), 1)
+            break
+          }
+        }
+      }
+    }
+    if (pending.length) {
+      for (const install of pending) {
+        for (const app of apps) {
+          if (install.appid === app.appid) {
+            install.app = app
+            break
+          }
         }
       }
     }
