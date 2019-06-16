@@ -9,13 +9,12 @@ module.exports = {
 
 async function beforeRequest (req) {
   const stripeAccounts = await dashboardServer.get(`/api/user/connect/stripe-accounts?accountid=${req.account.accountid}&all=true`, req.account.accountid, req.session.sessionid)
-  const accounts = []
   if (stripeAccounts && stripeAccounts.length) {
     for (const stripeAccount of stripeAccounts) {
       if (!stripeAccount.payouts_enabled || !stripeAccount.metadata.submitted) {
         continue
       }
-      accounts.push(stripeAccount)
+      stripeAccounts.splice(stripeAccounts.indexOf(stripeAccount), 1)
     }
   }
   req.query = req.query || {}
