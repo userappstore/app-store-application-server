@@ -24,13 +24,28 @@ async function beforeRequest (req) {
       if (subscription.status === 'trialing' && subscription.trial_end >= userAppStore.Timestamp.now - sevenDaysInSeconds) {
         trialsEnding.push(subscription)
       }
-      if (subscription.status === 'active' && subscription.current_period_end  >= userAppStore.Timestamp.now - sevenDaysInSeconds) {
+      if (subscription.status === 'active' && subscription.current_period_end >= userAppStore.Timestamp.now - sevenDaysInSeconds) {
         subscriptionsCharging.push(subscription)
       }
     }
   }
   req.query.all = true
   const pending = await global.api.user.userappstore.OrganizationInstalls.get(req)
+  if (pending && pending.length) {
+    const ownInstalls = await global.api.user.userappstore.Installs.get(req)
+    for (const install of pending) {
+      if (install.accountid === req.account.accountid) {
+        pending.splice(pending.indexOf(install), 1)
+        continue
+      }
+      for (const ownInstall of ownInstalls) {
+        if (ownInstall.organizationInstall === install.installid) {
+          pending.splice(pending.indexOf(install), 1)
+          break
+        }
+      }
+    }
+  }
   req.data = { apps, total, offset, trialsEnding, subscriptionsCharging, pending, subscriptions }
 }
 
