@@ -12,9 +12,8 @@ async function beforeRequest (req) {
   if (stripeAccounts && stripeAccounts.length) {
     for (const stripeAccount of stripeAccounts) {
       if (!stripeAccount.payouts_enabled || !stripeAccount.metadata.submitted) {
-        continue
+        stripeAccounts.splice(stripeAccounts.indexOf(stripeAccount), 1)
       }
-      stripeAccounts.splice(stripeAccounts.indexOf(stripeAccount), 1)
     }
   }
   req.query = req.query || {}
@@ -26,7 +25,7 @@ async function beforeRequest (req) {
       if (server.appid) {
         servers.splice(servers.indexOf(server), 1)
       }
-    } 
+    }
   }
   req.data = { stripeAccounts, servers }
 }
@@ -74,12 +73,12 @@ async function submitForm (req, res) {
     return renderPage(req, res, 'invalid-stripeid')
   }
   if (!global.applicationFee) {
-    if (req.body.application_fee !== '0.05' && 
-      req.body.application_fee !== '0.1' && 
-      req.body.application_fee !== '0.15' && 
+    if (req.body.application_fee !== '0.05' &&
+      req.body.application_fee !== '0.1' &&
+      req.body.application_fee !== '0.15' &&
       req.body.application_fee !== '0.2') {
-        throw new Error('invalid-application_fee')
-      }
+      throw new Error('invalid-application_fee')
+    }
   }
   let stripeAccount
   if (req.data.stripeAccounts && req.data.stripeAccounts.length) {
@@ -99,7 +98,7 @@ async function submitForm (req, res) {
     return renderPage(req, res, 'invalid-application-serverid')
   }
   if (!req.data.servers || !req.data.servers) {
-    return renderPage(req, res, 'invalid-application-serverid') 
+    return renderPage(req, res, 'invalid-application-serverid')
   }
   let found = false
   for (const server of req.data.servers) {
@@ -118,5 +117,5 @@ async function submitForm (req, res) {
     return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
-  } 
+  }
 }
