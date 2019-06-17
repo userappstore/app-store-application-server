@@ -18,7 +18,7 @@ async function beforeRequest (req) {
   if (install.uninstalled) {
     install.uninstalled = userAppStore.Timestamp.date(install.uninstalled)
   }
-  let subscription, invoices
+  let subscription, invoices, nextInvoice
   if (install.subscriptionid) {
     subscription = await dashboardServer.get(`/api/application-server/subscription?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
     invoices = await dashboardServer.get(`/api/application-server/subscription-invoices?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
@@ -66,10 +66,10 @@ async function renderPage (req, res, messageTemplate) {
         removeElements.push('trial-container')
       }
     } else {
-      removeElements.push('paid', 'charge-container')
+      removeElements.push('paid')
     }
   } else {
-    removeElements.push('free', 'paid', 'trial-container', 'charge-container')
+    removeElements.push('free', 'paid', 'trial-container')
   }
   if (req.data.organization) {
     userAppStore.HTML.renderList(doc, req.data.memberships, 'membership', 'memberships')
