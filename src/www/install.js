@@ -18,6 +18,7 @@ async function beforeRequest (req) {
   if (install.uninstalled) {
     install.uninstalled = userAppStore.Timestamp.date(install.uninstalled)
   }
+  let subscription, invoices
   if (install.subscriptionid) {
     subscription = await dashboardServer.get(`/api/application-server/subscription?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
     invoices = await dashboardServer.get(`/api/application-server/subscription-invoices?installid=${install.installid}`, req.account.accountid, req.session.sessionid)
