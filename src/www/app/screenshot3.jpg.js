@@ -10,7 +10,7 @@ async function beforeRequest (req) {
     throw new Error('invalid-appid')
   }
   if (req.query.appid === '${app.appid}') {
-    return res.end()
+    return
   }
   let app
   try {
