@@ -62,6 +62,7 @@ module.exports = {
       ['last-name']: profile.lastName
     }
     const account = await dashboardServer.post(`/api/application-server/create-user?serverid=${install.serverid}`, req.body, req.account.accountid, req.session.sessionid)
+    install.accountidSignedIn = account.accountid
     await userAppStore.Storage.write(`install/${req.query.installid}`, install)
     return account
   }
