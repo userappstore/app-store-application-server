@@ -21,6 +21,7 @@ async function beforeRequest (req) {
   if (project.accountid !== req.account.accountid) {
     throw new Error('invalid-project')
   }
+  project.filename = req.query.filename
   const projectFiles = await global.api.user.userappstore.ProjectFiles.get(req)
   const files = []
   for (const filename in projectFiles) {
