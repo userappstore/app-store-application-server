@@ -5,6 +5,7 @@ const Sitemap = require('./src/sitemap.js')
 const Timestamp = require('./src/timestamp.js')
 
 global.storagePath = process.env.STORAGE_PATH || path.join(__dirname, 'data')
+global.applicationFee = parseInt(process.env.APPLICATION_FEE || '0', 10)
 global.applicationPath = __dirname
 global.pageSize = 100
 global.minimumProfileFirstNameLength = parseInt(process.env.MINIMUM_PROFILE_FIRST_NAME_LENGTH || '1', 10)

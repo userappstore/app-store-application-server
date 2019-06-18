@@ -50,6 +50,16 @@ async function renderPage(req, res, messageTemplate) {
       }
     }
   }
+  if (global.applicationFee > 0) {
+    const select = doc.getElementById('application_fee')
+    userAppStore.HTML.setSelectedOptionByValue(doc, select, global.applicationFee.toString())
+    select.setAttribute('readonly', 'true')
+    select.setAttribute('disabled', 'true')
+  } else {
+    if (req.body) {
+      userAppStore.HTML.setSelectedOptionByValue(doc, 'application_fee', req.body.application_fee)
+    }
+  }
   const idField = doc.getElementById('appid')
   if (req.body) {
     idField.setAttribute('value', req.body.appid || '')

@@ -21,6 +21,14 @@ module.exports = {
     if (!req.body.stripeid || !req.body.stripeid.length) {
       throw new Error('invalid-stripeid')
     }
+    if (!global.applicationFee) {
+      if (req.body.application_fee !== '0.05' &&
+        req.body.application_fee !== '0.1' &&
+        req.body.application_fee !== '0.15' &&
+        req.body.application_fee !== '0.2') {
+        throw new Error('invalid-application_fee')
+      }
+    }
     req.query.serverid = req.body.serverid
     const server = await global.api.user.userappstore.ApplicationServer.get(req)
     if (!server) {
@@ -57,7 +65,8 @@ module.exports = {
       serverid: req.body.serverid,
       appid,
       accountid: req.query.accountid,
-      created: userAppStore.Timestamp.now
+      created: userAppStore.Timestamp.now,
+      applicationFee: global.applicationFee || req.body.Application_fee
     }
     if (server.projectid) {
       appInfo.projectid = server.projectid
