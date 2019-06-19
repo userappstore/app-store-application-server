@@ -25,7 +25,7 @@ module.exports = {
       created: userAppStore.Timestamp.now
     }
     await userAppStore.Storage.write(`uninstall/${uninstallid}`, uninstall)
-    await userAppStore.Storage.write(`map/uninstall/install/${installid}`, uninstallid)
+    await userAppStore.Storage.write(`map/uninstall/install/${req.query.installid}`, uninstallid)
     await userAppStore.StorageList.add(`account/uninstalls/${install.accountid}`, uninstallid)
     await userAppStore.StorageList.add(`uninstalls`, uninstallid)
     await userAppStore.Storage.deleteFile(`install/${req.query.installid}`)
