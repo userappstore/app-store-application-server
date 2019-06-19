@@ -10,7 +10,7 @@ module.exports = {
     }
     let install = await userAppStore.Storage.read(`install/${req.query.installid}`)
     if (!install || !install.length) {
-      const uninstallid = await userAppStore.Storage.write(`map/uninstall/install/${req.query.installid}`)
+      const uninstallid = await userAppStore.Storage.read(`map/uninstall/install/${req.query.installid}`)
       if (uninstallid) {
         let uninstall = await userAppStore.Storage.read(`uninstall/${uninstallid}`)
         if (uninstall && uninstall.length) {
