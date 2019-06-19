@@ -13,7 +13,7 @@ async function beforeRequest(req) {
   if (credits && credits.length) {
     for (const credit of credits) {
       credit.amountFormatted = money(credit.amount, credit.quantity, credit.currency)
-      credit.balanceFormatted = money(credit.amount, credit.quantity, credit.currency)
+      credit.balanceFormatted = money(credit.balance, credit.quantity, credit.currency)
       credit.createdFormatted = userAppStore.Timestamp.date(credit.created)
     }
   }
@@ -26,6 +26,12 @@ async function renderPage(req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
   if (req.data.credits && req.data.credits.length) {
     userAppStore.HTML.renderTable(doc, req.data.credits, 'credit-row', 'credits-table')
+    for (const credit of credits) {
+      if (!credit.balance || !credit.chargeid) {
+        const refundButton = doc.getElementById(`refund-credit-link-${credit.creditid}`)
+        refundButton.parentNode.removeChild(refundButton)    
+      }
+    }
     const noCredits = doc.getElementById('no-credits')
     noCredits.parentNode.removeChild(noCredits)
   } else {
