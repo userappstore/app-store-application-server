@@ -26,7 +26,7 @@ async function renderPage(req, res) {
   const doc = userAppStore.HTML.parse(req.route.html)
   if (req.data.credits && req.data.credits.length) {
     userAppStore.HTML.renderTable(doc, req.data.credits, 'credit-row', 'credits-table')
-    for (const credit of credits) {
+    for (const credit of req.data.credits) {
       if (!credit.balance || !credit.chargeid) {
         const refundButton = doc.getElementById(`refund-credit-link-${credit.creditid}`)
         refundButton.parentNode.removeChild(refundButton)    
