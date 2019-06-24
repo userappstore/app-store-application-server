@@ -75,7 +75,6 @@ async function submitForm (req, res) {
   fs.mkdirSync(`${projectPath}/application-server/src/www`)
   fs.mkdirSync(`${projectPath}/application-server/src/www/public`)
   fs.mkdirSync(`${projectPath}/dashboard-server`)
-  fs.mkdirSync(`${projectPath}/src/www/public`)
   for (const file of files) {
     fs.writeFileSync(`${projectPath}/${file}`, fileCache[file], 'utf-8')  
   }
@@ -88,12 +87,14 @@ async function submitForm (req, res) {
   for (const file of files) {
     fs.unlinkSync(`${projectPath}/${file}`)
   } 
-  fs.unlinkSync(`${projectPath}/application-server`)
-  fs.unlinkSync(`${projectPath}/application-server/src`)
-  fs.unlinkSync(`${projectPath}/application-server/src/www`)
-  fs.unlinkSync(`${projectPath}/application-server/src/www/public`)
-  fs.unlinkSync(`${projectPath}/dashboard-server`)
-  fs.unlinkSync(`${projectPath}/src/www/public`)
+  fs.unlinkSync(`${projectPath}/application-server/src/www/home.html`)
+  fs.unlinkSync(`${projectPath}/application-server/src/www/public/app.css`)
+  fs.unlinkSync(`${projectPath}/application-server/src/www/public/app.js`)
+  fs.rmdirSync(`${projectPath}/application-server/src/www/public`)
+  fs.rmdirSync(`${projectPath}/application-server/src/www`)
+  fs.rmdirSync(`${projectPath}/application-server/src`)
+  fs.rmdirSync(`${projectPath}/application-server`)
+  fs.rmdirSync(`${projectPath}/dashboard-server`)
   fs.unlinkSync(`${tempDir}/${zipFileName}`)
   fs.rmdirSync(projectPath)
   res.setHeader('content-disposition', `attachment; filename="${zipFileName}"`)
