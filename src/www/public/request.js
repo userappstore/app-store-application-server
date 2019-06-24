@@ -1,6 +1,9 @@
 var useXMLHttpRequest, compatibleActiveXObject
 
 window.Request = {
+  get: function (url, callback) {
+    return send(url, null, 'GET', callback)
+  },
   post: function (url, data, callback) {
     return send(url, data, 'POST', callback)
   },
