@@ -7,6 +7,6 @@
     "npm": "5.0.3"
   },
   "dependencies": {
-    "@userappstore/dashboard": "^2018.11.20-4"
+    "bcryptjs": "^2.4.3"
   }
 }
