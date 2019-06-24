@@ -1,0 +1,81 @@
+html { height: 100% }
+body { font-family: Roboto, Helvetica, Arial, sans-serif; border: 0.5rem solid #036; border-top: none; border-bottom: none; min-height: 100% }
+
+.container { background-color: #036 }
+.dashboard { background-color: #036; color: rgba(255, 255, 255, 0.75); fill: rgba(255, 255, 255, 0.75) }
+
+.header { display: flex; height: 2rem; position: relative; z-index: 99999 }
+.header svg { fill: inherit; display: block; float: left; width: 1rem; height: 1rem; margin: 0.5rem 0 0 0.5rem }
+.header svg,
+.header div span { opacity: 0.7 }
+.header a,
+.header a:hover { color: inherit }
+.header span.heading { float: left; display: block; height: 2rem; line-height: 2rem; padding-right: 0.5rem }
+.header span.heading a { height: 2rem; line-height: 2rem; opacity: 0.8; font-size: 1rem }
+.header .menus { position: absolute; z-index: 99999; right: 0.25rem; height: 2rem; line-height: 2rem; min-width: 10rem; text-align: right }
+.header .menus .menu { min-height: 2rem }
+.header .menus menu { min-height: 2rem; top: 1.75rem; right: -0.75rem; background-color: #FFF }
+
+.notification { width: auto !important }
+
+nav,
+.navigation { height: 2rem; line-height: 2rem; background-color: inherit; color: inherit }
+.navigation svg { min-width: 1rem; min-height: 0.8rem; max-width: 1rem; max-height: 0.8rem; fill: inherit; display: inline-block; margin-top: 1rem }
+.navigation a { height: 2rem; line-height: 2rem; font-size: 0.9rem; color: inherit; opacity: 0.7; cursor: pointer }
+.navigation span { line-height: 2rem }
+.navigation a.current-page { opacity: 0.9; color: inherit }
+.navigation a:hover { color: inherit; opacity: 1 }
+.navigation a[disabled] { opacity: 0.5 }
+.navigation .app { padding: 0 }
+.navigation img { width: 2rem; height: 2rem }
+
+.drop-down ol { right: -1rem }
+.account svg { margin-right: 0.75rem }
+
+.apps { width: 100%; margin-left: 0; display: flex; height: 2rem; line-height: 2rem; filter: drop-shadow(0 0 1rem rgba(33, 66, 99, 0.75)) }
+.apps .hidden { display: none; position: absolute; top: 2rem; z-index: 99999; width: 100% }
+.apps .heading,
+.apps .heading a { height: 2rem; line-height: 2rem; opacity: 0.7; font-size: 0.9rem }
+.apps .heading { padding-left: 0.5rem }
+.apps menu.grouped { display: block }
+.apps menu.grouped a { height: 3rem; line-height: 3rem }
+.apps menu.ungrouped { display: block; background-color: #FFF }
+.apps menu.ungrouped a { height: 3rem; line-height: 3rem; color: #000 }
+.apps menu.ungrouped p { line-height: 3rem; margin-top: 0; margin-left: 0.5rem; margin-bottom: 0; font-size: 0.9rem; color: #666 }
+.apps menu { width: 100%; text-align: left; padding: 0; margin: 0; background-color: inherit; color: inherit; list-style-type: none; width: 100% }
+.apps menu a { opacity: 0.7; font-size: 0.9rem; color: inherit; padding: 0.75rem; text-decoration: none; line-height: 1.5rem }
+.apps menu a:hover,
+.apps menu a:focus { opacity: 1 }
+
+.app-account,
+.app-account a { background-color: #EEE !important }
+.app-account-title { margin-right: 1rem; margin-top: 0.5rem; color: 333; font-weight: bold }
+.app-account a { color: #333 !important }
+.app-account a:hover { color: #666 !important }
+
+.app-settings-menu { display: inline-block; position: relative; }
+.app-settings-menu svg { width: 0.7rem; fill: #FFF; opacity: 0.6; margin-top: 0.1rem }
+.app-settings-menu menu { display: none; position: absolute; z-index: 2; width: 12rem; top: -1rem; left: -1rem; background-color: #000; border-radius: 0.5rem; padding: 0 1rem; line-height: 3rem }
+.app-settings-menu a, 
+.app-settings-menu span { display: inline-block !important; color: #CCC !important; font-size: 0.9rem }
+.app-settings-menu a:hover { color: #FFF !important }
+.app-settings-menu:hover menu { display: block }
+.app-settings-menu .app-account, 
+.app-settings-menu .app-account a { background-color: transparent !important }
+
+.trigger { display: flex }
+.trigger:hover span.heading svg,
+.trigger:hover span.heading a { color: #FFF; fill: #FFF; opacity: 1 }
+.trigger:hover .hidden { display: block; border-bottom: 2px solid #369 }
+
+/* userappstore customizations for golden window */
+.lm_goldenlayout { background: #036 !important }
+.lm_header { box-shadow: none !important; background: none; background-color: #036; z-index: auto !important }
+.lm_tab { background-size: 0.6rem 0.6rem; box-shadow: none !important; padding-bottom: 0 !important; margin-top: 0 !important; background: none !important; border: none !important }
+.lm_title { float: left; padding-right: 0.5rem; color: rgba(255, 255, 255, 0.6) }
+.lm_content { border: none !important; background-color: #FFF !important }
+.lm_active .lm_title { color: #FFF }
+.lm_controls,
+.lm_close_tab,
+.lm_left,
+.lm_right { display: none !important }

@@ -38,6 +38,7 @@ function send (url, data, method, callback) {
     return callback(null, x.responseText)
   }
   x.send(postData)
+  return x
 }
 
 function getRequest () {
