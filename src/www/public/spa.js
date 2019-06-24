@@ -58,6 +58,9 @@ function parseInstallData() {
 function bindLinks() {
   var links = document.getElementsByTagName('a')
   for (var i = 0, len = links.length; i < len; i++) {
+    if (links[i].getAttribute('js') === 'false') {
+      continue
+    }
     if (!links[i].href ||
       links[i].href.indexOf('/account/signout') > -1) {
       continue
@@ -135,12 +138,18 @@ function frameContent(url) {
     var forms = newFrame.contentWindow.document.getElementsByTagName('form')
     if (forms && forms.length) {
       for (i = 0, len = forms.length; i < len; i++) {
+        if (forms[i].getAttribute('js') === 'false') {
+          continue
+        }
         forms[i].onsubmit = submitContentForm
       }
     }
     var buttons = newFrame.contentWindow.document.getElementsByTagName('button')
     if (buttons && buttons.length) {
       for (i = 0, len = buttons.length; i < len; i++) {
+        if (buttons[i].getAttribute('js') === 'false') {
+          continue
+        }
         if (buttons[i].type === 'submit') {
           buttons[i].onclick = submitContentForm
         }
@@ -151,6 +160,9 @@ function frameContent(url) {
     // setup ajax intercepts on page links
     var links = newFrame.contentWindow.document.getElementsByTagName('a')
     for (i = 0, len = links.length; i < len; i++) {
+      if (links[i].getAttribute('js') === 'false') {
+        continue
+      }
       if (!links[i].href ||
         links[i].href.indexOf('/account/signout') > -1 ||
         links[i].href.indexOf('/install/') > -1) {
@@ -198,6 +210,9 @@ function createContent(html, url) {
       var links = notificationsContainer.getElementsByTagName('a')
       if (links && links.length) {
         for (var i = 0, len = links.length; i < len; i++) {
+          if (links[i].getAttribute('js') === 'false') {
+            continue
+          }
           links[i].onclick = openContent
         }
       }
@@ -265,6 +280,9 @@ function createContent(html, url) {
     if (!url || url.indexOf('/project-ide') === -1) {
       var forms = newFrame.contentWindow.document.getElementsByTagName('form')
       if (forms && forms.length) {
+        if (forms[i].getAttribute('js') === 'false') {
+          continue
+        }
         for (i = 0, len = forms.length; i < len; i++) {
           forms[i].onsubmit = submitContentForm
         }
@@ -272,6 +290,9 @@ function createContent(html, url) {
       var buttons = newFrame.contentWindow.document.getElementsByTagName('button')
       if (buttons && buttons.length) {
         for (i = 0, len = buttons.length; i < len; i++) {
+          if (buttons[i].getAttribute('js') === 'false') {
+            continue
+          }
           if (buttons[i].type === 'submit') {
             buttons[i].onclick = submitContentForm
           }
@@ -282,6 +303,9 @@ function createContent(html, url) {
       // setup ajax intercepts on page links
       var links = newFrame.contentWindow.document.getElementsByTagName('a')
       for (i = 0, len = links.length; i < len; i++) {
+        if (links[i].getAttribute('js') === 'false') {
+          continue
+        }
         if (!links[i].href ||
           links[i].href.indexOf('/account/signout') > -1 ||
           links[i].href.indexOf('/install/') > -1) {
