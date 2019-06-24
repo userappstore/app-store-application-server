@@ -14,14 +14,35 @@ Your project will run on any NodeJS-capable hosting such as Heroku, AWS, Digital
 ## Step 2: Setup and start the dashboard server
     $ cd dashboard-server
     $ npm install
-    $ bash start.sh
+    
+    # This part of the configuration requires
+    # generating your own unique value
+    $ node
+    > const bcrypt = require('bcryptjs')
+    > bcrypt.genSaltSync(4)
+      '$2a$10$abcdef'
+      <ctrl+c> + <ctrl+c>
+
+    # start Dashboard with your configuration
+    $ NODE_ENV=development \
+      APPLICATION_SERVER=http://localhost:3000 \
+      APPLICATION_SERVER_TOKEN="a shared secret" \
+      BCRYPT_FIXED_SALT="$2a$10$abcdef" \
+      DASHBOARD_SERVER=http://localhost:8000 \
+      node main.js
 
 ## Step 3: Setup and start the application server
     $ cd application-server
     $ npm install
-    $ bash start.sh 
+    $ NODE_ENV=development \
+      APPLICATION_SERVER=http://localhost:3000 \
+      APPLICATION_SERVER_TOKEN="a shared secret" \
+      DASHBOARD_SERVER=http://localhost:8000 \
+      node main.js
 
-Open your project in your browser at http://localhost:8000
+Open your project in your browser at `http://localhost:8000`
+
+The bcrypt fixed-salt allows some data like usernames to ensure uniqueness while only storing an encrypted hash.  Passwords use a random salt generated each time they are hashed.
 
 ### Changing the storage
 
@@ -56,18 +77,18 @@ Amazon S3 and compatible services offer slower but infinite scaling:
 
 ## Deploying to production
 
-There are configuration differences between production and development to increase user security:
+There are configuration differences between production and development to increase user security.  Note your fixed salt workload should match your workload factor.
 
     # Dashboard server production settings
     $ NODE_ENV=production \
       BCRYPT_WORKLOAD_FACTOR=10 \
       MINIMUM_USERNAME_LENGTH=8 \
       MINIMUM_PASSWORD_LENGTH=8 \
-      MINIMUM_RESET_CODE_LENGTH=8 \
-      BCRYPT_FIXED_SALT="\$2a\$10\$abcdef" \
-      APPLICATION_SESSION_KEY="a long string used to protect sessions" \
-      APPLICATION_SERVER=...
-      APPLICATION_SERVER_TOKEN="a long secret shared with application server" \
+      10
+      10cdef" \
+      10 string used to protect 10
+      10
+      10g secret shared with application 10
       ENCRYPTION_KEY="32 character hex string" \
       DATABASE_URL=postgres://.... \
       STORAGE_ENGINE=@userappstore/storage-postgresql \

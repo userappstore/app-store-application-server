@@ -8,12 +8,12 @@ const bcrypt = require('./src/bcrypt.js')
 const fs = require('fs')
 const http = require('http')
 const path = require('path')
+const WhoIs = require(`./src/www/whois.js`)
 
 const server = http.createServer(receiveRequest)
 server.listen(process.env.PORT || 3000, process.env.IP || '127.0.0.1')
 
 async function receiveRequest(req, res) {
-  res.statusCode = 200
   // confirm it came from the Dashboard server
   if (req.headers['x-dashboard-server'] === process.env.DASHBOARD_SERVER) {
     if (!req.headers['x-accountid']) {
@@ -51,9 +51,7 @@ async function receiveRequest(req, res) {
       res.setHeader('content-type', 'text/html')
       break
     case '/whois.js':
-      filename = 'whois.js.js'
-      res.setHeader('content-type', 'text/javascript')
-      break
+      return WhoIs.get(req, res)
     case '/public/app.css':
       filename = urlPath
       res.setHeader('content-type', 'text/css')
@@ -63,7 +61,6 @@ async function receiveRequest(req, res) {
       res.setHeader('content-type', 'text/javascript')
       break
     default:
-      console.log('bad2....', urlPath)
       res.statusCode = 404
       return res.end()
   }
