@@ -18,20 +18,7 @@ window.Request = {
   }
 }
 
-function send (url, data, method, callback) {
-  var postData
-  if (data) {
-    var arr = []
-    for (var key in data) {
-      const encoded = encodeURI(data[key])
-      const decoded = decodeURI(encoded)
-      if (decoded !== data[key]) {
-        throw new Error('encoding error')
-      }
-      arr.push(key + '=' + encoded)
-    }
-    postData = arr.join('&')
-  }
+function send(url, data, method, callback) {
   var x = getRequest()
   x.open(method, url, true)
   x.onreadystatechange = function () {
@@ -40,11 +27,11 @@ function send (url, data, method, callback) {
     }
     return callback(null, x.responseText)
   }
-  x.send(postData)
+  x.send(data)
   return x
 }
 
-function getRequest () {
+function getRequest() {
   if (useXMLHttpRequest || typeof XMLHttpRequest !== 'undefined') {
     useXMLHttpRequest = true
     return new window.XMLHttpRequest()
@@ -59,6 +46,6 @@ function getRequest () {
       xhr = new window.ActiveXObject(xhrversions[i])
       compatibleActiveXObject = xhrversions[i]
       return xhr
-    } catch (e) {}
+    } catch (e) { }
   }
 }
