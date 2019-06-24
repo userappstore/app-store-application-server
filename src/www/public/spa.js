@@ -280,10 +280,10 @@ function createContent(html, url) {
     if (!url || url.indexOf('/project-ide') === -1) {
       var forms = newFrame.contentWindow.document.getElementsByTagName('form')
       if (forms && forms.length) {
-        if (forms[i].getAttribute('js') === 'false') {
-          continue
-        }
         for (i = 0, len = forms.length; i < len; i++) {
+          if (forms[i].getAttribute('js') === 'false') {
+            continue
+          }
           forms[i].onsubmit = submitContentForm
         }
       }
