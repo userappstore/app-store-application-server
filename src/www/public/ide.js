@@ -89,13 +89,36 @@ function updatePreview (e) {
   }
   var html = lastSent['home.html'] || ''
   if(html) {
+    var whois = 'var user = ' + JSON.stringify({
+      accountid: 'account_00000001',
+      sessionid: 'session_00000001',
+      installid: ''
+    })
+    html = html.replace('<script src="/whois.js"></script>', '<script>' + whois + '</script>')
+    html = html.replace('<script src="/whois.js">', '<script>' + whois + '</script>')
+    html = html.replace("<script src='/whois.js'></script>", '<script>' + whois + '</script>')
+    html = html.replace("<script src='/whois.js'>", '<script>' + whois + '</script>')
     var js = lastSent['app.js'] || ''
-    html = html.replace('<script src="/public/app.js">', '<script>' + js + '</script>')
-    html = html.replace("<script src='/public/app.js'>", '<script>' + js + '</script>')
+    html = html.replace('<script src="/whois.js"></script>', '<script>' + js + '</script>')
+    html = html.replace('<script src="/whois.js">', '<script>' + js + '</script>')
+    html = html.replace("<script src='/whois.js'></script>", '<script>' + js + '</script>')
+    html = html.replace("<script src='/whois.js'>", '<script>' + js + '</script>')
     var css = lastSent['app.css'] || ''
+    html = html.replace('<link href="/public/app.css" rel="stylesheet" />', '<style>' + css + '</style>')
+    html = html.replace('<link href="/public/app.css" rel="stylesheet"/>', '<style>' + css + '</style>')
+    html = html.replace('<link href="/public/app.css" rel="stylesheet"></link>', '<style>' + css + '</style>')
     html = html.replace('<link href="/public/app.css" rel="stylesheet">', '<style>' + css + '</style>')
+    html = html.replace('<link rel="stylesheet" href="/public/app.css" />', '<style>' + css + '</style>')
+    html = html.replace('<link rel="stylesheet" href="/public/app.css"/>', '<style>' + css + '</style>')
+    html = html.replace('<link rel="stylesheet" href="/public/app.css"></link>', '<style>' + css + '</style>')
     html = html.replace('<link rel="stylesheet" href="/public/app.css">', '<style>' + css + '</style>')
+    html = html.replace("<link href='/public/app.css' rel='stylesheet' />", '<style>' + css + '</style>')
+    html = html.replace("<link href='/public/app.css' rel='stylesheet'/>", '<style>' + css + '</style>')
+    html = html.replace("<link href='/public/app.css' rel='stylesheet'></link>", '<style>' + css + '</style>')
     html = html.replace("<link href='/public/app.css' rel='stylesheet'>", '<style>' + css + '</style>')
+    html = html.replace("<link rel='stylesheet' href='/public/app.css' />", '<style>' + css + '</style>')
+    html = html.replace("<link rel='stylesheet' href='/public/app.css'/>", '<style>' + css + '</style>')
+    html = html.replace("<link rel='stylesheet' href='/public/app.css'></link>", '<style>' + css + '</style>')
     html = html.replace("<link rel='stylesheet' href='/public/app.css'>", '<style>' + css + '</style>')
     if (lastSent['app.css']) {
       html += '<style>' + lastSent['app.css'] + '</style>'
