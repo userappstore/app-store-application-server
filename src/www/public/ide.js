@@ -89,6 +89,14 @@ function updatePreview (e) {
   }
   var html = lastSent['home.html'] || ''
   if(html) {
+    var js = lastSent['app.js'] || ''
+    html = html.replace('<script src="/public/app.js">', '<script>' + js + '</script>')
+    html = html.replace("<script src='/public/app.js'>", '<script>' + js + '</script>')
+    var css = lastSent['app.css'] || ''
+    html = html.replace('<link href="/public/app.css" rel="stylesheet">', '<style>' + css + '</style>')
+    html = html.replace('<link rel="stylesheet" href="/public/app.css">', '<style>' + css + '</style>')
+    html = html.replace("<link href='/public/app.css' rel='stylesheet'>", '<style>' + css + '</style>')
+    html = html.replace("<link rel='stylesheet' href='/public/app.css'>", '<style>' + css + '</style>')
     if (lastSent['app.css']) {
       html += '<style>' + lastSent['app.css'] + '</style>'
     }
