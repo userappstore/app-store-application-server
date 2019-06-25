@@ -89,7 +89,7 @@ function updatePreview (e) {
   }
   var html = lastSent['home.html'] || ''
   if(html) {
-    var whois = 'var user = ' + JSON.stringify({
+    var whois = 'window.user = ' + JSON.stringify({
       accountid: 'account_00000001',
       sessionid: 'session_00000001',
       installid: ''
