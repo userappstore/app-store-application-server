@@ -94,15 +94,18 @@ function updatePreview (e) {
       sessionid: 'session_00000001',
       installid: ''
     })
+    console.log('html before parsing')
     html = html.replace('<script src="/whois.js"></script>', '<script>' + whois + '</script>')
     html = html.replace('<script src="/whois.js">', '<script>' + whois + '</script>')
     html = html.replace("<script src='/whois.js'></script>", '<script>' + whois + '</script>')
     html = html.replace("<script src='/whois.js'>", '<script>' + whois + '</script>')
+    console.log('parsed whois.js', html)
     var js = lastSent['app.js'] || ''
     html = html.replace('<script src="/whois.js"></script>', '<script>' + js + '</script>')
     html = html.replace('<script src="/whois.js">', '<script>' + js + '</script>')
     html = html.replace("<script src='/whois.js'></script>", '<script>' + js + '</script>')
     html = html.replace("<script src='/whois.js'>", '<script>' + js + '</script>')
+    console.log('parsed app.js', html)
     var css = lastSent['app.css'] || ''
     html = html.replace('<link href="/public/app.css" rel="stylesheet" />', '<style>' + css + '</style>')
     html = html.replace('<link href="/public/app.css" rel="stylesheet"/>', '<style>' + css + '</style>')
@@ -120,12 +123,7 @@ function updatePreview (e) {
     html = html.replace("<link rel='stylesheet' href='/public/app.css'/>", '<style>' + css + '</style>')
     html = html.replace("<link rel='stylesheet' href='/public/app.css'></link>", '<style>' + css + '</style>')
     html = html.replace("<link rel='stylesheet' href='/public/app.css'>", '<style>' + css + '</style>')
-    if (lastSent['app.css']) {
-      html += '<style>' + lastSent['app.css'] + '</style>'
-    }
-    if (lastSent['app.js']) {
-      html += '<script>' + lastSent['app.js'] + '</script>'
-    }
+    console.log('parsed app.css', html)
     if (html !== previewFrame.srcdoc) {
       previewFrame.srcdoc = html
     }
