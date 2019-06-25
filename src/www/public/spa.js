@@ -411,6 +411,13 @@ function openApplication(event, first) {
   var installid = newURL.split('/')[2]
   var install = installs[installid]
   if (!install.configured) {
+    if (layoutContainer) {
+      layoutContainer.style.display = 'none'
+    }
+    if (iframeContainer) {
+      iframeContainer.style.display = 'none'
+    }
+    contentContainer.style.display = ''
     return Request.get(newURL, function (error, response) {
       return createContent(response, newURL)
     })
