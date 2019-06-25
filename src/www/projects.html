@@ -26,9 +26,7 @@
       </thead>
     </table>
     <ul id="page-links" class="pagination"></ul>
-    
     <h2>Sample projects</h2>
-    <p>Copy these into your own account to edit them, or download them and run them as your own website.</p>
     <table id="sample-projects-table" class="pure-table pure-table-striped list-table">
       <thead>
         <tr>
@@ -46,6 +44,8 @@
       <td><a href="/project?projectid=${project.projectid}">${project.projectid}</a></td>
       <td>${project.created}</td>
       <td class="pure-button-group">
+        <a href="/download-project?projectid=${project.projectid}" class="pure-button pure-button-primary">Download</a>
+        <a href="/import-project?projectid=${project.projectid}" class="pure-button">Import</a>
       </td>
     </tr>
   </template>
@@ -55,7 +55,7 @@
       <td class="pure-button-group">
         <a href="/copy-project?projectid=${project.projectid}" class="pure-button pure-button-primary">Copy</a>
         <a href="/download-project?projectid=${project.projectid}" class="pure-button pure-button-primary">Download</a>
-        <a href="https://github.com/userappstore/${project.projectid}" class="pure-button">Github</a>
+        <a href="/import-project?projectid=${project.projectid}" class="pure-button">Import</a>
       </td>
     </tr>
   </template>
