@@ -349,12 +349,9 @@ function submitContentForm(event) {
       if (nextVariable > -1) {
         installid = installid.substring(0, nextVariable)
       }
+      installs[installid].configured = true
       event.target.href = '/install/' + installid + '/home'
-      return Request.get('/home', function (error, response) {
-        createContent(response)
-        closeContent()
-        return openApplication(event, false)
-      })
+      return openApplication(event, false)
     }
     iframe.srcdocWas = null
     function handleResponse(response) {
