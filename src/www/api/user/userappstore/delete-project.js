@@ -24,6 +24,13 @@ module.exports = {
     }
     await userAppStore.StorageList.remove(`account/projects/${req.account.accountid}`, req.query.projectid)
     await userAppStore.StorageList.remove(`projects`, req.query.projectid)
+    if (project.serverid) {
+      req.query.serverid = project.serverid
+      const server = await global.api.user.userappstore.ApplicationServer.get(req)
+      if (server.organizationid) {
+        await userAppStore.StorageList.remove(`organization/projects/${server.organizationid}`, req.query.projectid)
+      }
+    }
     req.success = true
   }
 }
