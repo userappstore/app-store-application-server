@@ -16,8 +16,10 @@ async function beforeRequest (req) {
 
 async function renderPage (req, res, messageTemplate) {
   const doc = userAppStore.HTML.parse(req.route.html)
-  if (req.body) {
-    const input = doc.getElementById('projectid')
+  const input = doc.getElementById('projectid')
+  if (req.method === 'GET' && req.query && req.query.projectid) {
+    input.setAttribute('value', req.query.projectid || '')
+  } else if (req.method === 'POST') {
     input.setAttribute('value', req.body.projectid || '')
   }
   if (messageTemplate) {
