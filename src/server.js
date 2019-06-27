@@ -97,6 +97,10 @@ async function receiveRequest(req, res) {
       }
       eTags[req.urlPath] = eTag
     }
+    if (req.headers['if-none-match'] === eTag) {
+      res.statusCode = 304
+      return res.end()
+    }
     res.setHeader('expires', new Date(Date.now() + eightDays).toUTCString())
     res.setHeader('etag', eTag)
     res.setHeader('vary', 'accept-encoding')
