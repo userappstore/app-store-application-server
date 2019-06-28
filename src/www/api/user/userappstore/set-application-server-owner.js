@@ -15,6 +15,9 @@ module.exports = {
     const token = `${server.applicationServer}/${req.account.accountid}/${req.session.sessionid}`
     const url = `${server.applicationServer}/authorized-app-stores/${process.env.DASHBOARD_SERVER.split('://')[1]}.txt`
     const urlContents = await fetch(url)
+    if (!urlContents) {
+      throw new Error('invalid-verification-token')
+    }
     const match = await bcrypt.compare(token, urlContents)
     if (!match) {
       throw new Error('invalid-verification-token')
@@ -57,6 +60,9 @@ const fetch = util.promisify((url, callback) => {
       body = body ? Buffer.concat([chunk, body]) : chunk
     })
     proxyResponse.on('end', () => {
+      if (!body) {
+        return callback()
+      }
       return callback(null, body.toString('utf-8'))
     })
     proxyResponse.on('error', (error) => {
