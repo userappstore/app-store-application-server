@@ -67,7 +67,7 @@ const proxy = util.promisify((method, path, data, accountid, sessionid, alternat
     port,
     method,
     headers: {
-      'x-application-server': applicationServer.split('://')[1],
+      'x-application-server': applicationServer,
       'x-dashboard-token': token
     }
   }
