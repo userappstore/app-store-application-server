@@ -53,9 +53,27 @@
     </form>
     <div id="integration-guide">
       <h2>How to integrate Dashboard</h2>
-      <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> proxies your server and each request it makes includes headers with account, session, and optionally organization and subscription ids. You use that data to determine what content to serve to the user. HTML content must be well-formed because it is parsed
-      and modified before being served to the user.</p>
-      <pre id="integration-guide-header"></pre>
+      <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> splits a web application into two parts, providing account management, signing in, subscriptions and more for your web app.</p>
+      <p>Your application server provides the rest of the content for your users, and Dashboard presents the user a single website made of content from either or both servers.</p>
+
+      <h3>Sample servers</h3>
+      <table>
+        <tr>
+          <th>Sample</th>
+          <th>Language</th>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/userappstore/express-application-server/blob/master/src/index.js">Express application server middleware</a></td>
+           <td>NodeJS</td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/userappstore/app-store-application-server/blob/master/src/project-standalone/application-server/main.js">Standalone project server</a></td>
+          <td>NodeJS</td>
+        </tr>
+      </table>
+      <p></p>
+      <pre id="integration-guide-header">
+      </pre>
       <p>The HTML your server returns is modified to include the installation path in URLs, for instance <strong>/home</strong> becomes <strong>/install/installid/home</strong>.  The modified HTML is served to the user via a sandboxed <strong>iframe</strong> in the <strong>srcdoc</strong> attribute.  Quotation marks are modified to inline the document as an attribute, and you must include a <strong>base</strong> tag with <strong>href="_top"</strong> for forms and links to use the entire page.</p>
     </div>
     <div id="usage-guide">
