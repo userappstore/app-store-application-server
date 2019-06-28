@@ -3,6 +3,7 @@
 // passes the request to the corresponding route or file
 const bcrypt = require('./bcrypt.js')
 const crypto = require('crypto')
+const dashboardServer = process.env.DASHBOARD_SERVER.split('://')[1]
 const fs = require('fs')
 const http = require('http')
 const Multiparty = require('multiparty')
@@ -42,11 +43,11 @@ module.exports = {
 
 async function receiveRequest(req, res) {
   if (process.env.DEBUG_ERRORS) {
-    console.log('[request]', req.method, req.url, req.headers['x-dashboard-server'])
+    console.log('[request]', req.method, req.url, dashboardServer)
   }
   res.statusCode = 200
   // confirm it came from the Dashboard server
-  if (req.headers['x-dashboard-server'] === process.env.DASHBOARD_SERVER) {
+  if (req.headers['x-dashboard-server'] === dashboardServer) {
     if (!req.headers['x-accountid']) {
       // guest accessing something
       const token = req.headers['x-dashboard-token']
