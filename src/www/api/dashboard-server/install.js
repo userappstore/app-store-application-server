@@ -1,6 +1,7 @@
 const userAppStore = require('../../../../index.js')
 
 module.exports = {
+  auth: false,
   get: async (req) => {
     if (!req.dashboardServer) {
       return
