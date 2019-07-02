@@ -455,7 +455,7 @@ function createApplicationContent(installid, html) {
   var newFrame = document.createElement('iframe')
   newFrame.style.position = 'absolute'
   newFrame.style.zIndex = 1
-  newFrame.sandbox = 'allow-popups allow-scripts allow-forms'
+  newFrame.sandbox = 'allow-same-origin allow-popups allow-scripts allow-forms'
   newFrame.className = iframe.className
   newFrame.srcdoc = srcdoc
   appNumber++
