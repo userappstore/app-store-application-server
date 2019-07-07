@@ -90,13 +90,13 @@ async function submitForm(req, res) {
         }
       }
       if (!defaultProfile.email) {
-        await dashboardServer.patch(`/api/application-server/update-default-profile?accountid=${req.account.accountid}`, req.body, req.account.accountid, req.session.sessionid)
+        await dashboardServer.patch(`/api/user/update-profile?profileid=${req.account.profileid}`, req.body, req.account.accountid, req.session.sessionid)
         defaultProfile.email = req.body.email
         defaultProfile.firstName = req.body['first-name']
         defaultProfile.lastName = req.body['last-name']
         profile = defaultProfile
       } else {
-        profile = await dashboardServer.post(`/api/application-server/create-profile?accountid=${req.account.accountid}`, req.body, req.account.accountid, req.session.sessionid)
+        profile = await dashboardServer.post(`/api/user/create-profile?accountid=${req.account.accountid}`, req.body, req.account.accountid, req.session.sessionid)
       }
     }
   } else {

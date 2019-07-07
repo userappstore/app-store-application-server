@@ -254,7 +254,7 @@ function createContent(html, url) {
     srcdoc = iframe.srcdocWas
     newTitle = document.title
     if (url &&
-      (url.indexOf('/account/signin') === 0 || url.indexOf('/account/authorize') === 0)) {
+      (url.indexOf('/account/signin') === 0)) {
       appMenuContainer.style.display = 'none'
       accountMenuContainer.style.display = 'none'
       navigation.innerHTML = ''
@@ -361,16 +361,7 @@ function submitContentForm(event) {
       var redirectURL = response.substring(response.indexOf(';url=') + ';url='.length)
       redirectURL = redirectURL.substring(0, redirectURL.indexOf('"'))
       currentURL = redirectURL
-      if (redirectURL === '/account/authorize') {
-        if (authorizationForm) {
-          iframe.srcdocWas = authorizationForm
-          return createContent(null, redirectURL)
-        }
-        return Request.get(currentURL, function (_, response) {
-          iframe.srcdocWas = authorizationForm = response
-          return createContent(null, currentURL)
-        })
-      } else if (redirectURL.indexOf('/account/signin') === 0) {
+      if (redirectURL.indexOf('/account/signin') === 0) {
         return Request.get(currentURL, function (_, response) {
           iframe.srcdocWas = response
           return createContent(null, currentURL)
