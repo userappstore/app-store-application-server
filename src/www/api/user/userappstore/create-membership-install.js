@@ -36,7 +36,8 @@ module.exports = {
       text: req.body.text,
       organizationid: install.organizationid,
       organizationInstall: req.query.installid,
-      subscriptionid: install.subscriptionid
+      subscriptionid: install.subscriptionid,
+      planid: install.planid
     }
     // installing a shared project
     if (install.projectid) {
