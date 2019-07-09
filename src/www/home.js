@@ -30,7 +30,7 @@ async function beforeRequest (req) {
     }
   }
   req.query.all = true
-  const pending = await global.api.user.userappstore.OrganizationInstalls.get(req)
+  const pending = await global.api.user.userappstore.OrganizationsInstalls.get(req)
   if (pending && pending.length) {
     const ownInstalls = await global.api.user.userappstore.Installs.get(req)
     for (const install of pending) {

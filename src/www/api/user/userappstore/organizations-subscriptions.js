@@ -10,10 +10,10 @@ module.exports = {
     }
     let subscriptions
     if (req.query.all) {
-      subscriptions = await dashboardServer.get(`/api/application-server/organization-subscriptions?accountid=${req.query.accountid}&all=true`, req.account.accountid, req.session.sessionid)
+      subscriptions = await dashboardServer.get(`/api/application-server/organizations-subscriptions?accountid=${req.query.accountid}&all=true`, req.account.accountid, req.session.sessionid)
     } else {
       const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0
-      subscriptions = await dashboardServer.get(`/api/application-server/organization-subscriptions?accountid=${req.query.accountid}&offset=${offset}`, req.account.accountid, req.session.sessionid)
+      subscriptions = await dashboardServer.get(`/api/application-server/organizations-subscriptions?accountid=${req.query.accountid}&offset=${offset}`, req.account.accountid, req.session.sessionid)
     }
     if (!subscriptions || !subscriptions.length) {
       return null
