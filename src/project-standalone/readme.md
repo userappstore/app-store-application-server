@@ -56,21 +56,21 @@ You can use Dashboard with your local file system, ideal for development and pri
 
 Redis offers a very fast and very scalable in-memory database:
 
-    $ npm install @userappstore/storage-redis
+    $ npm install @userdashboard/storage-redis
     $ REDIS_URL=redis://.... \
-      STORAGE_ENGINE=@userappstore/storage-redis \
+      STORAGE_ENGINE=@userdashboard/storage-redis \
       bash start.sh
 
 PostgreSQL offers a fast and very scalable disk-based database:
 
-    $ npm install @userappstore/storage-postgresql
+    $ npm install @userdashboard/storage-postgresql
     $ DATABASE_URL=postgres://.... \
-      STORAGE_ENGINE=@userappstore/storage-postgresql \
+      STORAGE_ENGINE=@userdashboard/storage-postgresql \
       bash start.sh
 
 Amazon S3 and compatible services offer slower but infinite scaling:
 
-    $ npm install @userappstore/storage-s3
+    $ npm install @userdashboard/storage-s3
     $ ACCESS_KEY_ID=.... \
       AWS_SECRET_KEY=.... \
       BUCKET_NAME=..... \
@@ -91,7 +91,7 @@ There are configuration differences between production and development to increa
       10g secret shared with application 10
       ENCRYPTION_KEY="32 character hex string" \
       DATABASE_URL=postgres://.... \
-      STORAGE_ENGINE=@userappstore/storage-postgresql \
+      STORAGE_ENGINE=@userdashboard/storage-postgresql \
       node main.js
 
     # Application server production settings
