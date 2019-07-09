@@ -23,9 +23,10 @@ async function beforeRequest(req) {
   req.query.all = true
   const plan = await dashboardServer.get(`/api/user/subscriptions/published-plan?planid=${install.planid}`, null, null, server.applicationServer, server.applicationServerToken)
   const organization = await dashboardServer.get(`/api/user/organizations/organization?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
+  const membership = await dashboardServer.get(`/api/user/organizations/organization-membership?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
  req.query.accountid = req.account.accountid
   const collections = await global.api.user.userappstore.Collections.get(req)
-  req.data = { app, plan, organization, collections, install }
+  req.data = { app, plan, organization, collections, install, membership }
 }
 
 function renderPage(req, res, messageTemplate) {
@@ -62,12 +63,25 @@ async function submitForm(req, res) {
   if (!req.body.text || !req.body.text.length) {
     return renderPage(req, res, 'invalid-text')
   }
+  // If the user is included in the installer's subscription they complete the install
+  if (req.data.install.subscriptions && req.data.install.subscriptions.length) {
+    if (req.data.install.subscriptions.indexOf(req.data.membership.membershipid) > -1) {
+      req.query.accountid = req.account.accountid
+      req.body.appid = req.query.appid
+      try {
+        const install = await global.api.user.userappstore.CreateMembershipInstall.post(req)
+        res.statusCode = 302
+        res.setHeader('location', `/setup-install-profile?installid=${install.installid}`)
+        return res.end()
+      } catch (error) {
+        return renderPage(req, res, error.message)
+      }
+    }
+  }
+  // The user must confirm their subscription and select billing details
   try {
-    req.query.accountid = req.account.accountid
-    req.body.appid = req.query.appid
-    const install = await global.api.user.userappstore.CreateMembershipInstall.post(req)
     res.statusCode = 302
-    res.setHeader('location', `/setup-install-profile?installid=${install.installid}`)
+    res.setHeader('location', `/setup-subscription?installid=${install.installid}`)
     return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)

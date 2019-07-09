@@ -11,7 +11,20 @@ async function beforeRequest (req) {
   if (!req.query || !req.query.installid) {
     throw new Error('invalid-installid')
   }
-  const install = await global.api.user.userappstore.Install.get(req)
+  let install
+  try {
+    install = await global.api.user.userappstore.Install.get(req)
+  } catch (error) {
+  }
+  if (!install) {
+    try {
+      install = await global.api.user.userappstore.OrganizationInstall.get(req)
+    } catch (error) {
+    }
+  }
+  if (!install) {
+    throw new Error('invalid-installid')
+  }
   if (!install.appid) {
     throw new Error('invalid-install')
   }

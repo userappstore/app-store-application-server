@@ -11,20 +11,39 @@ async function beforeRequest (req) {
   if (!req.query || !req.query.installid) {
     throw new Error('invalid-installid')
   }
-  const install = await global.api.user.userappstore.Install.get(req)
+  let install
+  try {
+    install = await global.api.user.userappstore.Install.get(req)
+  } catch (error) {
+  }
+  if (!install) {
+    try {
+      install = await global.api.user.userappstore.OrganizationInstall.get(req)
+    } catch (error) {
+    }
+  }
+  if (!install) {
+    throw new Error('invalid-installid')
+  }
   if (!install.appid) {
     throw new Error('invalid-install')
   }
   let organization, memberships
   if (install.organizationid) {
-    organization = await dashboardServer.get(`/api/user/organizations/organization?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
     memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
+    const installedMembers = await dashboardServer.get(`/api/user/organizations/organization-subscriptions?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
     if(memberships && memberships.length) {
       for (const i in memberships) {
         const membership = memberships[i]
+        // remove self
         if (membership.accountid === req.account.accountid) {
           memberships.splice(i, 1)
-          break
+          continue
+        }
+        // remove anyone with their own subscription or included in a subscription
+        if (installedMembers.indexOf(membership.membershipid) > -1) {
+          memberships.splice(i, 1)
+          continue
         }
       }
     }
