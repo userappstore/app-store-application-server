@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userdashboard/dashboard": "git+https://github.com/userappstore/dashboard.git"
+    "@userdashboard/dashboard": "^1.0.0"
   }
 }

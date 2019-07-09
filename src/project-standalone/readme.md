@@ -1,5 +1,5 @@
 # Standalone Project
-Your UserAppStore project is now a NodeJS project integrated with [Dashboard](https://github.com/userappstore/dashboard).  
+Your UserAppStore project is now a NodeJS project integrated with [Dashboard](https://github.com/userdashboard/dashboard).  
 
 Dashboard handles your account registration and management exactly like on UserAppStore.  
 
@@ -81,14 +81,13 @@ There are configuration differences between production and development to increa
 
     # Dashboard server production settings
     $ NODE_ENV=production \
+      APPLICATION_SERVER=http://localhost:8001 \
+      APPLICATION_SERVER_TOKEN="a long secret shared with application server" \
       BCRYPT_WORKLOAD_FACTOR=10 \
       MINIMUM_USERNAME_LENGTH=8 \
       MINIMUM_PASSWORD_LENGTH=8 \
-      10
-      10cdef" \
-      10 string used to protect 10
-      10
-      10g secret shared with application 10
+      MINIMUM_USERNAME_LENGTH=1024 \
+      MINIMUM_PASSWORD_LENGTH=1024 \
       ENCRYPTION_KEY="32 character hex string" \
       DATABASE_URL=postgres://.... \
       STORAGE_ENGINE=@userdashboard/storage-postgresql \
@@ -96,27 +95,7 @@ There are configuration differences between production and development to increa
 
     # Application server production settings
     $ NODE_ENV=production \
-      APPLICATION_SERVER=...
+      APPLICATION_SERVER=http://localhost:8001 \
       APPLICATION_SERVER_TOKEN="a long secret shared with application server" \
       node main.js
     
-#### Dashboard documentation
-- [Introduction](https://github.com/userappstore/dashboard/wiki)
-- [Configuring Dashboard](https://github.com/userappstore/dashboard/wiki/Configuring-Dashboard)
-- [Dashboard code structure](https://github.com/userappstore/dashboard/wiki/Dashboard-code-structure)
-- [Server request lifecycle](https://github.com/userappstore/dashboard/wiki/Server-Request-Lifecycle)
-
-## Dashboard modules
-
-Additional modules are used on UserAppStore to provide subscription billing and more.  Additional APIs, content and functionality can be added by `npm install` and nominating Dashboard modules in your `package.json`.  You can read more about this on the [Dashboard configuration wiki page](https://github.com/userappstore/dashboard/wiki/Configuring-Dashboard)
-
-    "dashboard": {
-      "modules": [ "package", "package2" ]
-    }
-
-| Name | Description | Package   | Repository |
-|------|-------------|-----------|------------|
-| MaxMind GeoIP | IP address-based geolocation | @dashboard/maxmind-geoip | [github](https://github.com/userappstore/maxmind-geoip) |
-| Organizations | User created groups | @dashboard/organizations | [github](https://github.com/userappstore/organizations) |
-| Stripe Subscriptions | SaaS functionality | @dashboard/stripe-subscriptions | [github](https://github.com/userappstore/stripe-subscriptions) |
-| Stripe Connect | Marketplace functionality | @dashboard/stripe-connect | [github](https://github.com/userappstore/stripe-connect)
