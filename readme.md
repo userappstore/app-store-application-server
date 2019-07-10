@@ -10,7 +10,7 @@ The app store software provides a website where users may code and share single-
 - [Compatibility guidelines](https://github.com/userappstore/app-store-application-server/wiki/Compatibility-guidelines)
 - [Creating single-page apps](https://github.com/userappstore/app-store-application-server/wiki/Creating-single-page-apps)
 - [Creating application servers](https://github.com/userappstore/app-store-application-server/wiki/Creating-application-servers)
-- [Integrating existing web applications](https://github.com/userdashboard/dashboard/wiki/Integrating-existing-web-applications)
+- [Integrating existing web applications](https://github.com/userappstore/dashboard/wiki/Integrating-existing-web-applications)
 
 ### Case studies 
 
