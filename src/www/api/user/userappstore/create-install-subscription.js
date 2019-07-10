@@ -4,12 +4,35 @@ const userAppStore = require('../../../../../index.js')
 module.exports = {
   post: async (req) => {
     if (!req.query || !req.query.installid) {
-      throw new Error('invalid-install')
+      throw new Error('invalid-installid')
     }
     if (!req.body || !req.body.customerid) {
       throw new Error('invalid-customerid')
     }
-    const install = await global.api.user.userappstore.Install.get(req)
+    let install
+    try {
+      install = await global.api.user.userappstore.Install.get(req)
+    } catch (error) {
+    }
+    if (!install) {
+      try {
+        install = await global.api.user.userappstore.OrganizationInstall.get(req)
+        // make a copy for ourselves
+        req.query.accountid = req.account.accountid
+        const bodyWas = req.body
+        req.body = {
+          text: 'installed-app-name',
+          appid: install.appid
+        }
+        install = await global.api.user.userappstore.CreateInstall.post(req)
+        req.body = bodyWas
+        req.query.installid = install.installid
+      } catch (error) {
+      }
+    }
+    if (!install) {
+      throw new Error('invalid-installid')
+    }
     if (!install.appid || install.subscriptionid) {
       throw new Error('invalid-install')
     }
