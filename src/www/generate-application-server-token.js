@@ -42,7 +42,6 @@ async function submitForm (req, res) {
       return renderPage(req, res, 'success')
     }
   } catch (error) {
-    console.log(error)
     return renderPage(req, res, error.message)
   }
 }
