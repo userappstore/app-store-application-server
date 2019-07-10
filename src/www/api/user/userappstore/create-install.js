@@ -161,10 +161,10 @@ module.exports = {
     }
     if (installInfo.organizationid) {
       await userAppStore.StorageList.add(`organization/installs/${installInfo.organizationid}`, installid)
-      await userAppStore.StorageList.add(`app/members/${installInfo.appid}`, membershipid)
+      await userAppStore.StorageList.add(`organization/app/members/${installInfo.appid}/${installInfo.organizationid}`, membershipid)
       if (installInfo.subscriptions && installInfo.subscriptions.length) {
         for (const includedMember of installInfo.subscriptions) {
-          await userAppStore.StorageList.add(`app/members/${installInfo.appid}`, includedMember)
+          await userAppStore.StorageList.add(`organization/app/members/${installInfo.appid}/${installInfo.organizationid}`, includedMember)
         }
       }      
     }
