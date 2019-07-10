@@ -25,7 +25,8 @@ module.exports = {
         const bodyWas = req.body
         req.body = {
           text: app.name,
-          appid: organizationInstall.appid
+          appid: organizationInstall.appid,
+          organizationid: organizationInstall.organizationid
         }
         install = await global.api.user.userappstore.CreateInstall.post(req)
         install.planid = organizationInstall.planid
