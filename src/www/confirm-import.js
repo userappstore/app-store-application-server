@@ -86,8 +86,8 @@ async function submitForm (req, res) {
   }
   try {
     req.query.accountid = req.account.accountid
-    if (req.data.install.projectid) {
-      req.body.projectid = req.data.install.projectid
+    if (req.data.project) {
+      req.body.projectid = req.data.project.projectid
     } else {
       req.body.url = req.data.server.applicationServer
     }
