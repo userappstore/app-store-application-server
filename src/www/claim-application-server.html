@@ -51,31 +51,6 @@
         <button id="submit-claim-button" class="pure-button pure-button-primary" type="submit">Claim server</button>
       </div>
     </form>
-    <div id="integration-guide">
-      <h2>How to integrate Dashboard</h2>
-      <p><a href="https://github.com/userappstore/dashboard">Dashboard</a> splits a web application into two parts, providing account management, signing in, subscriptions and more for your web app.</p>
-      <p>Your application server provides the rest of the content for your users, and Dashboard presents the user a single website made of content from either or both servers.</p>
-
-      <h3>Sample servers</h3>
-      <table>
-        <tr>
-          <th>Sample</th>
-          <th>Language</th>
-        </tr>
-        <tr>
-          <td><a href="https://github.com/userappstore/express-application-server/blob/master/src/index.js">Express application server middleware</a></td>
-           <td>NodeJS</td>
-        </tr>
-        <tr>
-          <td><a href="https://github.com/userappstore/app-store-application-server/blob/master/src/project-standalone/application-server/main.js">Standalone project server</a></td>
-          <td>NodeJS</td>
-        </tr>
-      </table>
-      <p></p>
-      <pre id="integration-guide-header">
-      </pre>
-      <p>The HTML your server returns is modified to include the installation path in URLs, for instance <strong>/home</strong> becomes <strong>/install/installid/home</strong>.  The modified HTML is served to the user via a sandboxed <strong>iframe</strong> in the <strong>srcdoc</strong> attribute.  Quotation marks are modified to inline the document as an attribute, and you must include a <strong>base</strong> tag with <strong>href="_top"</strong> for forms and links to use the entire page.</p>
-    </div>
     <div id="usage-guide">
       <h2>Using your application server token</h2>
       <p>Your new token enables your server to make requests to our API on behalf of your users.</p>
@@ -83,37 +58,8 @@
         <input readonly id="token" name="token" require type="text" size="80" class="token" />
         <p class="note">We will not show you this token again, but you can generate a new token if you forget it.</p>
       </div>
-      <p>Use the same headers to make HTTP requests to Dashboard's API on behalf of your users.</p>
-      <pre id="usage-headers"></pre>
     </div>
   </body>
-  <template id="token-usage"><code><span># make API requests on behalf of users</span>
-x-application-server: "${header.applicationServer}"
-x-dashboard-token: bcrypt.hash("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", bcrypt.genSalt(4))
-x-accountid: "account_aaaaaaaaa"
-x-sessionid: "session_bbbbbbbbb"
-GET ${header.dashboardServer}/api/user/organizations/organization?organizationid=organization_ccccccccc
-GET ${header.dashboardServer}/api/user/subscriptions/subscription?subscriptionid=subscription_ddddddddd
-
-<span># verify requests made to your server</span>
-x-dashboard-server: "${header.dashboardServer}"
-x-dashboard-token: "${header.dashboardServerToken}"
-x-accountid: "account_aaaaaaaaa"
-x-sessionid: "session_bbbbbbbbb"
-x-organizationid: "organization_ccccccccc" <span># if user installed for organization</span>
-x-subscriptionid: "subscription_ddddddddd" <span># if user installed from app store</span>
-
-if (x-dashboard-server === "${header.dashboardServer}") {
-  valid = bcrypt.compare("${header.applicationServerToken}/account_aaaaaaaaa/session_bbbbbbbbb", x-dashboard-token)
-}
-</code></template>
-  <template id="integration-headers"><code>x-dashboard-server: "${header.dashboardServer}"
-x-dashboard-token: "${header.token}"
-x-accountid: "account_aaaaaaaaa"
-x-sessionid: "session_bbbbbbbbb"
-x-organizationid: "organization_ccccccccc" <span># if user installed for organization</span>
-x-subscriptionid: "subscription_ddddddddd" <span># if user installed from app store</span>
-GET ${header.dashboardServer}/install/installid/home <span># proxies /home on your server</span></code></template>
   <template id="organization-option">
     <option value="${organization.organizationid}">${organization.name}</option>
   </template>

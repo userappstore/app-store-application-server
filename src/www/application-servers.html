@@ -26,6 +26,57 @@
       </thead>
     </table>
     <ul id="page-links" class="pagination"></ul>
+    <h2>Application servers for app stores</h2>
+    <p>Compatible web servers must be <a href="https://github.com/userdashboard/dashboard">Dashboard</a> application servers configured to support <a href="https://github.com/userappstore/app-store-application-server">app stores</a>.</p>
+    <h3>Documentation links</h3>
+    <h4>Developing for app stores</h4>
+    <ul>
+      <li><a target="_blank" href="https://github.com/userappstore/app-store-application-server/wiki">App store Wiki</a></td>
+      <li><a target="_blank" href="https://github.com/userappstore/app-store-application-server/wiki/Compatibility-guidelines">Compatibility guidelines</a></li>
+      <li><a target="_blank" href="https://github.com/userappstore/app-store-application-server/wiki/Creating-single-page-apps">Creating single-page apps</a></li>
+      <li><a target="_blank" href="https://github.com/userappstore/app-store-application-server/wiki/Creating-application-servers">Creating application servers</a></li>
+      <li><a target="_blank" href="https://github.com/userappstore/dashboard/wiki/Integrating-existing-web-applications">Integrating existing web applications</a></li>
+    </ul>
+    <h4>Developing websites with Dashboard</h4>
+    <ul>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki">Dashboard Wiki</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Configuring-Dashboard">Configuring Dashboard</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Dashboard-code-structure">Dashboard code structure</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Server-Request-Lifecycle">Server request lifecycle</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/API-access-from-application-server">API access from application server</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/API-access-from-module">API access from module</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/API-access-from-web-browser">API access from web browser</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Creating-web-applications-with-Dashboard">Creating web applications with Dashboard</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Integrating-Dashboard-with-existing-web-applications">Integrating Dashboard with existing web applications</a></li>
+      <li><a target="_blank" href="https://github.com/userdashboard/dashboard/wiki/Creating-modules-for-Dashboard">Creating modules for Dashboard</a></li>
+    </ul>
+    <h2>Integration examples</h2>
+    <p><a href="https://github.com/seejohnrun/haste-server">Hastebin</a> is an open source pastebin web application for anonymous guests to share code and text.  These case studies document converting it to publish on app stores, or to publish as an independent website with organizations and subscriptions.</p>
+    <ul>
+      <li><a href="https://github.com/userappstore/integration-examples/blob/master/hastebin/hastebin-app-store-free.md">Importable free web application</a></li>
+      <li><a href="https://github.com/userappstore/integration-examples/blob/master/hastebin/hastebin-app-store-subscription.md">App store subscriptions</a></li>
+      <li><a href="https://github.com/userdashboard/integration-examples/blob/master/hastebin/hastebin-saas-free.md">Standalone free website</a></li>
+      <li><a href="https://github.com/userdashboard/integration-examples/blob/master/hastebin/hastebin-saas-subscription.md">Standalone subscription website</a></li>
+    </ul>
+    <h3>Sample application servers</h3>
+    <table class="pure-table data-table">
+      <tr>
+        <th>Sample</th>
+        <th>Language</th>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/userdashboard/express-application-server/blob/master/src/index.js">Express application server middleware</a></td>
+        <td>NodeJS</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/userdashboard/express-application-server/blob/master/src/index.js">Express authorized app stores middleware</a></td>
+        <td>NodeJS</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/userappstore/app-store-application-server/blob/master/src/project-standalone/application-server/main.js">Standalone project server</a></td>
+        <td>NodeJS</td>
+      </tr>
+    </table>
   </body>
   <template id="page-link">
     <li><a href="/application-servers?offset=${page.offset}" id="page-link-${page.pageNumber}">${page.pageNumber}</a></li>

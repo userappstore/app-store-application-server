@@ -24,38 +24,28 @@ async function renderPage(req, res, messageTemplate) {
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, null, messageTemplate, 'message-container')
     if (messageTemplate !== 'success') {
-      const submitForm = doc.getElementById('submit-form')
-      submitForm.parentNode.removeChild(submitForm)
-      const integrationGuide = doc.getElementById('integration-guide')
-      integrationGuide.parentNode.removeChild(integrationGuide)
-      const claimingStart = doc.getElementById('claiming-start')
-      claimingStart.parentNode.removeChild(claimingStart)
-      const claimingGuide = doc.getElementById('claiming-guide')
-      claimingGuide.parentNode.removeChild(claimingGuide)
-      const usageGuide = doc.getElementById('usage-guide')
-      usageGuide.parentNode.removeChild(usageGuide)
-      return res.end(doc.toString())
+      if (!req.body || !req.body.url) {
+        const submitForm = doc.getElementById('submit-form')
+        submitForm.parentNode.removeChild(submitForm)
+        const claimingStart = doc.getElementById('claiming-start')
+        claimingStart.parentNode.removeChild(claimingStart)
+        const claimingGuide = doc.getElementById('claiming-guide')
+        claimingGuide.parentNode.removeChild(claimingGuide)
+        const usageGuide = doc.getElementById('usage-guide')
+        usageGuide.parentNode.removeChild(usageGuide)
+        return res.end(doc.toString())
+      }
     }
     if (messageTemplate === 'success') {
       // step 3: completed guide
       const submitForm = doc.getElementById('submit-form')
       submitForm.parentNode.removeChild(submitForm)
-      const integrationGuide = doc.getElementById('integration-guide')
-      integrationGuide.parentNode.removeChild(integrationGuide)
       const claimingStart = doc.getElementById('claiming-start')
       claimingStart.parentNode.removeChild(claimingStart)
       const claimingGuide = doc.getElementById('claiming-guide')
       claimingGuide.parentNode.removeChild(claimingGuide)
       const token = doc.getElementById('token')
       token.setAttribute('value', req.data.applicationServer.applicationServerToken)
-      const header = {
-        object: 'header',
-        dashboardServer: process.env.DASHBOARD_SERVER,
-        dashboardServerToken: exampleToken,
-        applicationServerToken: req.data.applicationServer.applicationServerToken,
-        applicationServer: req.data.applicationServer.applicationServer
-      }
-      userAppStore.HTML.renderTemplate(doc, header, 'token-usage', 'usage-headers')
       return res.end(doc.toString())
     }
   }
@@ -67,12 +57,6 @@ async function renderPage(req, res, messageTemplate) {
   }
   // step 1: url form and integration guide
   if (req.method === 'GET' || !req.body) {
-    const header = {
-      object: 'header',
-      dashboardServer: process.env.DASHBOARD_SERVER,
-      token: exampleToken
-    }
-    userAppStore.HTML.renderTemplate(doc, header, 'integration-headers', 'integration-guide-header')
     const verificationContainer = doc.getElementById('verification-container')
     verificationContainer.parentNode.removeChild(verificationContainer)
     const submitClaimButton = doc.getElementById('submit-claim-button')
@@ -96,8 +80,6 @@ async function renderPage(req, res, messageTemplate) {
     verificationPath.setAttribute('value', `/authorized-app-stores/${process.env.DOMAIN}.txt`)
     const submitURLButton = doc.getElementById('submit-url-button')
     submitURLButton.parentNode.removeChild(submitURLButton)
-    const integrationGuide = doc.getElementById('integration-guide')
-    integrationGuide.parentNode.removeChild(integrationGuide)
     const usageGuide = doc.getElementById('usage-guide')
     usageGuide.parentNode.removeChild(usageGuide)
     const organizationContainer = doc.getElementById('organization-container')
