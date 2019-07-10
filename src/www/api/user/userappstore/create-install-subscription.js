@@ -17,19 +17,22 @@ module.exports = {
     let app
     if (!install) {
       try {
-        install = await global.api.user.userappstore.OrganizationInstall.get(req)
-        req.query.appid = install.appid
+        const organizationInstall = await global.api.user.userappstore.OrganizationInstall.get(req)
+        req.query.appid = organizationInstall.appid
         app = await global.api.user.userappstore.PublishedApp.get(req)
         // make a copy for ourselves
         req.query.accountid = req.account.accountid
         const bodyWas = req.body
         req.body = {
           text: app.name,
-          appid: install.appid
+          appid: organizationInstall.appid
         }
         install = await global.api.user.userappstore.CreateInstall.post(req)
+        install.planid = organizationInstall.planid
+        install.serverid = organizationInstall.serverid
         req.body = bodyWas
         req.query.installid = install.installid
+        await userAppStore.Storage.write(`install/${req.query.installid}`, install)
       } catch (error) {
       }
     }
