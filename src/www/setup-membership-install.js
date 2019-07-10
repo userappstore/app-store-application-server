@@ -81,7 +81,7 @@ async function submitForm(req, res) {
   // The user must confirm their subscription and select billing details
   try {
     res.statusCode = 302
-    res.setHeader('location', `/setup-subscription?installid=${install.installid}`)
+    res.setHeader('location', `/setup-subscription?installid=${req.data.install.installid}`)
     return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
