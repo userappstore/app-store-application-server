@@ -83,6 +83,8 @@ async function submitForm (req, res) {
     if (!found) {
       return renderPage(req, res, 'invalid-organizationid')
     }
+  } else {
+    delete (req.body.organizationid)
   }
   try {
     req.query.accountid = req.account.accountid
