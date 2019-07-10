@@ -30,6 +30,7 @@ module.exports = {
         install = await global.api.user.userappstore.CreateInstall.post(req)
         install.planid = organizationInstall.planid
         install.serverid = organizationInstall.serverid
+        install.organizationid = organizationInstall.organizationid
         req.body = bodyWas
         req.query.installid = install.installid
         await userAppStore.Storage.write(`install/${req.query.installid}`, install)
