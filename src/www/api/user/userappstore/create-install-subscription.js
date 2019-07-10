@@ -14,14 +14,17 @@ module.exports = {
       install = await global.api.user.userappstore.Install.get(req)
     } catch (error) {
     }
+    let app
     if (!install) {
       try {
         install = await global.api.user.userappstore.OrganizationInstall.get(req)
+        req.query.appid = install.appid
+        app = await global.api.user.userappstore.PublishedApp.get(req)
         // make a copy for ourselves
         req.query.accountid = req.account.accountid
         const bodyWas = req.body
         req.body = {
-          text: 'installed-app-name',
+          text: app.name,
           appid: install.appid
         }
         install = await global.api.user.userappstore.CreateInstall.post(req)
@@ -39,8 +42,6 @@ module.exports = {
     if (!install.planid) {
       throw new Error('invalid-plan')
     }
-    req.query.appid = install.appid
-    const app = await global.api.user.userappstore.PublishedApp.get(req)
     req.query.serverid = install.serverid
     const server = await global.api.user.userappstore.ApplicationServer.get(req)
     const plan = await dashboardServer.get(`/api/user/subscriptions/published-plan?planid=${install.planid}`, null, null, server.applicationServer, server.applicationServerToken)
@@ -72,6 +73,10 @@ module.exports = {
     const subscription = await dashboardServer.post(`/api/application-server/create-subscription?customerid=${installCustomer.id}`, { installid: install.installid, accountid: account.accountid }, req.account.accountid, req.session.sessionid)
     if(!subscription) {
       throw new Error('invalid-subscription')
+    }
+    if (!app) {
+      req.query.appid = install.appid
+      app = await global.api.user.userappstore.PublishedApp.get(req)
     }
     install.accountidSignedIn = account.accountid
     install.stripeid = app.stripeid
