@@ -28,6 +28,12 @@ async function beforeRequest (req) {
   if (!install.appid) {
     throw new Error('invalid-install')
   }
+  req.query.appid = install.appid
+  const app = await global.api.user.userappstore.PublishedApp.get(req)
+  if (!app) {
+    throw new Error('invalid-install')
+  }
+  install.app = app
   const customers = await dashboardServer.get(`/api/user/subscriptions/customers?accountid=${req.account.accountid}`, req.account.accountid, req.session.sessionid)
   const elgibleCustomers = []
   if (customers && customers.length) {
@@ -125,7 +131,7 @@ async function submitForm(req, res) {
     return renderPage(req, res, 'invalid-customerid')
   }
   try {
-    const thing = await global.api.user.userappstore.CreateInstallSubscription.post(req)
+    await global.api.user.userappstore.CreateInstallSubscription.post(req)
     res.statusCode = 302
     res.setHeader('location', `/install/${req.query.installid}/home`)
     return res.end()

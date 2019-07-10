@@ -37,7 +37,7 @@ async function beforeRequest (req) {
   let organization, memberships
   if (install.organizationid) {
     memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
-    const installedMembers = await userAppStore.StorageList.listAll(`app/members/${installInfo.appid}`)
+    const installedMembers = await userAppStore.StorageList.listAll(`app/members/${install.appid}`)
     if (memberships && memberships.length) {
       for (const i in memberships) {
         const membership = memberships[i]
