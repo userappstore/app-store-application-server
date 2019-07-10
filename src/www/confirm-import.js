@@ -86,6 +86,11 @@ async function submitForm (req, res) {
   }
   try {
     req.query.accountid = req.account.accountid
+    if (req.data.install.projectid) {
+      req.body.projectid = req.data.install.projectid
+    } else {
+      req.body.url = req.data.server.applicationServer
+    }
     req.body.appid = req.query.appid
     const install = await global.api.user.userappstore.CreateInstall.post(req)
     res.statusCode = 302
