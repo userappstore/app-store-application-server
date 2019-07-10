@@ -26,17 +26,16 @@ async function beforeRequest (req) {
 
 function renderPage(req, res, messageTemplate) {
   const importInfo = {
-    object: 'import',
-    title: req.data.project ? req.data.project.projectid : req.data.server.url.split('://')[1]
+    object: 'importInfo',
+    serverid: req.query.serverid,
+    title: req.data.project ? req.data.project.projectid : req.data.server.applicationServer.split('://')[1]
   }
-  const doc = userAppStore.HTML.parse(req.route.html, importInfo, 'import')
+  const doc = userAppStore.HTML.parse(req.route.html, importInfo, 'importInfo')
   if (messageTemplate) {
     userAppStore.HTML.renderTemplate(doc, null, messageTemplate, 'message-container')
   }
   const textField = doc.getElementById('text')
-  if (req.method === 'GET') {
-    textField.setAttribute('value', req.data.app.name)
-  } else {
+  if (req.method !== 'GET') {
     textField.setAttribute('value', req.body.text || '')
   }
   if (req.data.organizations && req.data.organizations.length) {

@@ -14,6 +14,7 @@
       .padder p { margin: 0 0 1rem 0; max-width: 30rem }
       th.url { width: 20rem }
       td input { width: 100% }
+      .pure-u-1-2 { max-width: 30rem; padding-right: 2rem }
       </style>
       <base target="_top" />
   </head>
@@ -25,27 +26,31 @@
       <h1>Import URL</h1>
       <div id="message-container"></div>
       <form id="submit-form" class="pure-form pure-form-stacked" method="POST" action="/import-url">
-        <div id="url-container" class="pure-control-group">       
-          <label for="url">Application server URL (https only)</label>
+        <div id="url-container" class="pure-con trol-group">       
+          <label for="url">HTTPS only</label>
           <input require id="url" placeholder="https://application.example.com" name="url" type="text" maxlength="200" size="40" />
         </div>
-        <div class="pure-control-group">
-          <label for="text">Navigation text</label>
-          <input require id="text" placeholder="" name="text" type="text" maxlength="50" size="40" />
-        </div>
-        <div class="pure-control-group">
-          <h2>Websites you use</h2>
-          <p>This will frame the URL, all websites are eligible but they may disallow and prevent it working.</p>
-          <label for="iframe">
-            <input id="iframe" checked name="application-server" value="iframe" type="radio" /> This website has its own signin (iframe)
-          </label>
-        </div>
-        <div id="application-server" class="pure-control-group">
-          <h2>Websites that use Dashboard</h2>
-          <p>This will proxy the URL, requiring strictly well-formed HTML and Dashboard integration to work.</p>
-          <label for="proxy">
-            <input id="proxy" name="application-server" value="proxy" type="radio" /> This is an application server for Dashboard (proxy)
-          </label>
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div id="application-server" class="pure-control-group">
+              <h2>Application servers for app stores</h2>
+              <p>Compatible web applications can be imported for organization or personal use. They are by unregistered developers
+                and can not use app store subscriptions.</p>
+              <label for="proxy">
+                <input id="proxy" name="application-server" value="proxy" type="radio" /> This is an application server
+              </label>
+            </div>
+          </div>
+          <div class="pure-u-1-2">
+            <div class="pure-control-group">
+              <h2>All other websites</h2>
+              <p>This will frame the websites you to sign in and use alongside other apps, your browser or their server may prevent
+                it functioning correctly.</p>
+              <label for="iframe">
+                <input id="iframe" checked name="application-server" value="iframe" type="radio" /> This is a website
+              </label>
+            </div>
+          </div>
         </div>
         <div class="pure-controls">
           <button id="submit-button" class="pure-button pure-button-primary" type="submit">Continue</button>
@@ -114,9 +119,6 @@
       </table>
     </div>
   </body>
-  <template id="invalid-text">
-    <div class="error message">Error!  Invalid text was provided.</div>
-  </template>
   <template id="invalid-url">
     <div class="error message">Error!  An invalid URL was provided.</div>
   </template>

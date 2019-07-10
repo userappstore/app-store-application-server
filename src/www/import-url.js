@@ -31,9 +31,6 @@ async function submitForm (req, res) {
   if (req.body.url.length > 200) {
     return renderPage(req, res, 'invalid-url-length')
   }
-  if (!req.body.text || !req.body.text.length) {
-    return renderPage(req, res, 'invalid-text')
-  }
   if (req.body['application-server'] === 'iframe') {
     req.query = req.query || {}
     req.query.accountid = req.account.accountid
@@ -51,6 +48,7 @@ async function submitForm (req, res) {
   } catch (error) {
   }
   if (!server) {
+    req.query.accountid = req.account.accountid
     server = await global.api.user.userappstore.CreateApplicationServer.post(req)
   }
   try {
