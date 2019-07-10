@@ -118,6 +118,7 @@ module.exports = {
       }
     }
     // installing for an organization
+    let membershipid
     if (req.body.organizationid && req.body.organizationid !== 'personal') {
       installInfo.organizationid = req.body.organizationid
       let organization
@@ -132,6 +133,10 @@ module.exports = {
       const memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${req.body.organizationid}`, req.account.accountid, req.session.sessionid)
       if (memberships && memberships.length) {
         for (const membership of memberships) {
+          if (membership.accountid === req.account.accountid) {
+            membershipid = membership.membershipid
+            continue
+          }
           if (req.body[`member-${membership.membershipid}`]) {
             installInfo.subscriptions.push(membership.membershipid)
           }
@@ -156,6 +161,12 @@ module.exports = {
     }
     if (installInfo.organizationid) {
       await userAppStore.StorageList.add(`organization/installs/${installInfo.organizationid}`, installid)
+      await userAppStore.StorageList.add(`app/members/${installInfo.appid}`, membershipid)
+      if (installInfo.subscriptions && installInfo.subscriptions.length) {
+        for (const includedMember of installInfo.subscriptions) {
+          await userAppStore.StorageList.add(`app/members/${installInfo.appid}`, includedMember)
+        }
+      }      
     }
     req.success = true
     return installInfo

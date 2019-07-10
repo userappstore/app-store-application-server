@@ -28,11 +28,17 @@ async function beforeRequest (req) {
   if (!install.appid) {
     throw new Error('invalid-install')
   }
+  req.query.appid = install.appid
+  const app = await global.api.user.userappstore.PublishedApp.get(req)
+  if (!app) {
+    throw new Error('invalid-install')
+  }
+  install.app = app
   let organization, memberships
   if (install.organizationid) {
     memberships = await dashboardServer.get(`/api/user/organizations/organization-memberships?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
-    const installedMembers = await dashboardServer.get(`/api/user/organizations/organization-subscriptions?organizationid=${install.organizationid}`, req.account.accountid, req.session.sessionid)
-    if(memberships && memberships.length) {
+    const installedMembers = await userAppStore.StorageList.listAll(`app/members/${installInfo.appid}`)
+    if (memberships && memberships.length) {
       for (const i in memberships) {
         const membership = memberships[i]
         // remove self
