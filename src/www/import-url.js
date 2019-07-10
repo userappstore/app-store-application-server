@@ -34,11 +34,29 @@ async function submitForm (req, res) {
   if (!req.body.text || !req.body.text.length) {
     return renderPage(req, res, 'invalid-text')
   }
-  try {
+  if (req.body['application-server'] === 'iframe') {
     req.query = req.query || {}
     req.query.accountid = req.account.accountid
-    await global.api.user.userappstore.CreateInstall.post(req)
-    return renderPage(req, res, 'success')
+    try {
+      await global.api.user.userappstore.CreateInstall.post(req)
+      return renderPage(req, res, 'success')
+    } catch (error) {
+      return renderPage(req, res, error.message)
+    }
+  }
+  let server
+  try {
+    req.query.url = req.body.url
+    server = await global.api.user.userappstore.UrlApplicationServer.get(req)
+  } catch (error) {
+  }
+  if (!server) {
+    server = await global.api.user.userappstore.CreateApplicationServer.post(req)
+  }
+  try {
+    res.statusCode = 302
+    res.setHeader('location', `/confirm-import?serverid=${server.serverid}`)
+    return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
   }

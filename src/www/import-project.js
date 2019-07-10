@@ -51,16 +51,16 @@ async function submitForm (req, res) {
   }
   req.query = req.query || {}
   req.query.projectid = req.body.projectid
+  let project
   try {
-    await global.api.user.userappstore.SharedProject.get(req)
+    project = await global.api.user.userappstore.SharedProject.get(req)
   } catch (error) {
     return renderPage(req, res, error.message)
   }
   try {
-    req.query = req.query || {}
-    req.query.accountid = req.account.accountid
-    await global.api.user.userappstore.CreateInstall.post(req)
-    return renderPage(req, res, 'success')
+    res.statusCode = 302
+    res.setHeader('location', `/confirm-import?serverid=${project.serverid}`)
+    return res.end()
   } catch (error) {
     return renderPage(req, res, error.message)
   }
