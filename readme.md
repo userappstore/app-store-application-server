@@ -22,6 +22,10 @@ The app store software provides a website where users may code and share single-
 |:---------------------------------------------------------------------------------------------------------------:|
 | Signed in home page with an empty app store |
 
+| ![Example application](./src/www/public/0-example-app.png?raw=true) | 
+|:---------------------------------------------------------------------------------------------------------------:|
+| An example app with [case study](https://github.com/userappstore/integration-examples/blob/master/hastebin/hastebin-app-store-subscription.md) for it was made compatible |
+
 ## Installation part 1: Dashboard Server
 
 Visit the [App Store Dashboard Server](https://github.com/userappstore/app-store-dashboard-server) if you have not completed that part.
