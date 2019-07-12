@@ -12,17 +12,15 @@ The app store software provides a website where users may code and share single-
 - [Creating application servers](https://github.com/userappstore/app-store-application-server/wiki/Creating-application-servers)
 - [Integrating existing web applications](https://github.com/userappstore/dashboard/wiki/Integrating-existing-web-applications)
 
-### Case studies 
+## Screenshots of the app store software (both servers)
 
-`Hastebin` is an open source pastebin web application.  It started as a website for anonymous guests only, and was transformed into an application server with support for sharing posts with organizations and paid subscriptions.
+| ![Guest landing page](./src/www/public/1-app-store-landing-page.png?raw=true) | 
+|:---------------------------------------------------------------------------------------------------------------:|
+| Guest landing page that you replace with your own `/` route on your application server |
 
-- [Hastebin - free to import](https://github.com/userappstore/integration-examples/blob/master/hastebin/hastebin-app-store-free.md)
-- [Hastebin - app store subscriptions](https://github.com/userappstore/integration-examples/blob/master/hastebin/hastebin-app-store-subscription.md)
-
-## Prerequisites
-- [Stripe account](https://stripe.com)
-- [Registered Connect platform](https://stripe.com/connect)
-- flat file database, or [Amazon S3](https://github.com/userdashboard/storage-s3) [Redis](https://github.com/userdashboard/storage-redis) [PostgreSQL](https://github.com/userdashboard/storage-postgresql) 
+| ![Signed in home page](./src/www/public/2-app-store-signed-in.png?raw=true) |
+|:---------------------------------------------------------------------------------------------------------------:|
+| Signed in home page with an empty app store |
 
 ## Installation part 1: Dashboard Server
 
