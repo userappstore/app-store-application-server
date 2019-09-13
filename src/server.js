@@ -31,6 +31,7 @@ let server
 module.exports = {
   start: async () => {
     server = http.createServer(receiveRequest)
+    console.log(process.env.PORT)
     return server.listen(process.env.PORT || 8001, process.env.IP || '127.0.0.1')
   },
   stop: async() => {
